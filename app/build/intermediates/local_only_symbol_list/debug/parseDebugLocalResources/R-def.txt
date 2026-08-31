@@ -1,0 +1,28 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color violet_100
+color violet_200
+color violet_300
+color violet_400
+color violet_50
+color violet_500
+color violet_600
+color violet_700
+color violet_800
+color violet_900
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+font nunito_bold
+font nunito_medium
+font nunito_regular
+font nunito_semi_bold
+font outfit_black
+font outfit_bold
+font outfit_medium
+font outfit_regular
+font outfit_semi_bold
+mipmap ic_launcher
+string app_name
+style Theme.FindIt

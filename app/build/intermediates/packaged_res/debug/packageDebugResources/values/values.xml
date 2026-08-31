@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="violet_100">#EDE9FE</color>
+    <color name="violet_200">#DDD6FE</color>
+    <color name="violet_300">#C4B5FD</color>
+    <color name="violet_400">#A78BFA</color>
+    <color name="violet_50">#F5F3FF</color>
+    <color name="violet_500">#8B5CF6</color>
+    <color name="violet_600">#7C3AED</color>
+    <color name="violet_700">#6D28D9</color>
+    <color name="violet_800">#5B21B6</color>
+    <color name="violet_900">#4C1D95</color>
+    <color name="white">#FFFFFF</color>
+    <string name="app_name">FindIt</string>
+    <style name="Theme.FindIt" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>
