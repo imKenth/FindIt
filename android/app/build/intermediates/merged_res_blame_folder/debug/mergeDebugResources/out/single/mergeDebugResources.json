@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "com.findit.app-debug-65:/font_outfit_semi_bold.ttf.flat",
+        "source": "com.findit.app-main-67:/font/outfit_semi_bold.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_outfit_medium.ttf.flat",
+        "source": "com.findit.app-main-67:/font/outfit_medium.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_nunito_semi_bold.ttf.flat",
+        "source": "com.findit.app-main-67:/font/nunito_semi_bold.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.findit.app-main-67:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_outfit_black.ttf.flat",
+        "source": "com.findit.app-main-67:/font/outfit_black.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.findit.app-main-67:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_nunito_bold.ttf.flat",
+        "source": "com.findit.app-main-67:/font/nunito_bold.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_nunito_medium.ttf.flat",
+        "source": "com.findit.app-main-67:/font/nunito_medium.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.findit.app-main-67:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_outfit_bold.ttf.flat",
+        "source": "com.findit.app-main-67:/font/outfit_bold.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_outfit_regular.ttf.flat",
+        "source": "com.findit.app-main-67:/font/outfit_regular.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-65:/font_nunito_regular.ttf.flat",
+        "source": "com.findit.app-main-67:/font/nunito_regular.ttf"
+    }
+]
