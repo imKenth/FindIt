@@ -9,10 +9,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
 class FirestoreRepositoryImpl(
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val firestore: FirebaseFirestore = try {
+        FirebaseFirestore.getInstance()
+    } catch (e: Exception) {
+        // Fallback or handle later - although in a real app this should be properly injected
+        FirebaseFirestore.getInstance(com.google.firebase.FirebaseApp.getInstance())
+    }
 ) : ItemRepository {
 
-    private val itemsCollection = firestore.collection("items")
+    private val itemsCollection by lazy { firestore.collection("items") }
 
     override fun getAllItems(): Flow<List<Item>> {
         // .snapshots() provides a real-time Flow of the collection

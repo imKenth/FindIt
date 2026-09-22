@@ -27,10 +27,6 @@ fun BottomNav(
     activeRoute: String,
     notifCount: Int = 0,
 ) {
-    /* removed unused NavItem class */
-
-    /* removed unused items list */
-
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shadowElevation = 8.dp,
@@ -45,7 +41,6 @@ fun BottomNav(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Home
             BottomNavItem(
                 icon = if (activeRoute == Routes.HOME) Icons.Filled.Home else Icons.Outlined.Home,
                 label = "Home",
@@ -56,14 +51,12 @@ fun BottomNav(
                     }
                 }
             )
-            // Search
             BottomNavItem(
                 icon = if (activeRoute == Routes.SEARCH) Icons.Filled.Search else Icons.Outlined.Search,
                 label = "Search",
                 isSelected = activeRoute == Routes.SEARCH,
                 onClick = { navController.navigate(Routes.SEARCH) { popUpTo(Routes.HOME) } }
             )
-            // Report FAB
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable { navController.navigate(Routes.REPORT_TYPE) }
@@ -91,14 +84,12 @@ fun BottomNav(
                     color = Violet600
                 )
             }
-            // My Reports
             BottomNavItem(
                 icon = if (activeRoute == Routes.MY_REPORTS) Icons.Filled.Description else Icons.Outlined.Description,
                 label = "My Reports",
                 isSelected = activeRoute == Routes.MY_REPORTS,
                 onClick = { navController.navigate(Routes.MY_REPORTS) { popUpTo(Routes.HOME) } }
             )
-            // Profile
             Box {
                 BottomNavItem(
                     icon = if (activeRoute == Routes.PROFILE) Icons.Filled.Person else Icons.Outlined.Person,

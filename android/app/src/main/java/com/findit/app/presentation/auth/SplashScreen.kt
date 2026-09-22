@@ -22,9 +22,42 @@ import androidx.navigation.NavController
 import com.findit.app.navigation.Routes
 import com.findit.app.ui.theme.*
 import kotlinx.coroutines.delay
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
 
 @Composable
 fun SplashScreen(navController: NavController) {
+    val viewModel: AuthViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+            }
+        }
+    )
+
+    val currentUser by viewModel.currentUser.collectAsState()
+
+    LaunchedEffect(currentUser) {
+        delay(2800)
+        if (currentUser != null) {
+            if (currentUser?.email == "admin@school.edu") {
+                navController.navigate(Routes.ADMIN) {
+                    popUpTo(Routes.SPLASH) { inclusive = true }
+                }
+            } else {
+                navController.navigate(Routes.HOME) {
+                    popUpTo(Routes.SPLASH) { inclusive = true }
+                }
+            }
+        } else {
+            navController.navigate(Routes.LOGIN) {
+                popUpTo(Routes.SPLASH) { inclusive = true }
+            }
+        }
+    }
+
     val infiniteTransition = rememberInfiniteTransition(label = "bounce")
 
     val view = LocalView.current
@@ -43,13 +76,6 @@ fun SplashScreen(navController: NavController) {
         ),
         label = "alpha"
     )
-
-    LaunchedEffect(Unit) {
-        delay(2800)
-        navController.navigate(Routes.LOGIN) {
-            popUpTo(Routes.SPLASH) { inclusive = true }
-        }
-    }
 
     Box(
         modifier = Modifier

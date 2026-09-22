@@ -1,7 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.FindIt" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.FindIt" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/violet_600</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/violet_100</item>
+        <item name="colorOnPrimaryContainer">@color/violet_900</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/violet_400</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Status bar color. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/gray_900</item>
+        <item name="colorSurfaceVariant">@color/gray_50</item>
+        <item name="colorOnSurfaceVariant">@color/gray_500</item>
+
+        <item name="colorError">@color/red_500</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="ShapeAppearance.FindIt.Rounded12" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="ShapeAppearance.FindIt.Rounded16" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="Theme.FindIt.Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>
