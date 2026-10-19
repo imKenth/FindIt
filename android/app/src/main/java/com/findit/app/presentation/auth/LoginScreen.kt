@@ -27,15 +27,45 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+
 import com.findit.app.navigation.Routes
 import com.findit.app.ui.theme.*
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    val viewModel: AuthViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
+            }
+        }
+    )
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(value = false) }
+
+    val authState by viewModel.authState.collectAsState()
+    val currentUser by viewModel.currentUser.collectAsState()
+
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Success) {
+            if (currentUser?.email == "admin@school.edu") {
+                navController.navigate(Routes.ADMIN) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
+            } else {
+                navController.navigate(Routes.HOME) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
+            }
+        }
+    }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -99,12 +129,23 @@ fun LoginScreen(navController: NavController) {
             Text("Use your school account credentials", fontSize = 14.sp, color = Gray400)
             Spacer(modifier = Modifier.height(28.dp))
 
+            var validationError by remember { mutableStateOf<String?>(null) }
+
+            if (authState is AuthState.Error || validationError != null) {
+                Text(
+                    text = validationError ?: (authState as AuthState.Error).message,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+
             // Email field
             Text("Email Address", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray700)
             Spacer(modifier = Modifier.height(6.dp))
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { email = it; validationError = null },
                 placeholder = { Text("you@school.edu", color = Gray400) },
                 leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null, tint = Gray400) },
                 modifier = Modifier.fillMaxWidth(),
@@ -125,7 +166,7 @@ fun LoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(6.dp))
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { password = it; validationError = null },
                 placeholder = { Text("\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022", color = Gray400) },
                 leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null, tint = Gray400) },
                 trailingIcon = {
@@ -159,10 +200,13 @@ fun LoginScreen(navController: NavController) {
             // Sign In button
             Button(
                 onClick = {
-                    navController.navigate(if (email == "admin@school.edu") Routes.ADMIN else Routes.HOME) {
-                        popUpTo(Routes.LOGIN) { inclusive = true }
+                    if (email.isBlank() || password.isBlank()) {
+                        validationError = "Please enter both email and password"
+                    } else {
+                        viewModel.signIn(email, password)
                     }
                 },
+                enabled = authState !is AuthState.Loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -170,11 +214,19 @@ fun LoginScreen(navController: NavController) {
                 colors = ButtonDefaults.buttonColors(containerColor = Violet600),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
             ) {
-                Text("Sign In", fontSize = 16.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily)
+                if (authState is AuthState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = White,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Sign In", fontSize = 16.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily)
+                }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Text("New to FindIt? ", fontSize = 14.sp, color = Gray400)
                 TextButton(onClick = { navController.navigate(Routes.REGISTER) }) {
                     Text("Create Account", fontSize = 14.sp, fontWeight = FontWeight.Black, color = Violet600)

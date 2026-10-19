@@ -1,3 +1,11 @@
 <resources>
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_my_reports">My Reports</string>
+    <string name="nav_profile">Profile</string>
+    <string name="report_lost_icon">Report lost</string>
+    <string name="report_found_icon">Report found</string>
     <string name="app_name">FindIt</string>
+    <string name="change_profile_photo">Change profile photo</string>
 </resources>

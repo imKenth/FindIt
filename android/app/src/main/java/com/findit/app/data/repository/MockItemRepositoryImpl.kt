@@ -11,12 +11,13 @@ class MockItemRepositoryImpl : ItemRepository {
         emit(MockData.items)
     }
 
-    override fun getItemById(id: String): Flow<Item?> {
-        TODO("Not yet implemented")
+    override fun getItemById(id: String): Flow<Item?> = flow {
+        emit(MockData.items.find { it.id == id })
     }
 
     override suspend fun reportItem(item: Item) {
-        TODO("Not yet implemented")
+        // In a real implementation, this would add to a mutable list
+        // For now, mock data is immutable so we just simulate success
+        // The Firestore implementation will handle actual persistence
     }
-    // ... implement other methods using MockData
 }

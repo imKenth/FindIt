@@ -1,27 +1,116 @@
 package com.findit.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.findit.app.navigation.FindItNavGraph
-import com.findit.app.ui.theme.FindItTheme
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
+import com.findit.app.databinding.ActivityMainBinding
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            FindItTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    val navController = rememberNavController()
-                    FindItNavGraph(navController = navController)
-                }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+                ?: return
+        val navController = navHostFragment.navController
+        configureBottomNavigation(navController)
+
+        bottomNavigation()?.let { navView ->
+            ViewCompat.setOnApplyWindowInsetsListener(navView) { view, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.updatePadding(bottom = insets.bottom)
+                windowInsets
             }
         }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            bottomNavigation()?.visibility =
+                if (destination.id in bottomNavigationDestinations) View.VISIBLE else View.GONE
+            updateSelectedItem(destination.id)
+        }
+        navController.currentDestination?.id?.let { destinationId ->
+            bottomNavigation()?.visibility =
+                if (destinationId in bottomNavigationDestinations) View.VISIBLE else View.GONE
+            updateSelectedItem(destinationId)
+        }
     }
+
+    private fun configureBottomNavigation(navController: NavController) {
+        val root = bottomNavigation() ?: return
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setPopUpTo(R.id.homeFragment, false)
+            .build()
+
+        configureItem(root, R.id.nav_home, R.drawable.ic_home, R.string.nav_home) {
+            navController.navigate(R.id.action_global_home, null, navOptions)
+        }
+        configureItem(root, R.id.nav_search, R.drawable.ic_search_nav, R.string.nav_search) {
+            navController.navigate(R.id.action_global_search, null, navOptions)
+        }
+        root.findViewById<View>(R.id.nav_reports).setOnClickListener {
+            navController.navigate(R.id.action_global_report_type, null, navOptions)
+        }
+        configureItem(root, R.id.nav_my_reports, R.drawable.ic_document, R.string.nav_my_reports) {
+            navController.navigate(R.id.action_global_my_reports, null, navOptions)
+        }
+        configureItem(root, R.id.nav_profile, R.drawable.ic_person, R.string.nav_profile) {
+            navController.navigate(R.id.action_global_profile, null, navOptions)
+        }
+    }
+
+    private fun configureItem(
+        root: View,
+        itemId: Int,
+        iconRes: Int,
+        labelRes: Int,
+        onClick: () -> Unit
+    ) {
+        val item = root.findViewById<View>(itemId) ?: return
+        item.findViewById<android.widget.ImageView>(R.id.nav_item_icon).setImageResource(iconRes)
+        item.findViewById<android.widget.TextView>(R.id.nav_item_label).setText(labelRes)
+        item.setOnClickListener { onClick() }
+    }
+
+    private fun updateSelectedItem(destinationId: Int) {
+        val selectedItemId = when (destinationId) {
+            R.id.homeFragment -> R.id.nav_home
+            R.id.searchFragment -> R.id.nav_search
+            R.id.myReportsFragment -> R.id.nav_my_reports
+            R.id.profileFragment -> R.id.nav_profile
+            else -> null
+        }
+        listOf(R.id.nav_home, R.id.nav_search, R.id.nav_my_reports, R.id.nav_profile).forEach { itemId ->
+            val item = bottomNavigation()?.findViewById<View>(itemId) ?: return@forEach
+            val color = ContextCompat.getColor(
+                this,
+                if (itemId == selectedItemId) R.color.bottom_nav_selected
+                else R.color.bottom_nav_unselected
+            )
+            item.findViewById<android.widget.ImageView>(R.id.nav_item_icon).setColorFilter(color)
+            item.findViewById<android.widget.TextView>(R.id.nav_item_label).setTextColor(color)
+        }
+    }
+
+    private fun bottomNavigation(): View? =
+        binding.root.findViewById(R.id.bottom_navigation)
+
+    private val bottomNavigationDestinations = setOf(
+        R.id.homeFragment,
+        R.id.searchFragment,
+        R.id.reportTypeFragment,
+        R.id.myReportsFragment,
+        R.id.profileFragment
+    )
 }

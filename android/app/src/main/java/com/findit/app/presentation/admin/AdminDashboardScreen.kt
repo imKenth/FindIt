@@ -3,6 +3,7 @@ package com.findit.app.presentation.admin
 import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,17 +22,40 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.findit.app.data.remote.MockData
+import com.findit.app.domain.model.Item
 import com.findit.app.domain.model.ItemStatus
 import com.findit.app.presentation.common.components.StatusBadge
 import com.findit.app.presentation.common.components.BadgeSize
 import com.findit.app.navigation.Routes
+import com.findit.app.presentation.home.HomeViewModel
 import com.findit.app.ui.theme.*
 
 @Composable
 fun AdminDashboardScreen(navController: NavController) {
+    val homeViewModel: HomeViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    )
+
+    val liveItems by homeViewModel.items.collectAsState()
+    var removedItemIds by remember { mutableStateOf(setOf<String>()) }
+    var resolvedItemIds by remember { mutableStateOf(setOf<String>()) }
+
+    val baseItems = if (liveItems.isNotEmpty()) liveItems else MockData.items
+    val allItems = baseItems.filter { !removedItemIds.contains(it.id) }.map { item ->
+        if (resolvedItemIds.contains(item.id)) item.copy(status = ItemStatus.RESOLVED) else item
+    }
+
     var tab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Dashboard", "Reports", "Claims", "Users")
     var approvedClaims by remember { mutableStateOf(setOf<String>()) }
@@ -76,6 +100,7 @@ fun AdminDashboardScreen(navController: NavController) {
                                 .weight(1f)
                                 .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
                                 .background(if (tab == i) Gray50 else Color.Transparent)
+                                .clickable { tab = i }
                                 .padding(vertical = 10.dp),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -94,8 +119,13 @@ fun AdminDashboardScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
         ) {
             when (tab) {
-                0 -> DashboardTab()
-                1 -> ReportsTab()
+                0 -> DashboardTab(allItems)
+                1 -> ReportsTab(
+                    items = allItems,
+                    navController = navController,
+                    onRemove = { id -> removedItemIds = removedItemIds + id },
+                    onResolve = { id -> resolvedItemIds = resolvedItemIds + id }
+                )
                 2 -> ClaimsTab(
                     approvedClaims,
                     rejectedClaims,
@@ -109,12 +139,14 @@ fun AdminDashboardScreen(navController: NavController) {
 }
 
 @Composable
-private fun DashboardTab() {
+private fun DashboardTab(items: List<Item>) {
+    val pendingClaimsCount = MockData.adminClaims.size
+    val totalReportsCount = items.size
     val stats = listOf(
-        Triple("47", "Total Reports", "+5 today"),
-        Triple("12", "Pending Claims", "3 urgent"),
-        Triple("234", "Registered Users", "+8 this week"),
-        Triple("8", "Flagged Content", "Needs review")
+        Triple("$totalReportsCount", "Total Reports", "Live Active Reports"),
+        Triple("$pendingClaimsCount", "Pending Claims", "Under Review"),
+        Triple("234", "Registered Users", "Active School Users"),
+        Triple("0", "Flagged Content", "System Clean")
     )
 
     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
@@ -159,11 +191,11 @@ private fun DashboardTab() {
                     MockData.adminActivity.forEach { a ->
                         data class ActivityStyle(val icon: String, val bg: Color, val text: Color)
                         val style = when (a["type"]) {
-                            "approved" -> ActivityStyle("\u2714", Green100, Green600)
+                            "approved" -> ActivityStyle("✔", Green100, Green600)
                             "report" -> ActivityStyle("+", Violet100, Violet600)
-                            "flag" -> ActivityStyle("\u26A0", Amber100, Amber600)
-                            "rejected" -> ActivityStyle("\u2716", Red100, Red500)
-                            else -> ActivityStyle("\u2022", Gray100, Gray500)
+                            "flag" -> ActivityStyle("⚠️", Amber100, Amber600)
+                            "rejected" -> ActivityStyle("✖", Red100, Red500)
+                            else -> ActivityStyle("•", Gray100, Gray500)
                         }
                         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Box(modifier = Modifier.size(32.dp).clip(RoundedCornerShape(50)).background(style.bg), contentAlignment = Alignment.Center) {
@@ -172,7 +204,7 @@ private fun DashboardTab() {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(a["action"] ?: "", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Gray900)
                                 Text(a["item"] ?: "", fontSize = 12.sp, color = Gray500, maxLines = 1)
-                                Text("${a["user"]} \u00B7 ${a["time"]}", fontSize = 10.sp, color = Gray400)
+                                Text("${a["user"]} · ${a["time"]}", fontSize = 10.sp, color = Gray400)
                             }
                         }
                     }
@@ -183,30 +215,72 @@ private fun DashboardTab() {
 }
 
 @Composable
-private fun ReportsTab() {
+private fun ReportsTab(
+    items: List<Item>,
+    navController: NavController,
+    onRemove: (String) -> Unit,
+    onResolve: (String) -> Unit
+) {
     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("${MockData.items.size} total reports", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray500)
+            Text("${items.size} total reports", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray500)
             Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Violet50)) {
                 Text("Export CSV", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600)
             }
         }
-        MockData.items.forEach { item ->
-            Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = White), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
-                Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    AsyncImage(model = item.imageUrl, contentDescription = item.name, modifier = Modifier.size(56.dp).clip(RoundedCornerShape(12.dp)), contentScale = ContentScale.Crop)
-                    Column(modifier = Modifier.weight(1f)) {
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(item.name, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray900, modifier = Modifier.weight(1f))
-                            StatusBadge(status = item.status, size = BadgeSize.XS)
-                        }
-                        Text("${item.reportedBy} \u00B7 ${item.date}", fontSize = 12.sp, color = Gray400)
-                        Text(item.location, fontSize = 12.sp, color = Gray400, maxLines = 1)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Violet50)) { Text("View", modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600) }
-                            Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Red50)) { Text("Remove", modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Red500) }
-                            Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Gray100)) { Text("Mark Resolved", modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Gray500) }
+
+        if (items.isEmpty()) {
+            Card(modifier = Modifier.fillMaxWidth().padding(top = 40.dp), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = White)) {
+                Column(modifier = Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("📋", fontSize = 32.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("No Reports Found", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Gray700)
+                    Text("Reports submitted by users will appear here", fontSize = 12.sp, color = Gray400)
+                }
+            }
+        } else {
+            items.forEach { item ->
+                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = White), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
+                    Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        AsyncImage(
+                            model = item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format" },
+                            contentDescription = item.name,
+                            modifier = Modifier.size(56.dp).clip(RoundedCornerShape(12.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                Text(item.name, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray900, modifier = Modifier.weight(1f))
+                                StatusBadge(status = item.status, size = BadgeSize.XS)
+                            }
+                            Text("${item.reportedBy} · ${item.date}", fontSize = 12.sp, color = Gray400)
+                            Text(item.location, fontSize = 12.sp, color = Gray400, maxLines = 1)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Card(
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Violet50),
+                                    modifier = Modifier.clickable { navController.navigate(Routes.itemDetails(item.id)) }
+                                ) {
+                                    Text("View", modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600)
+                                }
+                                Card(
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Red50),
+                                    modifier = Modifier.clickable { onRemove(item.id) }
+                                ) {
+                                    Text("Remove", modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Red500)
+                                }
+                                if (item.status != ItemStatus.RESOLVED) {
+                                    Card(
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = CardDefaults.cardColors(containerColor = Gray100),
+                                        modifier = Modifier.clickable { onResolve(item.id) }
+                                    ) {
+                                        Text("Mark Resolved", modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Gray500)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -233,7 +307,7 @@ private fun ClaimsTab(approvedClaims: Set<String>, rejectedClaims: Set<String>, 
                         Text(claim["item"] ?: "", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray900)
                         StatusBadge(status = when { approved -> ItemStatus.APPROVED; rejected -> ItemStatus.REJECTED; else -> ItemStatus.PENDING }, size = BadgeSize.XS)
                     }
-                    Text("Claimant: ${claim["claimant"]} \u00B7 ${claim["when"]}", fontSize = 12.sp, color = Gray500)
+                    Text("Claimant: ${claim["claimant"]} · ${claim["when"]}", fontSize = 12.sp, color = Gray500)
                     Spacer(modifier = Modifier.height(12.dp))
                     Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = Gray50)) {
                         Column(modifier = Modifier.padding(12.dp)) {
@@ -253,8 +327,8 @@ private fun ClaimsTab(approvedClaims: Set<String>, rejectedClaims: Set<String>, 
                             }
                         }
                     }
-                    if (approved) { Spacer(modifier = Modifier.height(12.dp)); Text("\u2714 Approved \u2014 notifying claimant to collect item", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Green600) }
-                    if (rejected) { Spacer(modifier = Modifier.height(12.dp)); Text("\u2716 Rejected \u2014 claimant has been notified", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Red500) }
+                    if (approved) { Spacer(modifier = Modifier.height(12.dp)); Text("✔ Approved — notifying claimant to collect item", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Green600) }
+                    if (rejected) { Spacer(modifier = Modifier.height(12.dp)); Text("✖ Rejected — claimant has been notified", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Red500) }
                 }
             }
         }

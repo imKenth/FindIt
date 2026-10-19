@@ -9,7 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +18,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.findit.app.data.remote.MockData
@@ -29,14 +32,28 @@ import com.findit.app.ui.theme.*
 
 @Composable
 fun ItemDetailsScreen(navController: NavController, itemId: String) {
-    val item = MockData.items.find { it.id == itemId } ?: MockData.items.first()
+    val viewModel: ItemDetailsViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return ItemDetailsViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    )
+
+    LaunchedEffect(itemId) {
+        viewModel.getItem(itemId)
+    }
+
+    val liveItem by viewModel.item.collectAsState()
+    val item = liveItem ?: MockData.items.find { it.id == itemId } ?: MockData.items.first()
     val canClaim = (item.status == ItemStatus.LOST) || (item.status == ItemStatus.FOUND)
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Hero image
             Box(modifier = Modifier.fillMaxWidth().height(208.dp)) {
-                AsyncImage(model = item.imageUrl, contentDescription = item.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                AsyncImage(model = item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format" }, contentDescription = item.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
                 Box(modifier = Modifier.fillMaxSize().background(androidx.compose.ui.graphics.Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)))))
 
                 // Back button
@@ -83,11 +100,11 @@ fun ItemDetailsScreen(navController: NavController, itemId: String) {
                 Text(item.name, fontSize = 22.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900, lineHeight = 28.sp)
                 Spacer(modifier = Modifier.height(20.dp))
 
-                MetaRow("\uD83D\uDCCD", "Location", item.location)
+                MetaRow("📍", "Location", item.location)
                 Spacer(modifier = Modifier.height(10.dp))
-                MetaRow("\uD83D\uDCC5", "Date Reported", "${item.date}${item.time?.let { " \u00B7 $it" } ?: ""}")
+                MetaRow("📅", "Date Reported", "${item.date}${item.time?.let { " · $it" } ?: ""}")
                 Spacer(modifier = Modifier.height(10.dp))
-                MetaRow("\uD83D\uDC64", "Reported By", item.reportedBy)
+                MetaRow("👤", "Reported By", item.reportedBy)
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Text("Description", fontSize = 14.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900)
@@ -97,7 +114,7 @@ fun ItemDetailsScreen(navController: NavController, itemId: String) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Blue50)) {
                     Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("\uD83D\uDD12", fontSize = 16.sp)
+                        Text("🔒", fontSize = 16.sp)
                         Text("Ownership information is kept private. Claim details are only visible to school administrators for verification.", fontSize = 12.sp, color = Blue700, lineHeight = 18.sp)
                     }
                 }
@@ -124,7 +141,7 @@ fun ItemDetailsScreen(navController: NavController, itemId: String) {
                 }
             } else {
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Gray100)) {
-                    Text("Item is ${item.status.name} \u2014 not available to claim", modifier = Modifier.fillMaxWidth().padding(16.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray400, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    Text("Item is ${item.status.name} — not available to claim", modifier = Modifier.fillMaxWidth().padding(16.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gray400, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                 }
             }
             OutlinedButton(onClick = {}, modifier = Modifier.fillMaxWidth().height(48.dp), shape = RoundedCornerShape(16.dp)) {

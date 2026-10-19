@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.findit.app-mergeDebugResources-63:/values-v30/values-v30.xml",
+            "outputFile": "com.findit.app-mergeDebugResources-82:/values-v30/values-v30.xml",
             "map": [
                 {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/a7346675c78e79cc8469416ef8bebe57/transformed/material3-release/res/values-v30/values-v30.xml",
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/a3286d64b70210e17a58dfdabf443456/transformed/material3-release/res/values-v30/values-v30.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

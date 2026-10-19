@@ -1,0 +1,4 @@
+#Tue Sep 22 11:45:50 PST 2026
+base.0=/home/rai/Documents/FindItMobileApp/android/app/build/intermediates/dex/debugAndroidTest/mergeProjectDexDebugAndroidTest/0/classes.dex
+path.0=0/classes.dex
+renamed.0=classes.dex

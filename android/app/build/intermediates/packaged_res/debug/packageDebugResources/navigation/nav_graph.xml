@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <action
+        android:id="@+id/action_global_home"
+        app:destination="@id/homeFragment"
+        app:launchSingleTop="true" />
+    <action
+        android:id="@+id/action_global_search"
+        app:destination="@id/searchFragment"
+        app:launchSingleTop="true" />
+    <action
+        android:id="@+id/action_global_report_type"
+        app:destination="@id/reportTypeFragment"
+        app:launchSingleTop="true" />
+    <action
+        android:id="@+id/action_global_my_reports"
+        app:destination="@id/myReportsFragment"
+        app:launchSingleTop="true" />
+    <action
+        android:id="@+id/action_global_profile"
+        app:destination="@id/profileFragment"
+        app:launchSingleTop="true" />
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.findit.app.presentation.auth.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_adminDashboardFragment"
+            app:destination="@id/adminDashboardFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.findit.app.presentation.auth.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminDashboardFragment"
+            app:destination="@id/adminDashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.findit.app.presentation.auth.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_registerFragment_to_adminDashboardFragment"
+            app:destination="@id/adminDashboardFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.findit.app.presentation.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_reportTypeFragment"
+            app:destination="@id/reportTypeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportTypeFragment"
+        android:name="com.findit.app.presentation.common.ReportTypeFragment"
+        android:label="ReportTypeFragment"
+        tools:layout="@layout/fragment_report_type">
+        <action
+            android:id="@+id/action_reportTypeFragment_to_reportLostFragment"
+            app:destination="@id/reportLostFragment" />
+        <action
+            android:id="@+id/action_reportTypeFragment_to_reportFoundFragment"
+            app:destination="@id/reportFoundFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportLostFragment"
+        android:name="com.findit.app.presentation.lost.ReportLostFragment"
+        android:label="ReportLostFragment"
+        tools:layout="@layout/fragment_report_lost" />
+
+    <fragment
+        android:id="@+id/reportFoundFragment"
+        android:name="com.findit.app.presentation.found.ReportFoundFragment"
+        android:label="ReportFoundFragment"
+        tools:layout="@layout/fragment_report_found" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.findit.app.presentation.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.findit.app.presentation.notifications.NotificationsFragment"
+        android:label="NotificationsFragment"
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_notificationsFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/itemDetailsFragment"
+        android:name="com.findit.app.presentation.common.ItemDetailsFragment"
+        android:label="ItemDetailsFragment"
+        tools:layout="@layout/fragment_item_details">
+        <argument
+            android:name="itemId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_itemDetailsFragment_to_claimItemFragment"
+            app:destination="@id/claimItemFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/claimItemFragment"
+        android:name="com.findit.app.presentation.claims.ClaimItemFragment"
+        android:label="ClaimItemFragment"
+        tools:layout="@layout/fragment_claim_item" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.findit.app.presentation.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_adminDashboardFragment"
+            app:destination="@id/adminDashboardFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_myReportsFragment"
+            app:destination="@id/myReportsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myReportsFragment"
+        android:name="com.findit.app.presentation.profile.MyReportsFragment"
+        android:label="MyReportsFragment"
+        tools:layout="@layout/fragment_my_reports">
+        <action
+            android:id="@+id/action_myReportsFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+        <action
+            android:id="@+id/action_myReportsFragment_to_reportTypeFragment"
+            app:destination="@id/reportTypeFragment" />
+        <action
+            android:id="@+id/action_myReportsFragment_to_claimStatusFragment"
+            app:destination="@id/claimStatusFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/claimStatusFragment"
+        android:name="com.findit.app.presentation.claims.ClaimStatusFragment"
+        android:label="ClaimStatusFragment"
+        tools:layout="@layout/fragment_claim_status" />
+
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.findit.app.presentation.admin.AdminDashboardFragment"
+        android:label="AdminDashboardFragment"
+        tools:layout="@layout/fragment_admin">
+        <action
+            android:id="@+id/action_adminDashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

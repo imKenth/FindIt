@@ -19,18 +19,58 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.ItemStatus
+import com.findit.app.domain.model.ItemType
+import com.findit.app.presentation.auth.AuthViewModel
 import com.findit.app.presentation.common.components.BottomNav
 import com.findit.app.presentation.common.components.StatusBadge
 import com.findit.app.presentation.common.components.BadgeSize
 import com.findit.app.navigation.Routes
+import com.findit.app.presentation.home.HomeViewModel
 import com.findit.app.ui.theme.*
 
 @Composable
 fun MyReportsScreen(navController: NavController) {
+    val homeViewModel: HomeViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    )
+
+    val authViewModel: AuthViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
+            }
+        }
+    )
+
+    val currentUser by authViewModel.currentUser.collectAsState()
+    val allItems by homeViewModel.items.collectAsState()
+
+    val currentUserName = currentUser?.name ?: "Alex Rivera"
+
+    val userItems = if (allItems.isNotEmpty()) {
+        val userFiltered = allItems.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
+        if (userFiltered.isNotEmpty()) userFiltered else allItems.take(2)
+    } else {
+        MockData.myReports
+    }
+
+    val activeReports = userItems.filter { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
+    val resolvedReports = userItems.filter { it.status == ItemStatus.RESOLVED || it.status == ItemStatus.CLAIMED }
+    val myClaims = MockData.myClaims
+
     var tab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Active", "Claims", "Resolved")
 
@@ -54,7 +94,7 @@ fun MyReportsScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
                     tabs.forEachIndexed { i, t ->
-                        val count = when (i) { 0 -> MockData.myReports.size; 1 -> MockData.myClaims.size; 2 -> MockData.resolvedReports.size; else -> 0 }
+                        val count = when (i) { 0 -> activeReports.size; 1 -> myClaims.size; 2 -> resolvedReports.size; else -> 0 }
                         Box(
                             modifier = Modifier
                                 .weight(1f)
@@ -81,33 +121,43 @@ fun MyReportsScreen(navController: NavController) {
             ) {
                 when (tab) {
                     0 -> { // Active
-                        MockData.myReports.forEach { item ->
-                            Card(
-                                modifier = Modifier.fillMaxWidth().clickable { navController.navigate(Routes.itemDetails(item.id)) },
-                                shape = RoundedCornerShape(16.dp),
-                                colors = CardDefaults.cardColors(containerColor = White),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                            ) {
-                                Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                    AsyncImage(model = item.imageUrl, contentDescription = item.name, modifier = Modifier.size(64.dp).clip(RoundedCornerShape(12.dp)), contentScale = ContentScale.Crop)
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                                            Text(item.name, fontSize = 14.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900, modifier = Modifier.weight(1f))
-                                            StatusBadge(status = item.status, size = BadgeSize.XS)
-                                        }
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text("${if (item.type == com.findit.app.domain.model.ItemType.LOST) "Lost" else "Found"} Report", fontSize = 12.sp, color = Violet500, fontWeight = FontWeight.Bold)
-                                        Text(item.location, fontSize = 12.sp, color = Gray400)
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                            Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Violet50)) { Text("View", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600) }
-                                            Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Gray100)) { Text("Edit", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Gray500) }
-                                            Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Red50)) { Text("Delete", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Red400) }
+                        if (activeReports.isEmpty()) {
+                            EmptyState("No Active Reports", "Report a lost or found item to get started")
+                        } else {
+                            activeReports.forEach { item ->
+                                Card(
+                                    modifier = Modifier.fillMaxWidth().clickable { navController.navigate(Routes.itemDetails(item.id)) },
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = CardDefaults.cardColors(containerColor = White),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                ) {
+                                    Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                        AsyncImage(
+                                            model = item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format" },
+                                            contentDescription = item.name,
+                                            modifier = Modifier.size(64.dp).clip(RoundedCornerShape(12.dp)),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                                                Text(item.name, fontSize = 14.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900, modifier = Modifier.weight(1f))
+                                                StatusBadge(status = item.status, size = BadgeSize.XS)
+                                            }
+                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Text("${if (item.type == ItemType.LOST) "Lost" else "Found"} Report", fontSize = 12.sp, color = Violet500, fontWeight = FontWeight.Bold)
+                                            Text(item.location, fontSize = 12.sp, color = Gray400)
+                                            Spacer(modifier = Modifier.height(10.dp))
+                                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                                Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(containerColor = Violet50)) {
+                                                    Text("View", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600)
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
                         OutlinedButton(
                             onClick = { navController.navigate(Routes.REPORT_TYPE) },
                             modifier = Modifier.fillMaxWidth().height(80.dp),
@@ -122,10 +172,10 @@ fun MyReportsScreen(navController: NavController) {
                         }
                     }
                     1 -> { // Claims
-                        if (MockData.myClaims.isEmpty()) {
+                        if (myClaims.isEmpty()) {
                             EmptyState("No Claims Yet", "Items you've claimed will appear here")
                         } else {
-                            MockData.myClaims.forEach { claim ->
+                            myClaims.forEach { claim ->
                                 Card(
                                     modifier = Modifier.fillMaxWidth().clickable { navController.navigate(Routes.claimStatus(claim.id)) },
                                     shape = RoundedCornerShape(16.dp),
@@ -140,7 +190,7 @@ fun MyReportsScreen(navController: NavController) {
                                                 StatusBadge(status = ItemStatus.APPROVED, size = BadgeSize.XS)
                                             }
                                             Spacer(modifier = Modifier.height(4.dp))
-                                            Text("Claim submitted Aug 26, 2026", fontSize = 12.sp, color = Gray400)
+                                            Text("Claim submitted", fontSize = 12.sp, color = Gray400)
                                             Text(claim.location, fontSize = 12.sp, color = Gray400)
                                         }
                                     }
@@ -149,17 +199,22 @@ fun MyReportsScreen(navController: NavController) {
                         }
                     }
                     2 -> { // Resolved
-                        if (MockData.resolvedReports.isEmpty()) {
+                        if (resolvedReports.isEmpty()) {
                             EmptyState("No Resolved Items", "Resolved reports will appear here")
                         } else {
-                            MockData.resolvedReports.forEach { item ->
+                            resolvedReports.forEach { item ->
                                 Card(
                                     modifier = Modifier.fillMaxWidth().clickable { navController.navigate(Routes.itemDetails(item.id)) },
                                     shape = RoundedCornerShape(16.dp),
                                     colors = CardDefaults.cardColors(containerColor = Gray50),
                                 ) {
                                     Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                        AsyncImage(model = item.imageUrl, contentDescription = item.name, modifier = Modifier.size(64.dp).clip(RoundedCornerShape(12.dp)).alpha(0.7f), contentScale = ContentScale.Crop)
+                                        AsyncImage(
+                                            model = item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop&auto=format" },
+                                            contentDescription = item.name,
+                                            modifier = Modifier.size(64.dp).clip(RoundedCornerShape(12.dp)).alpha(0.7f),
+                                            contentScale = ContentScale.Crop
+                                        )
                                         Column(modifier = Modifier.weight(1f)) {
                                             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                                                 Text(item.name, fontSize = 14.sp, fontWeight = FontWeight.Bold, fontFamily = OutfitFontFamily, color = Gray500, modifier = Modifier.weight(1f))
@@ -187,7 +242,7 @@ private fun EmptyState(title: String, desc: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(modifier = Modifier.size(64.dp).clip(RoundedCornerShape(50)).background(Gray100), contentAlignment = Alignment.Center) {
-            Text("\uD83D\uDCCB", fontSize = 28.sp, color = Gray300)
+            Text("📋", fontSize = 28.sp, color = Gray300)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(title, fontSize = 16.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray700)

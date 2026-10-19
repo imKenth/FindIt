@@ -17,7 +17,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,13 +28,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.ItemStatus
-import com.findit.app.data.repository.FirestoreRepositoryImpl
-import com.findit.app.data.repository.MockItemRepositoryImpl
+import com.findit.app.presentation.auth.AuthViewModel
 import com.findit.app.presentation.common.components.BottomNav
 import com.findit.app.presentation.common.components.ItemCard
 import com.findit.app.navigation.Routes
 import com.findit.app.ui.theme.*
-import com.findit.app.presentation.home.HomeViewModel
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -43,16 +40,29 @@ fun HomeScreen(navController: NavController) {
     val viewModel: HomeViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HomeViewModel(FirestoreRepositoryImpl()) as T
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
             }
         }
     )
 
-    val allItems by viewModel.items.collectAsState()
+    val authViewModel: AuthViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
+            }
+        }
+    )
+
+    val currentUser by authViewModel.currentUser.collectAsState()
+    val liveItems by viewModel.items.collectAsState()
+    val allItems = if (liveItems.isNotEmpty()) liveItems else MockData.items
 
     val unread = MockData.notifications.count { !it.read }
-    val matches = allItems.filter { it.status == ItemStatus.FOUND}.take(4)
+    val matches = allItems.filter { it.status == ItemStatus.FOUND }.take(4)
     val recent = allItems.take(6)
+    val userName = currentUser?.name ?: MockData.currentUser.name
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -109,9 +119,9 @@ fun HomeScreen(navController: NavController) {
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Good morning,", fontSize = 14.sp, color = White)
+                    Text("Good day,", fontSize = 14.sp, color = White)
                     Text(
-                        text = "${MockData.currentUser.name} \uD83D\uDC4B",
+                        text = "$userName 👋",
                         fontSize = 22.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = White
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -160,7 +170,7 @@ fun HomeScreen(navController: NavController) {
                                 modifier = Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(White.copy(alpha = 0.2f)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("\u2716", color = White, fontSize = 20.sp)
+                                Text("✖", color = White, fontSize = 20.sp)
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                             Text("Report Lost", fontSize = 14.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = White)
@@ -178,7 +188,7 @@ fun HomeScreen(navController: NavController) {
                                 modifier = Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(White.copy(alpha = 0.2f)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("\u2714", color = White, fontSize = 20.sp)
+                                Text("✔", color = White, fontSize = 20.sp)
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                             Text("Report Found", fontSize = 14.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = White)
@@ -195,7 +205,7 @@ fun HomeScreen(navController: NavController) {
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Row(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-                        listOf("47" to "Reports", "12" to "Found today", "8" to "My matches").forEach { (n, label) ->
+                        listOf("${allItems.size}" to "Reports", "${allItems.count { it.status == ItemStatus.FOUND }}" to "Found today", "${allItems.count { it.status == ItemStatus.LOST }}" to "Active lost").forEach { (n, label) ->
                             Column(
                                 modifier = Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
@@ -213,9 +223,13 @@ fun HomeScreen(navController: NavController) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Column {
                             Text("Possible Matches", fontSize = 15.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900)
-                            Text("Based on your active lost reports", fontSize = 12.sp, color = Gray500)
+                            Text("Based on active reports", fontSize = 12.sp, color = Gray500)
                         }
-                        Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Violet50)) {
+                        Card(
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = Violet50),
+                            modifier = Modifier.clickable { navController.navigate(Routes.SEARCH) }
+                        ) {
                             Text("See all", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600)
                         }
                     }
@@ -238,7 +252,11 @@ fun HomeScreen(navController: NavController) {
                             Text("Recent Reports", fontSize = 15.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900)
                             Text("Latest from your school", fontSize = 12.sp, color = Gray500)
                         }
-                        Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Violet50)) {
+                        Card(
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = Violet50),
+                            modifier = Modifier.clickable { navController.navigate(Routes.SEARCH) }
+                        ) {
                             Text("See all", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Violet600)
                         }
                     }
