@@ -16,18 +16,39 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.findit.app.data.remote.MockData
 import com.findit.app.navigation.Routes
+import com.findit.app.presentation.common.ItemDetailsViewModel
 import com.findit.app.ui.theme.*
 
 @Composable
 fun ClaimItemScreen(navController: NavController, itemId: String) {
-    val item = MockData.items.find { it.id == itemId } ?: MockData.items.first()
+    val viewModel: ItemDetailsViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return ItemDetailsViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    )
+
+    LaunchedEffect(itemId) {
+        viewModel.getItem(itemId)
+    }
+
+    val liveItem by viewModel.item.collectAsState()
+    val item = liveItem ?: MockData.items.find { it.id == itemId } ?: MockData.items.first()
+
     var reason by remember { mutableStateOf("") }
     var lostWhen by remember { mutableStateOf("") }
     var privateDetail by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -54,10 +75,15 @@ fun ClaimItemScreen(navController: NavController, itemId: String) {
             // Item preview
             Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Gray50)) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    AsyncImage(model = item.imageUrl, contentDescription = item.name, modifier = Modifier.size(56.dp).clip(RoundedCornerShape(12.dp)), contentScale = ContentScale.Crop)
+                    AsyncImage(
+                        model = item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format" },
+                        contentDescription = item.name,
+                        modifier = Modifier.size(56.dp).clip(RoundedCornerShape(12.dp)),
+                        contentScale = ContentScale.Crop
+                    )
                     Column {
                         Text(item.name, fontSize = 16.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900)
-                        Text("${item.category.name.replace("_", " ")} \u00B7 ${item.location}", fontSize = 12.sp, color = Gray500)
+                        Text("${item.category.name.replace("_", " ")} · ${item.location}", fontSize = 12.sp, color = Gray500)
                     }
                 }
             }
@@ -65,7 +91,7 @@ fun ClaimItemScreen(navController: NavController, itemId: String) {
             // Privacy notice
             Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Green50)) {
                 Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("\uD83D\uDD12", fontSize = 20.sp)
+                    Text("🔒", fontSize = 20.sp)
                     Column {
                         Text("Your claim is private", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Green800)
                         Spacer(modifier = Modifier.height(4.dp))
@@ -94,8 +120,30 @@ fun ClaimItemScreen(navController: NavController, itemId: String) {
                 Text("Provide a detail only the true owner would know. This is kept strictly private.", fontSize = 12.sp, color = Gray400, lineHeight = 18.sp)
             }
 
+            if (showError) {
+                Text(
+                    text = errorMessage,
+                    color = Red500,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
+            }
+
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { navController.navigate(Routes.claimStatus(item.id)) }, modifier = Modifier.fillMaxWidth().height(56.dp), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Violet600), elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)) {
+            Button(
+                onClick = {
+                    if (reason.isBlank() || lostWhen.isBlank() || privateDetail.isBlank()) {
+                        errorMessage = "Please fill in all required fields"
+                        showError = true
+                    } else {
+                        navController.navigate(Routes.claimStatus(item.id))
+                    }
+                },
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Violet600),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
+            ) {
                 Text("Submit Claim", fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily)
             }
         }

@@ -4,24 +4,24 @@ package com.findit.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.findit.app.R;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
 
 public final class CardItemCompactBinding implements ViewBinding {
   @NonNull
-  private final CardView rootView;
+  private final MaterialCardView rootView;
 
   @NonNull
-  public final ImageView itemImage;
+  public final ShapeableImageView itemImage;
 
   @NonNull
   public final TextView itemLocation;
@@ -32,8 +32,9 @@ public final class CardItemCompactBinding implements ViewBinding {
   @NonNull
   public final TextView statusBadge;
 
-  private CardItemCompactBinding(@NonNull CardView rootView, @NonNull ImageView itemImage,
-      @NonNull TextView itemLocation, @NonNull TextView itemName, @NonNull TextView statusBadge) {
+  private CardItemCompactBinding(@NonNull MaterialCardView rootView,
+      @NonNull ShapeableImageView itemImage, @NonNull TextView itemLocation,
+      @NonNull TextView itemName, @NonNull TextView statusBadge) {
     this.rootView = rootView;
     this.itemImage = itemImage;
     this.itemLocation = itemLocation;
@@ -43,7 +44,7 @@ public final class CardItemCompactBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public CardView getRoot() {
+  public MaterialCardView getRoot() {
     return rootView;
   }
 
@@ -69,7 +70,7 @@ public final class CardItemCompactBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.item_image;
-      ImageView itemImage = ViewBindings.findChildViewById(rootView, id);
+      ShapeableImageView itemImage = ViewBindings.findChildViewById(rootView, id);
       if (itemImage == null) {
         break missingId;
       }
@@ -92,8 +93,8 @@ public final class CardItemCompactBinding implements ViewBinding {
         break missingId;
       }
 
-      return new CardItemCompactBinding((CardView) rootView, itemImage, itemLocation, itemName,
-          statusBadge);
+      return new CardItemCompactBinding((MaterialCardView) rootView, itemImage, itemLocation,
+          itemName, statusBadge);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

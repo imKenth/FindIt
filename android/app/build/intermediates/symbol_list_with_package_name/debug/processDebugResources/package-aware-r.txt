@@ -3444,6 +3444,7 @@ id bestChoice
 id blocking
 id bottom
 id bottom_navigation
+id bottom_navigation_container
 id bounce
 id bounceBoth
 id bounceEnd
@@ -3745,6 +3746,8 @@ id nav_item_label
 id nav_my_reports
 id nav_profile
 id nav_reports
+id nav_reports_button
+id nav_reports_label
 id nav_search
 id navigation_bar_item_active_indicator_view
 id navigation_bar_item_icon_container

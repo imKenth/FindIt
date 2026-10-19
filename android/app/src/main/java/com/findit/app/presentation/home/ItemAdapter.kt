@@ -42,8 +42,12 @@ class ItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item) {
+            val fallbackImage = "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format"
             binding.root.setOnClickListener { onItemClick(item) }
-            binding.itemImage.load(item.imageUrl)
+            binding.itemImage.load(item.imageUrl.ifEmpty { fallbackImage }) {
+                placeholder(R.drawable.ic_launcher_background)
+                error(R.drawable.ic_launcher_background)
+            }
             binding.itemName.text = item.name
             binding.itemLocation.text = item.location
             binding.statusBadge.text = item.status.name
@@ -86,8 +90,12 @@ class ItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item) {
+            val fallbackImage = "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format"
             binding.root.setOnClickListener { onItemClick(item) }
-            binding.itemImage.load(item.imageUrl)
+            binding.itemImage.load(item.imageUrl.ifEmpty { fallbackImage }) {
+                placeholder(R.drawable.ic_launcher_background)
+                error(R.drawable.ic_launcher_background)
+            }
             binding.itemName.text = item.name
             binding.itemCategory.text = item.category.name.replace("_", " ")
             binding.itemLocation.text = item.location

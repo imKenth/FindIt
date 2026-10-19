@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,7 +16,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.findit.app.R
-import com.findit.app.data.repository.FirestoreRepositoryImpl
 import com.findit.app.databinding.FragmentItemDetailsBinding
 import com.findit.app.domain.model.Item
 import com.findit.app.domain.model.ItemStatus
@@ -30,7 +30,7 @@ class ItemDetailsFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ItemDetailsViewModel(FirestoreRepositoryImpl()) as T
+                return ItemDetailsViewModel(com.findit.app.di.AppModule.itemRepository) as T
             }
         }
     }
@@ -70,7 +70,7 @@ class ItemDetailsFragment : Fragment() {
     }
 
     private fun bindItem(item: Item) {
-        binding.itemHeroImage.load(item.imageUrl)
+        binding.itemHeroImage.load(item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format" })
         binding.itemName.text = item.name
         binding.categoryText.text = item.category.name.replace("_", " ")
         binding.itemDescription.text = item.description
@@ -125,7 +125,10 @@ class ItemDetailsFragment : Fragment() {
         }
         
         binding.claimButton.setOnClickListener {
-            // Navigation to claim flow (will be implemented next)
+            findNavController().navigate(
+                R.id.action_itemDetailsFragment_to_claimItemFragment,
+                bundleOf("itemId" to item.id)
+            )
         }
     }
 

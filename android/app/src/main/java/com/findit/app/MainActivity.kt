@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
-import com.google.firebase.FirebaseApp
 import com.findit.app.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -14,7 +17,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -23,6 +25,15 @@ class MainActivity : AppCompatActivity() {
                 ?: return
         val navController = navHostFragment.navController
         configureBottomNavigation(navController)
+
+        bottomNavigation()?.let { navView ->
+            ViewCompat.setOnApplyWindowInsetsListener(navView) { view, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.updatePadding(bottom = insets.bottom)
+                windowInsets
+            }
+        }
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             bottomNavigation()?.visibility =
                 if (destination.id in bottomNavigationDestinations) View.VISIBLE else View.GONE
@@ -37,20 +48,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureBottomNavigation(navController: NavController) {
         val root = bottomNavigation() ?: return
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setPopUpTo(R.id.homeFragment, false)
+            .build()
+
         configureItem(root, R.id.nav_home, R.drawable.ic_home, R.string.nav_home) {
-            navController.navigate(R.id.action_global_home)
+            navController.navigate(R.id.action_global_home, null, navOptions)
         }
         configureItem(root, R.id.nav_search, R.drawable.ic_search_nav, R.string.nav_search) {
-            navController.navigate(R.id.action_global_search)
+            navController.navigate(R.id.action_global_search, null, navOptions)
         }
         root.findViewById<View>(R.id.nav_reports).setOnClickListener {
-            navController.navigate(R.id.action_global_report_type)
+            navController.navigate(R.id.action_global_report_type, null, navOptions)
         }
         configureItem(root, R.id.nav_my_reports, R.drawable.ic_document, R.string.nav_my_reports) {
-            navController.navigate(R.id.action_global_my_reports)
+            navController.navigate(R.id.action_global_my_reports, null, navOptions)
         }
         configureItem(root, R.id.nav_profile, R.drawable.ic_person, R.string.nav_profile) {
-            navController.navigate(R.id.action_global_profile)
+            navController.navigate(R.id.action_global_profile, null, navOptions)
         }
     }
 

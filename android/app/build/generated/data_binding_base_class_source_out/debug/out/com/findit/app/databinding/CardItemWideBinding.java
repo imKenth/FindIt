@@ -4,21 +4,21 @@ package com.findit.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.findit.app.R;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
 
 public final class CardItemWideBinding implements ViewBinding {
   @NonNull
-  private final CardView rootView;
+  private final MaterialCardView rootView;
 
   @NonNull
   public final TextView itemCategory;
@@ -27,7 +27,7 @@ public final class CardItemWideBinding implements ViewBinding {
   public final TextView itemDate;
 
   @NonNull
-  public final ImageView itemImage;
+  public final ShapeableImageView itemImage;
 
   @NonNull
   public final TextView itemLocation;
@@ -38,9 +38,9 @@ public final class CardItemWideBinding implements ViewBinding {
   @NonNull
   public final TextView statusBadge;
 
-  private CardItemWideBinding(@NonNull CardView rootView, @NonNull TextView itemCategory,
-      @NonNull TextView itemDate, @NonNull ImageView itemImage, @NonNull TextView itemLocation,
-      @NonNull TextView itemName, @NonNull TextView statusBadge) {
+  private CardItemWideBinding(@NonNull MaterialCardView rootView, @NonNull TextView itemCategory,
+      @NonNull TextView itemDate, @NonNull ShapeableImageView itemImage,
+      @NonNull TextView itemLocation, @NonNull TextView itemName, @NonNull TextView statusBadge) {
     this.rootView = rootView;
     this.itemCategory = itemCategory;
     this.itemDate = itemDate;
@@ -52,7 +52,7 @@ public final class CardItemWideBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public CardView getRoot() {
+  public MaterialCardView getRoot() {
     return rootView;
   }
 
@@ -90,7 +90,7 @@ public final class CardItemWideBinding implements ViewBinding {
       }
 
       id = R.id.item_image;
-      ImageView itemImage = ViewBindings.findChildViewById(rootView, id);
+      ShapeableImageView itemImage = ViewBindings.findChildViewById(rootView, id);
       if (itemImage == null) {
         break missingId;
       }
@@ -113,7 +113,7 @@ public final class CardItemWideBinding implements ViewBinding {
         break missingId;
       }
 
-      return new CardItemWideBinding((CardView) rootView, itemCategory, itemDate, itemImage,
+      return new CardItemWideBinding((MaterialCardView) rootView, itemCategory, itemDate, itemImage,
           itemLocation, itemName, statusBadge);
     }
     String missingId = rootView.getResources().getResourceName(id);

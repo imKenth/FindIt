@@ -6,18 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.findit.app.R;
+import com.google.android.material.card.MaterialCardView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
 
 public final class LayoutBottomNavigationBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final FrameLayout rootView;
+
+  @NonNull
+  public final LinearLayout bottomNavigationContainer;
 
   @NonNull
   public final ItemBottomNavigationBinding navHome;
@@ -32,24 +37,34 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
   public final FrameLayout navReports;
 
   @NonNull
+  public final MaterialCardView navReportsButton;
+
+  @NonNull
+  public final TextView navReportsLabel;
+
+  @NonNull
   public final ItemBottomNavigationBinding navSearch;
 
-  private LayoutBottomNavigationBinding(@NonNull LinearLayout rootView,
-      @NonNull ItemBottomNavigationBinding navHome,
+  private LayoutBottomNavigationBinding(@NonNull FrameLayout rootView,
+      @NonNull LinearLayout bottomNavigationContainer, @NonNull ItemBottomNavigationBinding navHome,
       @NonNull ItemBottomNavigationBinding navMyReports,
       @NonNull ItemBottomNavigationBinding navProfile, @NonNull FrameLayout navReports,
+      @NonNull MaterialCardView navReportsButton, @NonNull TextView navReportsLabel,
       @NonNull ItemBottomNavigationBinding navSearch) {
     this.rootView = rootView;
+    this.bottomNavigationContainer = bottomNavigationContainer;
     this.navHome = navHome;
     this.navMyReports = navMyReports;
     this.navProfile = navProfile;
     this.navReports = navReports;
+    this.navReportsButton = navReportsButton;
+    this.navReportsLabel = navReportsLabel;
     this.navSearch = navSearch;
   }
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public FrameLayout getRoot() {
     return rootView;
   }
 
@@ -74,6 +89,12 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.bottom_navigation_container;
+      LinearLayout bottomNavigationContainer = ViewBindings.findChildViewById(rootView, id);
+      if (bottomNavigationContainer == null) {
+        break missingId;
+      }
+
       id = R.id.nav_home;
       View navHome = ViewBindings.findChildViewById(rootView, id);
       if (navHome == null) {
@@ -101,6 +122,18 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.nav_reports_button;
+      MaterialCardView navReportsButton = ViewBindings.findChildViewById(rootView, id);
+      if (navReportsButton == null) {
+        break missingId;
+      }
+
+      id = R.id.nav_reports_label;
+      TextView navReportsLabel = ViewBindings.findChildViewById(rootView, id);
+      if (navReportsLabel == null) {
+        break missingId;
+      }
+
       id = R.id.nav_search;
       View navSearch = ViewBindings.findChildViewById(rootView, id);
       if (navSearch == null) {
@@ -108,8 +141,9 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
       }
       ItemBottomNavigationBinding binding_navSearch = ItemBottomNavigationBinding.bind(navSearch);
 
-      return new LayoutBottomNavigationBinding((LinearLayout) rootView, binding_navHome,
-          binding_navMyReports, binding_navProfile, navReports, binding_navSearch);
+      return new LayoutBottomNavigationBinding((FrameLayout) rootView, bottomNavigationContainer,
+          binding_navHome, binding_navMyReports, binding_navProfile, navReports, navReportsButton,
+          navReportsLabel, binding_navSearch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

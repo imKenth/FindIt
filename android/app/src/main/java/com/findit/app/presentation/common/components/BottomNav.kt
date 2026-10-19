@@ -78,7 +78,7 @@ fun BottomNav(
                 }
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "Report",
+                    text = "Reports",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = Violet600

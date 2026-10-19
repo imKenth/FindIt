@@ -14,7 +14,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.findit.app.R
-import com.findit.app.data.repository.FirestoreRepositoryImpl
 import com.findit.app.databinding.FragmentHomeBinding
 import com.findit.app.domain.model.ItemStatus
 import com.findit.app.presentation.auth.AuthViewModel
@@ -32,7 +31,7 @@ class HomeFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     }
@@ -41,7 +40,7 @@ class HomeFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(FirestoreRepositoryImpl()) as T
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
             }
         }
     }

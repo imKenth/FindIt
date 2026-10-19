@@ -31,7 +31,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
+
 import com.findit.app.navigation.Routes
 import com.findit.app.ui.theme.*
 
@@ -41,7 +41,7 @@ fun LoginScreen(navController: NavController) {
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     )

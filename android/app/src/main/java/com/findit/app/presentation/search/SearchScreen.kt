@@ -18,24 +18,40 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.ItemCategory
 import com.findit.app.presentation.common.components.BottomNav
 import com.findit.app.presentation.common.components.ItemCard
 import com.findit.app.navigation.Routes
+import com.findit.app.presentation.home.HomeViewModel
 import com.findit.app.ui.theme.*
 
 @Composable
 fun SearchScreen(navController: NavController) {
+    val viewModel: HomeViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    )
+
+    val liveItems by viewModel.items.collectAsState()
+    val allItems = if (liveItems.isNotEmpty()) liveItems else MockData.items
+
     var query by remember { mutableStateOf("") }
     var filter by remember { mutableStateOf("All") }
     var selectedCategory by remember { mutableStateOf("All") }
     val categories = listOf("All") + ItemCategory.entries.dropLast(1).map { it.name.replace("_", " ") }
 
-    val results = MockData.items.filter { item ->
+    val results = allItems.filter { item ->
         val q = query.lowercase()
-        val matchQ = q.isEmpty() || item.name.lowercase().contains(q) || item.location.lowercase().contains(q) || item.category.name.lowercase().contains(q)
+        val matchQ = q.isEmpty() || item.name.lowercase().contains(q) || item.location.lowercase().contains(q) || item.category.name.lowercase().contains(q) || item.description.lowercase().contains(q)
         val matchF = (filter == "All") || (item.type.name == filter.uppercase())
         val matchC = selectedCategory == "All" || item.category.name.replace("_", " ") == selectedCategory
         matchQ && matchF && matchC
@@ -60,7 +76,7 @@ fun SearchScreen(navController: NavController) {
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
-                    placeholder = { Text("Search items, locations, categories\u2026", color = Gray400) },
+                    placeholder = { Text("Search items, locations, categories…", color = Gray400) },
                     leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null, tint = Gray400) },
                     trailingIcon = {
                         if (query.isNotEmpty()) {

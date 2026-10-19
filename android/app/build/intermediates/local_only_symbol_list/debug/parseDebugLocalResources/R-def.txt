@@ -144,6 +144,7 @@ id approve_button
 id back_button
 id back_to_home_button
 id bottom_navigation
+id bottom_navigation_container
 id cancel_button
 id category_chip_group
 id category_dropdown
@@ -220,6 +221,8 @@ id nav_item_label
 id nav_my_reports
 id nav_profile
 id nav_reports
+id nav_reports_button
+id nav_reports_label
 id nav_search
 id notif_emoji
 id notif_message

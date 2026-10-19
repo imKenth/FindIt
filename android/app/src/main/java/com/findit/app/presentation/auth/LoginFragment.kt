@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     }

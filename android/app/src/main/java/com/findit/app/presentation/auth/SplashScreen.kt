@@ -32,7 +32,8 @@ fun SplashScreen(navController: NavController) {
     val viewModel: AuthViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                @Suppress("UNCHECKED_CAST")
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     )

@@ -6,11 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.findit.app.R
 import com.findit.app.data.remote.MockData
 import com.findit.app.databinding.*
+import com.findit.app.domain.model.Item
+import com.findit.app.presentation.home.HomeViewModel
+import com.findit.app.presentation.home.ItemAdapter
+import kotlinx.coroutines.launch
 
 class AdminDashboardTabFragment : Fragment() {
     private var _binding: FragmentAdminDashboardTabBinding? = null
@@ -75,6 +85,17 @@ class AdminReportsTabFragment : Fragment() {
     private var _binding: FragmentAdminReportsTabBinding? = null
     private val binding get() = _binding!!
 
+    private val homeViewModel: HomeViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    }
+
+    private lateinit var adapter: ItemAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAdminReportsTabBinding.inflate(inflater, container, false)
         return binding.root
@@ -82,9 +103,29 @@ class AdminReportsTabFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.reportsCountText.text = "${MockData.items.size} total reports"
+
+        adapter = ItemAdapter(isCompact = false) { _ -> }
         binding.reportsRecyclerView.layoutManager = LinearLayoutManager(context)
-        // ... set adapter for reports (re-use ItemAdapter or create specific AdminReportsAdapter)
+        binding.reportsRecyclerView.adapter = adapter
+
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.items.collect { items ->
+                    val displayItems = if (items.isNotEmpty()) items else MockData.items
+                    binding.reportsCountText.text = "${displayItems.size} total reports"
+                    adapter.submitList(displayItems)
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 
@@ -101,7 +142,11 @@ class AdminClaimsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.claimsCountText.text = "${MockData.adminClaims.size} pending claims"
         binding.claimsRecyclerView.layoutManager = LinearLayoutManager(context)
-        // ... set adapter for claims
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 
@@ -118,6 +163,10 @@ class AdminUsersTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.usersCountText.text = "${MockData.adminUsers.size} registered users"
         binding.usersRecyclerView.layoutManager = LinearLayoutManager(context)
-        // ... set adapter for users
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

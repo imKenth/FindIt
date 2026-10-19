@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
 import com.findit.app.R
 import com.findit.app.databinding.FragmentRegisterBinding
 import androidx.navigation.fragment.findNavController
@@ -27,7 +26,7 @@ class RegisterFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     }

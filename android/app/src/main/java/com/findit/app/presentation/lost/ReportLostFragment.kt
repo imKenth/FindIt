@@ -35,7 +35,7 @@ class ReportLostFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     }
@@ -44,7 +44,7 @@ class ReportLostFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ReportViewModel(FirestoreRepositoryImpl()) as T
+                return ReportViewModel(com.findit.app.di.AppModule.itemRepository) as T
             }
         }
     }
@@ -95,22 +95,25 @@ class ReportLostFragment : Fragment() {
         val time = binding.timeEditText.text.toString()
         val description = binding.descriptionEditText.text.toString()
 
-        if (name.isBlank() || category.isBlank() || location.isBlank() || date.isBlank() || description.isBlank()) {
-            // Show error (could use a Snackbar)
+        val finalCategory = category.ifBlank { "Other" }
+        val finalDate = date.ifBlank { "Today" }
+        val finalDesc = description.ifBlank { "No detailed description provided." }
+
+        if (name.isBlank() || location.isBlank()) {
             return
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val user = authViewModel.currentUser.first()
+            val user = authViewModel.currentUser.value
             reportViewModel.reportItem(
                 name = name,
-                category = category,
+                category = finalCategory,
                 location = location,
-                date = date,
+                date = finalDate,
                 time = time.ifBlank { null },
-                description = description,
+                description = finalDesc,
                 type = ItemType.LOST,
-                reportedBy = user?.name ?: "Anonymous"
+                reportedBy = user?.name ?: "User"
             )
         }
     }

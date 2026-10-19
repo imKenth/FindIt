@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.findit.app.R
 import com.findit.app.data.remote.MockData
-import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
 import com.findit.app.databinding.FragmentProfileBinding
 import com.findit.app.presentation.auth.AuthViewModel
 import kotlinx.coroutines.launch
@@ -52,7 +51,7 @@ class ProfileFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     }
