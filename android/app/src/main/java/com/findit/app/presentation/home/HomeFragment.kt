@@ -21,6 +21,7 @@ import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
 import kotlinx.coroutines.launch
 
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 
 class HomeFragment : Fragment() {
 
@@ -36,7 +37,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private val viewModel: HomeViewModel by viewModels {
+    private val viewModel: HomeViewModel by activityViewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")

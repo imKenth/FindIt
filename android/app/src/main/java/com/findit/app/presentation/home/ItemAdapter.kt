@@ -42,9 +42,8 @@ class ItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item) {
-            val fallbackImage = "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format"
             binding.root.setOnClickListener { onItemClick(item) }
-            binding.itemImage.load(item.imageUrl.ifEmpty { fallbackImage }) {
+            binding.itemImage.load(item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.ic_launcher_background) {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_background)
                 error(R.drawable.ic_launcher_background)
@@ -91,9 +90,8 @@ class ItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item) {
-            val fallbackImage = "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format"
             binding.root.setOnClickListener { onItemClick(item) }
-            binding.itemImage.load(item.imageUrl.ifEmpty { fallbackImage }) {
+            binding.itemImage.load(item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.ic_launcher_background) {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_background)
                 error(R.drawable.ic_launcher_background)

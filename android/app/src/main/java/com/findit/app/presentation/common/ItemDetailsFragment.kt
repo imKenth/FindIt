@@ -70,7 +70,13 @@ class ItemDetailsFragment : Fragment() {
     }
 
     private fun bindItem(item: Item) {
-        binding.itemHeroImage.load(item.imageUrl.ifEmpty { "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format" })
+        binding.itemHeroImage.load(
+            item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.ic_launcher_background
+        ) {
+            crossfade(true)
+            placeholder(R.drawable.ic_launcher_background)
+            error(R.drawable.ic_launcher_background)
+        }
         binding.itemName.text = item.name
         binding.categoryText.text = item.category.name.replace("_", " ")
         binding.itemDescription.text = item.description

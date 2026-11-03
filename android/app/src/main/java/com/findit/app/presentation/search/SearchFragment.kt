@@ -8,7 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,14 +24,20 @@ import com.findit.app.domain.model.ItemCategory
 import com.findit.app.presentation.home.HomeViewModel
 import com.findit.app.presentation.home.ItemAdapter
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel: HomeViewModel by viewModels {
+    private val homeViewModel: HomeViewModel by activityViewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
@@ -44,7 +50,15 @@ class SearchFragment : Fragment() {
     private var currentFilter = "All"
     private var currentCategory = "All"
     private var currentQuery = ""
-    private var allItemsList = emptyList<Item>()
+    private var indexedItems = emptyList<SearchIndexEntry>()
+    private var searchJob: Job? = null
+
+    private data class SearchIndexEntry(
+        val item: Item,
+        val searchableFields: List<String>,
+        val type: String,
+        val category: String
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,7 +88,22 @@ class SearchFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.items.collect { items ->
-                    allItemsList = if (items.isNotEmpty()) items else MockData.items
+                    val sourceItems = if (items.isNotEmpty()) items else MockData.items
+                    indexedItems = withContext(Dispatchers.Default) {
+                        sourceItems.map { item ->
+                            SearchIndexEntry(
+                                item = item,
+                                searchableFields = listOf(
+                                    item.name,
+                                    item.location,
+                                    item.category.name,
+                                    item.description
+                                ).map { it.lowercase(Locale.ROOT) },
+                                type = item.type.name,
+                                category = item.category.name.replace("_", " ")
+                            )
+                        }
+                    }
                     updateResults()
                 }
             }
@@ -128,24 +157,36 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateResults() {
-        val base = if (allItemsList.isNotEmpty()) allItemsList else MockData.items
-        val results = base.filter { item ->
-            val q = currentQuery.lowercase()
-            val matchQ = q.isEmpty() || item.name.lowercase().contains(q) || 
-                         item.location.lowercase().contains(q) || 
-                         item.category.name.lowercase().contains(q) ||
-                         item.description.lowercase().contains(q)
-            val matchF = (currentFilter == "All") || (item.type.name == currentFilter.uppercase())
-            val matchC = currentCategory == "All" || item.category.name.replace("_", " ") == currentCategory
-            matchQ && matchF && matchC
-        }
+        val query = currentQuery.trim().lowercase(Locale.ROOT)
+        val filter = currentFilter.uppercase(Locale.ROOT)
+        val category = currentCategory
+        val source = indexedItems
+        searchJob?.cancel()
+        searchJob = viewLifecycleOwner.lifecycleScope.launch {
+            val results = withContext(Dispatchers.Default) {
+                buildList {
+                    for ((index, entry) in source.withIndex()) {
+                        if (index % 64 == 0) currentCoroutineContext().ensureActive()
+                        if (
+                            (query.isEmpty() || entry.searchableFields.any { it.contains(query) }) &&
+                            (filter == "ALL" || entry.type == filter) &&
+                            (category == "All" || entry.category == category)
+                        ) {
+                            add(entry.item)
+                        }
+                    }
+                }
+            }
 
-        adapter.submitList(results)
-        binding.emptyState.isVisible = results.isEmpty()
-        binding.resultsRecyclerView.isVisible = results.isNotEmpty()
+            adapter.submitList(results)
+            binding.emptyState.isVisible = results.isEmpty()
+            binding.resultsRecyclerView.isVisible = results.isNotEmpty()
+        }
     }
 
     override fun onDestroyView() {
+        searchJob?.cancel()
+        searchJob = null
         super.onDestroyView()
         _binding = null
     }
