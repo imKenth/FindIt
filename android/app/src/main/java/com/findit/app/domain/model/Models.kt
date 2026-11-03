@@ -18,6 +18,7 @@ data class Item(
     val description: String = "",
     val imageUrl: String = "",
     val reportedBy: String = "",
+    val reportedById: String = "",
     val type: ItemType = ItemType.LOST
 )
 

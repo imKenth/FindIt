@@ -102,7 +102,11 @@ class ReportLostFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+            val firebaseUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
             val user = authViewModel.currentUser.value
+            val userEmail = firebaseUser?.email ?: user?.email ?: "user@school.edu"
+            val userName = firebaseUser?.displayName ?: user?.name ?: userEmail.substringBefore("@")
+
             reportViewModel.reportItem(
                 name = name,
                 category = finalCategory,
@@ -111,7 +115,8 @@ class ReportLostFragment : Fragment() {
                 time = time.ifBlank { null },
                 description = finalDesc,
                 type = ItemType.LOST,
-                reportedBy = user?.name ?: "User"
+                reportedBy = userName,
+                reportedById = userEmail
             )
         }
     }

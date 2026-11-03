@@ -3,6 +3,7 @@ package com.findit.app.data.repository
 import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.Item
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withTimeoutOrNull
 
 class FirestoreRepositoryImpl(
     private val firestore: FirebaseFirestore = try {
@@ -20,52 +20,39 @@ class FirestoreRepositoryImpl(
     }
 ) : ItemRepository {
 
-    private val localItems = mutableListOf<Item>()
     private val itemsCollection by lazy { firestore.collection("items") }
 
     override fun getAllItems(): Flow<List<Item>> {
         return try {
-            itemsCollection.snapshots().map { snapshot ->
+            itemsCollection.orderBy("date", Query.Direction.DESCENDING).snapshots().map { snapshot ->
                 val remoteItems = snapshot.toObjects(Item::class.java)
-                // Combine real user reports (local + remote) with demo sample items
-                (localItems + remoteItems + MockData.items).distinctBy { it.id }
+                (remoteItems + MockData.items).distinctBy { it.id }
             }.catch {
-                emit((localItems + MockData.items).distinctBy { it.id })
+                emit(MockData.items)
             }
         } catch (e: Exception) {
-            flowOf((localItems + MockData.items).distinctBy { it.id })
+            flowOf(MockData.items)
         }
     }
 
     override fun getItemById(id: String): Flow<Item?> {
-        val local = localItems.find { it.id == id } ?: MockData.items.find { it.id == id }
-        if (local != null && localItems.contains(local)) return flowOf(local)
-
+        val local = MockData.items.find { it.id == id }
         return try {
             itemsCollection.document(id).snapshots().map { snapshot ->
-                snapshot.toObject(Item::class.java)
-                    ?: localItems.find { it.id == id }
-                    ?: MockData.items.find { it.id == id }
+                snapshot.toObject(Item::class.java) ?: local
             }.catch {
-                emit(localItems.find { it.id == id } ?: MockData.items.find { it.id == id })
+                emit(local)
             }
         } catch (e: Exception) {
-            flowOf(localItems.find { it.id == id } ?: MockData.items.find { it.id == id })
+            flowOf(local)
         }
     }
 
     override suspend fun reportItem(item: Item) {
-        // Always store locally first so app works offline / instantly
-        localItems.add(0, item)
-
-        try {
-            if (item.id.isNotEmpty()) {
-                itemsCollection.document(item.id).set(item).await()
-            } else {
-                itemsCollection.add(item).await()
-            }
-        } catch (e: Exception) {
-            // Firestore write failed; item is preserved in localItems
+        if (item.id.isNotEmpty()) {
+            itemsCollection.document(item.id).set(item).await()
+        } else {
+            itemsCollection.add(item).await()
         }
     }
 }

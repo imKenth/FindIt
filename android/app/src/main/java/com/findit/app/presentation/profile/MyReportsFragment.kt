@@ -50,6 +50,7 @@ class MyReportsFragment : Fragment() {
     private lateinit var adapter: ItemAdapter
     private var allItemsList = emptyList<Item>()
     private var currentUserName = "User"
+    private var currentUserEmail = ""
     private var currentTab = 0
 
     override fun onCreateView(
@@ -76,6 +77,8 @@ class MyReportsFragment : Fragment() {
                     authViewModel.currentUser.collect { user ->
                         if (user != null) {
                             currentUserName = user.name
+                            currentUserEmail = user.email
+                            updateList(currentTab)
                         }
                     }
                 }
@@ -91,6 +94,20 @@ class MyReportsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.reportsRecyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = ItemAdapter(isCompact = false) { item ->
+            if (currentTab == 1) {
+                findNavController().navigate(
+                    R.id.action_myReportsFragment_to_claimStatusFragment,
+                    bundleOf("itemId" to item.id)
+                )
+            } else {
+                findNavController().navigate(
+                    R.id.action_myReportsFragment_to_itemDetailsFragment,
+                    bundleOf("itemId" to item.id)
+                )
+            }
+        }
+        binding.reportsRecyclerView.adapter = adapter
     }
 
     private fun setupTabs() {
@@ -109,29 +126,20 @@ class MyReportsFragment : Fragment() {
     }
 
     private fun updateList(position: Int) {
-        val userItems = allItemsList.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
+        val userItems = allItemsList.filter { item ->
+            val emailMatch = currentUserEmail.isNotBlank() && item.reportedById.equals(currentUserEmail, ignoreCase = true)
+            val legacyNameMatch = item.reportedById.isBlank() && currentUserName.isNotBlank() && currentUserName != "User" && item.reportedBy.equals(currentUserName, ignoreCase = true)
+
+            emailMatch || legacyNameMatch
+        }
 
         val items = when (position) {
-            0 -> userItems.filter { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
-            1 -> userItems.filter { it.status == ItemStatus.CLAIMED || it.status == ItemStatus.PENDING }
-            2 -> userItems.filter { it.status == ItemStatus.RESOLVED }
+            0 -> userItems.filter { item -> item.status == ItemStatus.LOST || item.status == ItemStatus.FOUND }
+            1 -> userItems.filter { item -> item.status == ItemStatus.CLAIMED || item.status == ItemStatus.PENDING }
+            2 -> userItems.filter { item -> item.status == ItemStatus.RESOLVED }
             else -> emptyList()
         }
 
-        adapter = ItemAdapter(isCompact = false) { item ->
-            if (position == 1) {
-                findNavController().navigate(
-                    R.id.action_myReportsFragment_to_claimStatusFragment,
-                    bundleOf("itemId" to item.id)
-                )
-            } else {
-                findNavController().navigate(
-                    R.id.action_myReportsFragment_to_itemDetailsFragment,
-                    bundleOf("itemId" to item.id)
-                )
-            }
-        }
-        binding.reportsRecyclerView.adapter = adapter
         adapter.submitList(items)
     }
 

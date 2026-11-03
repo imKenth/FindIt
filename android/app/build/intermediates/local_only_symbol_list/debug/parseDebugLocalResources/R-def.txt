@@ -278,6 +278,9 @@ id sign_in_button
 id sign_in_link
 id sign_out_button
 id splashFragment
+id stat_found_count
+id stat_matches_count
+id stat_reports_count
 id status_badge
 id status_card
 id status_message

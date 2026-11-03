@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.findit.app.R
 import com.findit.app.databinding.FragmentProfileBinding
+import com.findit.app.domain.model.Item
 import com.findit.app.domain.model.ItemStatus
 import com.findit.app.presentation.auth.AuthViewModel
 import com.findit.app.presentation.home.HomeViewModel
@@ -67,6 +69,8 @@ class ProfileFragment : Fragment() {
     }
 
     private var currentUserName = "User"
+    private var currentUserEmail = ""
+    private var allItemsList = emptyList<Item>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +85,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.profileImage.setImageResource(R.drawable.ic_profile_default)
+        binding.adminPanelCard.isVisible = false
 
         setupMenu()
         setupAdminPanel()
@@ -90,6 +95,7 @@ class ProfileFragment : Fragment() {
         binding.editProfileButton.setOnClickListener { openProfileImagePicker() }
 
         binding.signOutButton.setOnClickListener {
+            authViewModel.signOut()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
@@ -105,37 +111,56 @@ class ProfileFragment : Fragment() {
                     authViewModel.currentUser.collect { user ->
                         if (user != null) {
                             currentUserName = user.name
+                            currentUserEmail = user.email
+                            binding.adminPanelCard.isVisible =
+                                user.email.equals(ADMIN_EMAIL, ignoreCase = true)
                             binding.profileImage.load(user.avatar) {
                                 placeholder(R.drawable.ic_profile_default)
                                 error(R.drawable.ic_profile_default)
                             }
                             binding.userName.text = user.name
                             binding.userEmail.text = user.email
+                            updateStats()
+                        } else {
+                            binding.adminPanelCard.isVisible = false
                         }
                     }
                 }
 
                 launch {
                     homeViewModel.items.collect { items ->
-                        val userItems = items.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
-                        val activeCount = userItems.count { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
-                        val claimsCount = userItems.count { it.status == ItemStatus.CLAIMED }
-                        val resolvedCount = userItems.count { it.status == ItemStatus.RESOLVED }
-
-                        binding.reportsCount.text = activeCount.toString()
-                        binding.claimsCount.text = claimsCount.toString()
-                        binding.resolvedCount.text = resolvedCount.toString()
-
-                        binding.menuReports.menuSubtitle.text = "$activeCount active reports"
+                        allItemsList = items
+                        updateStats()
                     }
                 }
             }
         }
     }
 
+    private fun updateStats() {
+        val userItems = allItemsList.filter { item ->
+            val emailMatch = currentUserEmail.isNotBlank() && item.reportedById.equals(currentUserEmail, ignoreCase = true)
+            val legacyNameMatch = item.reportedById.isBlank() && currentUserName.isNotBlank() && currentUserName != "User" && item.reportedBy.equals(currentUserName, ignoreCase = true)
+
+            emailMatch || legacyNameMatch
+        }
+
+        val activeCount = userItems.count { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
+        val claimsCount = userItems.count { it.status == ItemStatus.CLAIMED }
+        val resolvedCount = userItems.count { it.status == ItemStatus.RESOLVED }
+
+        binding.reportsCount.text = activeCount.toString()
+        binding.claimsCount.text = claimsCount.toString()
+        binding.resolvedCount.text = resolvedCount.toString()
+
+        binding.menuReports.menuSubtitle.text = "$activeCount active reports"
+    }
+
     private fun setupAdminPanel() {
         binding.adminPanelCard.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_adminDashboardFragment)
+            if (authViewModel.currentUser.value?.email.equals(ADMIN_EMAIL, ignoreCase = true)) {
+                findNavController().navigate(R.id.action_profileFragment_to_adminDashboardFragment)
+            }
         }
     }
 
@@ -166,5 +191,9 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private companion object {
+        const val ADMIN_EMAIL = "admin@school.edu"
     }
 }

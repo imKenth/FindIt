@@ -24,7 +24,8 @@ class ReportViewModel(private val repository: ItemRepository) : ViewModel() {
         time: String?,
         description: String,
         type: ItemType,
-        reportedBy: String
+        reportedBy: String,
+        reportedById: String
     ) {
         viewModelScope.launch {
             _reportState.value = ReportState.Loading
@@ -40,6 +41,7 @@ class ReportViewModel(private val repository: ItemRepository) : ViewModel() {
                     description = description,
                     imageUrl = "", // Placeholder
                     reportedBy = reportedBy,
+                    reportedById = reportedById,
                     type = type
                 )
                 repository.reportItem(item)

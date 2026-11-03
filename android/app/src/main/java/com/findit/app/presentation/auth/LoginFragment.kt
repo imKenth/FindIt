@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.findit.app.data.repository.AuthEmailPolicy
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -38,9 +39,9 @@ class LoginFragment : Fragment() {
             val photoUrl = account.photoUrl?.toString()
 
             if (!idToken.isNullOrEmpty()) {
-                viewModel.signInWithGoogle(idToken, name, photoUrl)
+                viewModel.signInWithGoogle(idToken, email, name, photoUrl)
             } else {
-                viewModel.handleGoogleUser(name, email, photoUrl)
+                viewModel.handleGoogleUser(email)
             }
         } catch (e: ApiException) {
             binding.errorText.text = "Google Sign-In Error (${e.statusCode}): Enable Google provider in Firebase Console."
@@ -102,6 +103,7 @@ class LoginFragment : Fragment() {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .setHostedDomain("sjp2cd.edu.ph")
                 .build()
             val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
             // Purge and revoke access so Google Play Services always forces the Account Chooser sheet
@@ -152,6 +154,16 @@ class LoginFragment : Fragment() {
                 binding.signInButton.isEnabled = true
                 binding.googleSignInButton.isEnabled = true
                 binding.errorText.text = state.message
+                binding.errorText.isVisible = true
+            }
+            is AuthState.VerificationEmailSent -> {
+                binding.signInButton.isEnabled = true
+                binding.googleSignInButton.isEnabled = true
+                binding.errorText.text = if (AuthEmailPolicy.isAdmin(state.email)) {
+                    "Account created. You can sign in now."
+                } else {
+                    AuthEmailPolicy.VERIFICATION_SENT_MESSAGE
+                }
                 binding.errorText.isVisible = true
             }
             is AuthState.Idle -> {

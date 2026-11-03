@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.findit.app.data.repository.AuthEmailPolicy
 import com.findit.app.data.repository.AuthRepository
 import com.findit.app.domain.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,11 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     val authState = _authState.asStateFlow()
 
     fun signIn(email: String, password: String) {
+        if (!AuthEmailPolicy.isAllowed(email)) {
+            _authState.value = AuthState.Error(AuthEmailPolicy.DOMAIN_ERROR)
+            return
+        }
+
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             val result = repository.signIn(email, password)
@@ -34,10 +40,20 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         }
     }
 
-    fun signInWithGoogle(idToken: String, name: String? = null, photoUrl: String? = null) {
+    fun signInWithGoogle(
+        idToken: String,
+        email: String,
+        name: String? = null,
+        photoUrl: String? = null
+    ) {
+        if (!AuthEmailPolicy.isAllowed(email)) {
+            _authState.value = AuthState.Error(AuthEmailPolicy.DOMAIN_ERROR)
+            return
+        }
+
         viewModelScope.launch {
             _authState.value = AuthState.Loading
-            val result = repository.signInWithGoogle(idToken, name, photoUrl)
+            val result = repository.signInWithGoogle(idToken, email, name, photoUrl)
             result.onSuccess {
                 _authState.value = AuthState.Success
             }.onFailure { e ->
@@ -46,32 +62,27 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         }
     }
 
-    fun handleGoogleUser(name: String, email: String, photoUrl: String? = null) {
-        viewModelScope.launch {
-            _authState.value = AuthState.Loading
-            val googleName = if (name.isBlank()) email.substringBefore("@").replace(".", " ") else name
-            val googlePhoto = photoUrl ?: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&auto=format"
-            val signInResult = repository.signIn(email, "GoogleAuthPass123!")
-            if (signInResult.isSuccess) {
-                repository.updateGoogleProfile(googleName, googlePhoto)
-                _authState.value = AuthState.Success
+    fun handleGoogleUser(email: String) {
+        _authState.value = AuthState.Error(
+            if (AuthEmailPolicy.isAllowed(email)) {
+                "Google Sign-In could not be completed. Please try again."
             } else {
-                val signUpResult = repository.signUp(googleName, email, "GoogleAuthPass123!", googlePhoto)
-                if (signUpResult.isSuccess) {
-                    _authState.value = AuthState.Success
-                } else {
-                    _authState.value = AuthState.Error(signUpResult.exceptionOrNull()?.message ?: "Google authentication failed")
-                }
+                AuthEmailPolicy.DOMAIN_ERROR
             }
-        }
+        )
     }
 
     fun signUp(name: String, email: String, password: String) {
+        if (!AuthEmailPolicy.isAllowed(email)) {
+            _authState.value = AuthState.Error(AuthEmailPolicy.DOMAIN_ERROR)
+            return
+        }
+
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             val result = repository.signUp(name, email, password)
-            result.onSuccess {
-                _authState.value = AuthState.Success
+            result.onSuccess { user ->
+                _authState.value = AuthState.VerificationEmailSent(user.email)
             }.onFailure { e ->
                 _authState.value = AuthState.Error(e.message ?: "Registration failed")
             }
@@ -104,5 +115,6 @@ sealed class AuthState {
     object Idle : AuthState()
     object Loading : AuthState()
     object Success : AuthState()
+    data class VerificationEmailSent(val email: String) : AuthState()
     data class Error(val message: String) : AuthState()
 }

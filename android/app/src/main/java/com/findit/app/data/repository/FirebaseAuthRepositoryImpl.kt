@@ -2,7 +2,6 @@ package com.findit.app.data.repository
 
 import android.content.ContentResolver
 import android.net.Uri
-import android.webkit.MimeTypeMap
 import com.findit.app.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -93,51 +92,103 @@ class FirebaseAuthRepositoryImpl(
     }
 
     override suspend fun signIn(email: String, password: String): Result<User> {
+        val normalizedEmail = email.trim()
+        if (!AuthEmailPolicy.isAllowed(normalizedEmail)) {
+            return Result.failure(IllegalArgumentException(AuthEmailPolicy.DOMAIN_ERROR))
+        }
+
+        var authenticated = false
         return try {
-            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            val user = result.user?.toDomainUser()
-            if (user != null) Result.success(user)
-            else Result.failure(Exception("User not found after sign in"))
+            val result = firebaseAuth.signInWithEmailAndPassword(normalizedEmail, password).await()
+            val firebaseUser = result.user
+                ?: return Result.failure(IllegalStateException("User not found after sign in"))
+            authenticated = true
+
+            firebaseUser.reload().await()
+            val signedInUser = firebaseAuth.currentUser ?: firebaseUser
+            val authenticatedEmail = signedInUser.email.orEmpty()
+            if (!AuthEmailPolicy.isAllowed(authenticatedEmail)) {
+                firebaseAuth.signOut()
+                return Result.failure(IllegalArgumentException(AuthEmailPolicy.DOMAIN_ERROR))
+            }
+            if (!signedInUser.isEmailVerified && !AuthEmailPolicy.isAdmin(authenticatedEmail)) {
+                firebaseAuth.signOut()
+                return Result.failure(IllegalStateException(AuthEmailPolicy.VERIFICATION_ERROR))
+            }
+
+            Result.success(signedInUser.toDomainUser())
         } catch (e: Exception) {
+            if (authenticated) firebaseAuth.signOut()
             Result.failure(e)
         }
     }
 
-    override suspend fun signInWithGoogle(idToken: String, name: String?, photoUrl: String?): Result<User> {
+    override suspend fun signInWithGoogle(
+        idToken: String,
+        email: String,
+        name: String?,
+        photoUrl: String?
+    ): Result<User> {
+        if (!AuthEmailPolicy.isAllowed(email)) {
+            return Result.failure(IllegalArgumentException(AuthEmailPolicy.DOMAIN_ERROR))
+        }
+
+        var authenticated = false
         return try {
             val credential = com.google.firebase.auth.GoogleAuthProvider.getCredential(idToken, null)
             val result = firebaseAuth.signInWithCredential(credential).await()
-            
+            authenticated = true
+            val firebaseUser = result.user
+                ?: return Result.failure(IllegalStateException("Failed to sign in with Google"))
+            val authenticatedEmail = firebaseUser.email.orEmpty()
+            if (!AuthEmailPolicy.isAllowed(authenticatedEmail)) {
+                firebaseAuth.signOut()
+                return Result.failure(IllegalArgumentException(AuthEmailPolicy.DOMAIN_ERROR))
+            }
+
             if (!name.isNullOrEmpty() || !photoUrl.isNullOrEmpty()) {
                 val builder = UserProfileChangeRequest.Builder()
                 if (!name.isNullOrEmpty()) builder.setDisplayName(name)
                 if (!photoUrl.isNullOrEmpty()) builder.setPhotoUri(Uri.parse(photoUrl))
-                result.user?.updateProfile(builder.build())?.await()
+                firebaseUser.updateProfile(builder.build()).await()
             }
 
-            val user = result.user?.toDomainUser()
-            if (user != null) Result.success(user)
-            else Result.failure(Exception("Failed to sign in with Google"))
+            Result.success(firebaseUser.toDomainUser())
         } catch (e: Exception) {
+            if (authenticated) firebaseAuth.signOut()
             Result.failure(e)
         }
     }
 
     override suspend fun signUp(name: String, email: String, password: String, photoUrl: String?): Result<User> {
+        val normalizedEmail = email.trim()
+        if (!AuthEmailPolicy.isAllowed(normalizedEmail)) {
+            return Result.failure(IllegalArgumentException(AuthEmailPolicy.DOMAIN_ERROR))
+        }
+
         return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            val profileBuilder = UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-            if (!photoUrl.isNullOrEmpty()) {
-                profileBuilder.setPhotoUri(Uri.parse(photoUrl))
+            val result = firebaseAuth.createUserWithEmailAndPassword(normalizedEmail, password).await()
+            val firebaseUser = result.user
+                ?: return Result.failure(IllegalStateException("Failed to create user"))
+
+            try {
+                val profileBuilder = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                if (!photoUrl.isNullOrEmpty()) {
+                    profileBuilder.setPhotoUri(Uri.parse(photoUrl))
+                }
+                firebaseUser.updateProfile(profileBuilder.build()).await()
+                firebaseUser.sendEmailVerification().await()
+
+                Result.success(
+                    firebaseUser.toDomainUser().copy(
+                        name = name,
+                        avatar = photoUrl ?: firebaseUser.photoUrl?.toString() ?: ""
+                    )
+                )
+            } finally {
+                firebaseAuth.signOut()
             }
-            result.user?.updateProfile(profileBuilder.build())?.await()
-            val user = result.user?.toDomainUser()?.copy(
-                name = name,
-                avatar = photoUrl ?: result.user?.photoUrl?.toString() ?: ""
-            )
-            if (user != null) Result.success(user)
-            else Result.failure(Exception("Failed to create user"))
         } catch (e: Exception) {
             Result.failure(e)
         }

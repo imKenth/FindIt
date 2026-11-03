@@ -284,6 +284,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/stat_reports_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="47"
@@ -308,6 +309,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/stat_found_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12"
@@ -332,6 +334,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/stat_matches_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8"

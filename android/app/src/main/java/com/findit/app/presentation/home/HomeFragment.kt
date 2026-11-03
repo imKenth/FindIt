@@ -118,6 +118,10 @@ class HomeFragment : Fragment() {
                         val matches = items.filter { it.status == ItemStatus.FOUND }.take(4)
                         matchesAdapter.submitList(matches)
                         recentAdapter.submitList(items.take(6))
+
+                        binding.statReportsCount.text = items.size.toString()
+                        binding.statFoundCount.text = items.count { it.status == ItemStatus.FOUND }.toString()
+                        binding.statMatchesCount.text = matches.size.toString()
                     }
                 }
             }

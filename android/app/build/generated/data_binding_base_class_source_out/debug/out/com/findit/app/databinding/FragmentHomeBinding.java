@@ -46,6 +46,15 @@ public final class FragmentHomeBinding implements ViewBinding {
   public final MaterialCardView seeAllRecent;
 
   @NonNull
+  public final TextView statFoundCount;
+
+  @NonNull
+  public final TextView statMatchesCount;
+
+  @NonNull
+  public final TextView statReportsCount;
+
+  @NonNull
   public final TextView userNameText;
 
   private FragmentHomeBinding(@NonNull CoordinatorLayout rootView,
@@ -53,7 +62,8 @@ public final class FragmentHomeBinding implements ViewBinding {
       @NonNull RecyclerView recentRecyclerView, @NonNull MaterialCardView reportFoundCard,
       @NonNull MaterialCardView reportLostCard, @NonNull MaterialCardView searchBar,
       @NonNull MaterialCardView seeAllMatches, @NonNull MaterialCardView seeAllRecent,
-      @NonNull TextView userNameText) {
+      @NonNull TextView statFoundCount, @NonNull TextView statMatchesCount,
+      @NonNull TextView statReportsCount, @NonNull TextView userNameText) {
     this.rootView = rootView;
     this.matchesRecyclerView = matchesRecyclerView;
     this.notificationButton = notificationButton;
@@ -63,6 +73,9 @@ public final class FragmentHomeBinding implements ViewBinding {
     this.searchBar = searchBar;
     this.seeAllMatches = seeAllMatches;
     this.seeAllRecent = seeAllRecent;
+    this.statFoundCount = statFoundCount;
+    this.statMatchesCount = statMatchesCount;
+    this.statReportsCount = statReportsCount;
     this.userNameText = userNameText;
   }
 
@@ -141,6 +154,24 @@ public final class FragmentHomeBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.stat_found_count;
+      TextView statFoundCount = ViewBindings.findChildViewById(rootView, id);
+      if (statFoundCount == null) {
+        break missingId;
+      }
+
+      id = R.id.stat_matches_count;
+      TextView statMatchesCount = ViewBindings.findChildViewById(rootView, id);
+      if (statMatchesCount == null) {
+        break missingId;
+      }
+
+      id = R.id.stat_reports_count;
+      TextView statReportsCount = ViewBindings.findChildViewById(rootView, id);
+      if (statReportsCount == null) {
+        break missingId;
+      }
+
       id = R.id.user_name_text;
       TextView userNameText = ViewBindings.findChildViewById(rootView, id);
       if (userNameText == null) {
@@ -149,7 +180,8 @@ public final class FragmentHomeBinding implements ViewBinding {
 
       return new FragmentHomeBinding((CoordinatorLayout) rootView, matchesRecyclerView,
           notificationButton, recentRecyclerView, reportFoundCard, reportLostCard, searchBar,
-          seeAllMatches, seeAllRecent, userNameText);
+          seeAllMatches, seeAllRecent, statFoundCount, statMatchesCount, statReportsCount,
+          userNameText);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

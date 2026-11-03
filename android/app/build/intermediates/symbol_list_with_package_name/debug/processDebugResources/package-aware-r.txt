@@ -3918,6 +3918,9 @@ id start
 id startHorizontal
 id startToEnd
 id startVertical
+id stat_found_count
+id stat_matches_count
+id stat_reports_count
 id staticLayout
 id staticPostLayout
 id status_badge

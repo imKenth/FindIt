@@ -45,6 +45,7 @@ class ItemAdapter(
             val fallbackImage = "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format"
             binding.root.setOnClickListener { onItemClick(item) }
             binding.itemImage.load(item.imageUrl.ifEmpty { fallbackImage }) {
+                crossfade(true)
                 placeholder(R.drawable.ic_launcher_background)
                 error(R.drawable.ic_launcher_background)
             }
@@ -93,6 +94,7 @@ class ItemAdapter(
             val fallbackImage = "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=400&h=300&fit=crop&auto=format"
             binding.root.setOnClickListener { onItemClick(item) }
             binding.itemImage.load(item.imageUrl.ifEmpty { fallbackImage }) {
+                crossfade(true)
                 placeholder(R.drawable.ic_launcher_background)
                 error(R.drawable.ic_launcher_background)
             }
