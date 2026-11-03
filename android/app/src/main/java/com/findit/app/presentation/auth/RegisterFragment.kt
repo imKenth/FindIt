@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,9 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.findit.app.data.repository.AuthEmailPolicy
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.findit.app.R
 import com.findit.app.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.launch
@@ -27,31 +23,6 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-
-    private val googleSignInLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        try {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            val account = task.getResult(ApiException::class.java)
-            val idToken = account?.idToken
-            val email = account?.email ?: return@registerForActivityResult
-            val name = account.displayName ?: account.givenName ?: email.substringBefore("@").replace(".", " ")
-            val photoUrl = account.photoUrl?.toString()
-
-            if (!idToken.isNullOrEmpty()) {
-                viewModel.signInWithGoogle(idToken, email, name, photoUrl)
-            } else {
-                viewModel.handleGoogleUser(email)
-            }
-        } catch (e: ApiException) {
-            binding.errorText.text = "Google Sign-Up Error (${e.statusCode}): Enable Google provider in Firebase Console."
-            binding.errorText.isVisible = true
-        } catch (e: Exception) {
-            binding.errorText.text = e.localizedMessage ?: "Google Sign-Up failed"
-            binding.errorText.isVisible = true
-        }
-    }
 
     private val viewModel: AuthViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -95,38 +66,11 @@ class RegisterFragment : Fragment() {
             }
         }
 
-        binding.googleRegisterButton.setOnClickListener {
-            binding.errorText.isVisible = false
-            launchGoogleSignIn()
-        }
-
         binding.signInLink.setOnClickListener {
             findNavController().popBackStack()
         }
 
         observeState()
-    }
-
-    private fun launchGoogleSignIn() {
-        try {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .setHostedDomain("sjp2cd.edu.ph")
-                .build()
-            val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-            // Purge and revoke access so Google Play Services always forces the Account Chooser sheet
-            googleSignInClient.signOut().addOnCompleteListener {
-                googleSignInClient.revokeAccess().addOnCompleteListener {
-                    if (isAdded) {
-                        googleSignInLauncher.launch(googleSignInClient.signInIntent)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            binding.errorText.text = e.localizedMessage ?: "Could not launch Google Sign-In"
-            binding.errorText.isVisible = true
-        }
     }
 
     private fun observeState() {
@@ -145,11 +89,9 @@ class RegisterFragment : Fragment() {
         when (state) {
             is AuthState.Loading -> {
                 binding.createAccountButton.isEnabled = false
-                binding.googleRegisterButton.isEnabled = false
             }
             is AuthState.Success -> {
                 binding.createAccountButton.isEnabled = true
-                binding.googleRegisterButton.isEnabled = true
                 viewLifecycleOwner.lifecycleScope.launch {
                     val user = viewModel.currentUser.value
                     if (user?.email == "admin@school.edu") {
@@ -161,7 +103,6 @@ class RegisterFragment : Fragment() {
             }
             is AuthState.VerificationEmailSent -> {
                 binding.createAccountButton.isEnabled = true
-                binding.googleRegisterButton.isEnabled = true
                 viewModel.resetState()
                 Toast.makeText(
                     requireContext(),
@@ -176,13 +117,11 @@ class RegisterFragment : Fragment() {
             }
             is AuthState.Error -> {
                 binding.createAccountButton.isEnabled = true
-                binding.googleRegisterButton.isEnabled = true
                 binding.errorText.text = state.message
                 binding.errorText.isVisible = true
             }
             is AuthState.Idle -> {
                 binding.createAccountButton.isEnabled = true
-                binding.googleRegisterButton.isEnabled = true
                 binding.errorText.isVisible = false
             }
         }
