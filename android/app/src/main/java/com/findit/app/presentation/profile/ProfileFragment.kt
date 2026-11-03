@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,9 +16,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.findit.app.R
-import com.findit.app.data.remote.MockData
 import com.findit.app.databinding.FragmentProfileBinding
+import com.findit.app.domain.model.ItemStatus
 import com.findit.app.presentation.auth.AuthViewModel
+import com.findit.app.presentation.home.HomeViewModel
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -56,6 +57,17 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private val homeViewModel: HomeViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(com.findit.app.di.AppModule.itemRepository) as T
+            }
+        }
+    }
+
+    private var currentUserName = "User"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,26 +80,15 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user = MockData.currentUser
         binding.profileImage.setImageResource(R.drawable.ic_profile_default)
-        binding.profileImage.load(user.avatar) {
-            placeholder(R.drawable.ic_profile_default)
-            error(R.drawable.ic_profile_default)
-        }
-        binding.userName.text = user.name
-        binding.userEmail.text = user.email
-        
-        binding.reportsCount.text = user.reportsCount.toString()
-        binding.claimsCount.text = user.claimsCount.toString()
-        binding.resolvedCount.text = user.resolvedCount.toString()
 
         setupMenu()
         setupAdminPanel()
-        observeAuthenticatedUser()
+        observeData()
 
         binding.profileImage.setOnClickListener { openProfileImagePicker() }
         binding.editProfileButton.setOnClickListener { openProfileImagePicker() }
-        
+
         binding.signOutButton.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
@@ -97,17 +98,35 @@ class ProfileFragment : Fragment() {
         profileImagePicker.launch("image/*")
     }
 
-    private fun observeAuthenticatedUser() {
+    private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.currentUser.collect { user ->
-                    if (user != null) {
-                        binding.profileImage.load(user.avatar) {
-                            placeholder(R.drawable.ic_profile_default)
-                            error(R.drawable.ic_profile_default)
+                launch {
+                    authViewModel.currentUser.collect { user ->
+                        if (user != null) {
+                            currentUserName = user.name
+                            binding.profileImage.load(user.avatar) {
+                                placeholder(R.drawable.ic_profile_default)
+                                error(R.drawable.ic_profile_default)
+                            }
+                            binding.userName.text = user.name
+                            binding.userEmail.text = user.email
                         }
-                        binding.userName.text = user.name
-                        binding.userEmail.text = user.email
+                    }
+                }
+
+                launch {
+                    homeViewModel.items.collect { items ->
+                        val userItems = items.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
+                        val activeCount = userItems.count { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
+                        val claimsCount = userItems.count { it.status == ItemStatus.CLAIMED }
+                        val resolvedCount = userItems.count { it.status == ItemStatus.RESOLVED }
+
+                        binding.reportsCount.text = activeCount.toString()
+                        binding.claimsCount.text = claimsCount.toString()
+                        binding.resolvedCount.text = resolvedCount.toString()
+
+                        binding.menuReports.menuSubtitle.text = "$activeCount active reports"
                     }
                 }
             }
@@ -121,18 +140,16 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupMenu() {
-        val unread = MockData.notifications.count { !it.read }
-
         binding.menuReports.menuIcon.text = "📋"
         binding.menuReports.menuLabel.text = "My Reports"
-        binding.menuReports.menuSubtitle.text = "${MockData.currentUser.reportsCount} active reports"
+        binding.menuReports.menuSubtitle.text = "0 active reports"
         binding.menuReports.root.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_myReportsFragment)
         }
 
         binding.menuNotifications.menuIcon.text = "🔔"
         binding.menuNotifications.menuLabel.text = "Notifications"
-        binding.menuNotifications.menuSubtitle.text = if (unread > 0) "$unread unread notifications" else "All caught up"
+        binding.menuNotifications.menuSubtitle.text = "All caught up"
         binding.menuNotifications.root.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_notificationsFragment)
         }
@@ -144,7 +161,6 @@ class ProfileFragment : Fragment() {
         binding.menuHelpSupport.menuIcon.text = "❓"
         binding.menuHelpSupport.menuLabel.text = "Help & Support"
         binding.menuHelpSupport.menuSubtitle.text = "FAQs, contact admin"
-
     }
 
     override fun onDestroyView() {

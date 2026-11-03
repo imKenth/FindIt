@@ -36,7 +36,7 @@ class AdminDashboardFragment : Fragment() {
         }.attach()
 
         binding.signOutButton.setOnClickListener {
-            findNavController().navigate(R.id.action_adminDashboardFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_adminDashboardFragment_to_homeFragment)
         }
     }
 

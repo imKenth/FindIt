@@ -15,7 +15,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.findit.app.R
-import com.findit.app.data.remote.MockData
 import com.findit.app.databinding.FragmentMyReportsBinding
 import com.findit.app.domain.model.Item
 import com.findit.app.domain.model.ItemStatus
@@ -103,27 +102,22 @@ class MyReportsFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-        
+
         binding.createReportFab.setOnClickListener {
             findNavController().navigate(R.id.action_myReportsFragment_to_reportTypeFragment)
         }
     }
 
     private fun updateList(position: Int) {
-        val userItems = if (allItemsList.isNotEmpty()) {
-            val userFiltered = allItemsList.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
-            if (userFiltered.isNotEmpty()) userFiltered else allItemsList.take(2)
-        } else {
-            MockData.myReports
-        }
+        val userItems = allItemsList.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
 
         val items = when (position) {
             0 -> userItems.filter { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
-            1 -> MockData.myClaims
-            2 -> userItems.filter { it.status == ItemStatus.RESOLVED || it.status == ItemStatus.CLAIMED }
+            1 -> userItems.filter { it.status == ItemStatus.CLAIMED || it.status == ItemStatus.PENDING }
+            2 -> userItems.filter { it.status == ItemStatus.RESOLVED }
             else -> emptyList()
         }
-        
+
         adapter = ItemAdapter(isCompact = false) { item ->
             if (position == 1) {
                 findNavController().navigate(

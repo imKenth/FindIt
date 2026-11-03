@@ -51,17 +51,11 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
             _authState.value = AuthState.Loading
             val googleName = if (name.isBlank()) email.substringBefore("@").replace(".", " ") else name
             val googlePhoto = photoUrl ?: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&auto=format"
-            val signInResult = repository.signIn(email, "googlepassword123")
-            if (signInResult.isSuccess) {
-                repository.updateGoogleProfile(googleName, googlePhoto)
+            val updateResult = repository.updateGoogleProfile(googleName, googlePhoto)
+            if (updateResult.isSuccess) {
                 _authState.value = AuthState.Success
             } else {
-                val signUpResult = repository.signUp(googleName, email, "googlepassword123", googlePhoto)
-                if (signUpResult.isSuccess) {
-                    _authState.value = AuthState.Success
-                } else {
-                    _authState.value = AuthState.Error(signUpResult.exceptionOrNull()?.message ?: "Google authentication failed")
-                }
+                _authState.value = AuthState.Error("Google authentication failed. Please sign in with Google.")
             }
         }
     }

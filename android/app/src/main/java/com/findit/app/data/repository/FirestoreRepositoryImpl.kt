@@ -58,17 +58,14 @@ class FirestoreRepositoryImpl(
         // Always store locally first so app works offline / instantly
         localItems.add(0, item)
 
-        // Try syncing to Firestore in background with 3-second timeout
         try {
-            withTimeoutOrNull(3000) {
-                if (item.id.isNotEmpty()) {
-                    itemsCollection.document(item.id).set(item).await()
-                } else {
-                    itemsCollection.add(item).await()
-                }
+            if (item.id.isNotEmpty()) {
+                itemsCollection.document(item.id).set(item).await()
+            } else {
+                itemsCollection.add(item).await()
             }
         } catch (e: Exception) {
-            // Firestore write failed or timed out; item is preserved in localItems
+            // Firestore write failed; item is preserved in localItems
         }
     }
 }

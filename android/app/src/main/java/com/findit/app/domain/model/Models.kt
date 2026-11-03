@@ -8,51 +8,51 @@ enum class ItemType { LOST, FOUND }
 
 @Serializable
 data class Item(
-    val id: String,
-    val name: String,
-    val category: ItemCategory,
-    val status: ItemStatus,
-    val location: String,
-    val date: String,
+    val id: String = "",
+    val name: String = "",
+    val category: ItemCategory = ItemCategory.OTHER,
+    val status: ItemStatus = ItemStatus.LOST,
+    val location: String = "",
+    val date: String = "",
     val time: String? = null,
-    val description: String,
-    val imageUrl: String,
-    val reportedBy: String,
-    val type: ItemType
+    val description: String = "",
+    val imageUrl: String = "",
+    val reportedBy: String = "",
+    val type: ItemType = ItemType.LOST
 )
 
 @Serializable
 data class AppNotification(
-    val id: String,
-    val type: String,
-    val title: String,
-    val message: String,
-    val time: String,
-    val read: Boolean,
+    val id: String = "",
+    val type: String = "",
+    val title: String = "",
+    val message: String = "",
+    val time: String = "",
+    val read: Boolean = false,
     val itemId: String? = null
 )
 
 @Serializable
 data class Claim(
-    val id: String,
-    val itemId: String,
-    val claimant: String,
-    val reason: String,
-    val lostWhen: String,
-    val privateDetail: String,
-    val status: ItemStatus,
-    val submittedDate: String
+    val id: String = "",
+    val itemId: String = "",
+    val claimant: String = "",
+    val reason: String = "",
+    val lostWhen: String = "",
+    val privateDetail: String = "",
+    val status: ItemStatus = ItemStatus.PENDING,
+    val submittedDate: String = ""
 )
 
 @Serializable
 data class User(
-    val id: String,
-    val name: String,
-    val email: String,
-    val avatar: String,
-    val reportsCount: Int,
-    val claimsCount: Int,
-    val resolvedCount: Int
+    val id: String = "",
+    val name: String = "",
+    val email: String = "",
+    val avatar: String = "",
+    val reportsCount: Int = 0,
+    val claimsCount: Int = 0,
+    val resolvedCount: Int = 0
 )
 
 enum class Screen {

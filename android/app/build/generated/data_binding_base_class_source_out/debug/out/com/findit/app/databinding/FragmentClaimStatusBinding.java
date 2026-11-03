@@ -4,25 +4,73 @@ package com.findit.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
+import androidx.viewbinding.ViewBindings;
 import com.findit.app.R;
+import com.google.android.material.button.MaterialButton;
 import java.lang.NullPointerException;
 import java.lang.Override;
+import java.lang.String;
 
 public final class FragmentClaimStatusBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final ConstraintLayout rootView;
 
-  private FragmentClaimStatusBinding(@NonNull LinearLayout rootView) {
+  @NonNull
+  public final ImageButton backButton;
+
+  @NonNull
+  public final FrameLayout buttonContainer;
+
+  @NonNull
+  public final TextView claimReasonText;
+
+  @NonNull
+  public final TextView claimStatusBadge;
+
+  @NonNull
+  public final TextView claimantNameText;
+
+  @NonNull
+  public final MaterialButton doneButton;
+
+  @NonNull
+  public final LinearLayout headerBar;
+
+  @NonNull
+  public final TextView itemLocationText;
+
+  @NonNull
+  public final TextView itemNameText;
+
+  private FragmentClaimStatusBinding(@NonNull ConstraintLayout rootView,
+      @NonNull ImageButton backButton, @NonNull FrameLayout buttonContainer,
+      @NonNull TextView claimReasonText, @NonNull TextView claimStatusBadge,
+      @NonNull TextView claimantNameText, @NonNull MaterialButton doneButton,
+      @NonNull LinearLayout headerBar, @NonNull TextView itemLocationText,
+      @NonNull TextView itemNameText) {
     this.rootView = rootView;
+    this.backButton = backButton;
+    this.buttonContainer = buttonContainer;
+    this.claimReasonText = claimReasonText;
+    this.claimStatusBadge = claimStatusBadge;
+    this.claimantNameText = claimantNameText;
+    this.doneButton = doneButton;
+    this.headerBar = headerBar;
+    this.itemLocationText = itemLocationText;
+    this.itemNameText = itemNameText;
   }
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public ConstraintLayout getRoot() {
     return rootView;
   }
 
@@ -43,10 +91,69 @@ public final class FragmentClaimStatusBinding implements ViewBinding {
 
   @NonNull
   public static FragmentClaimStatusBinding bind(@NonNull View rootView) {
-    if (rootView == null) {
-      throw new NullPointerException("rootView");
-    }
+    // The body of this method is generated in a way you would not otherwise write.
+    // This is done to optimize the compiled bytecode for size and performance.
+    int id;
+    missingId: {
+      id = R.id.back_button;
+      ImageButton backButton = ViewBindings.findChildViewById(rootView, id);
+      if (backButton == null) {
+        break missingId;
+      }
 
-    return new FragmentClaimStatusBinding((LinearLayout) rootView);
+      id = R.id.button_container;
+      FrameLayout buttonContainer = ViewBindings.findChildViewById(rootView, id);
+      if (buttonContainer == null) {
+        break missingId;
+      }
+
+      id = R.id.claim_reason_text;
+      TextView claimReasonText = ViewBindings.findChildViewById(rootView, id);
+      if (claimReasonText == null) {
+        break missingId;
+      }
+
+      id = R.id.claim_status_badge;
+      TextView claimStatusBadge = ViewBindings.findChildViewById(rootView, id);
+      if (claimStatusBadge == null) {
+        break missingId;
+      }
+
+      id = R.id.claimant_name_text;
+      TextView claimantNameText = ViewBindings.findChildViewById(rootView, id);
+      if (claimantNameText == null) {
+        break missingId;
+      }
+
+      id = R.id.done_button;
+      MaterialButton doneButton = ViewBindings.findChildViewById(rootView, id);
+      if (doneButton == null) {
+        break missingId;
+      }
+
+      id = R.id.header_bar;
+      LinearLayout headerBar = ViewBindings.findChildViewById(rootView, id);
+      if (headerBar == null) {
+        break missingId;
+      }
+
+      id = R.id.item_location_text;
+      TextView itemLocationText = ViewBindings.findChildViewById(rootView, id);
+      if (itemLocationText == null) {
+        break missingId;
+      }
+
+      id = R.id.item_name_text;
+      TextView itemNameText = ViewBindings.findChildViewById(rootView, id);
+      if (itemNameText == null) {
+        break missingId;
+      }
+
+      return new FragmentClaimStatusBinding((ConstraintLayout) rootView, backButton,
+          buttonContainer, claimReasonText, claimStatusBadge, claimantNameText, doneButton,
+          headerBar, itemLocationText, itemNameText);
+    }
+    String missingId = rootView.getResources().getResourceName(id);
+    throw new NullPointerException("Missing required view with ID: ".concat(missingId));
   }
 }

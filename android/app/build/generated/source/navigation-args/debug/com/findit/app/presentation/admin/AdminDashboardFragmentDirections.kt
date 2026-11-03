@@ -7,8 +7,8 @@ import com.findit.app.R
 
 public class AdminDashboardFragmentDirections private constructor() {
   public companion object {
-    public fun actionAdminDashboardFragmentToLoginFragment(): NavDirections =
-        ActionOnlyNavDirections(R.id.action_adminDashboardFragment_to_loginFragment)
+    public fun actionAdminDashboardFragmentToHomeFragment(): NavDirections =
+        ActionOnlyNavDirections(R.id.action_adminDashboardFragment_to_homeFragment)
 
     public fun actionGlobalHome(): NavDirections = NavGraphDirections.actionGlobalHome()
 

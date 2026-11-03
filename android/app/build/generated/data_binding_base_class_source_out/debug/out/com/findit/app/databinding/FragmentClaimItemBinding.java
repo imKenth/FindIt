@@ -4,25 +4,87 @@ package com.findit.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
+import androidx.viewbinding.ViewBindings;
 import com.findit.app.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import java.lang.NullPointerException;
 import java.lang.Override;
+import java.lang.String;
 
 public final class FragmentClaimItemBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final ConstraintLayout rootView;
 
-  private FragmentClaimItemBinding(@NonNull LinearLayout rootView) {
+  @NonNull
+  public final ImageButton backButton;
+
+  @NonNull
+  public final MaterialButton backToHomeButton;
+
+  @NonNull
+  public final FrameLayout buttonContainer;
+
+  @NonNull
+  public final TextInputEditText dateLostEditText;
+
+  @NonNull
+  public final TextView errorText;
+
+  @NonNull
+  public final LinearLayout headerBar;
+
+  @NonNull
+  public final TextView itemLocationText;
+
+  @NonNull
+  public final TextView itemNameText;
+
+  @NonNull
+  public final TextInputEditText privateDetailEditText;
+
+  @NonNull
+  public final TextInputEditText reasonEditText;
+
+  @NonNull
+  public final MaterialButton submitClaimButton;
+
+  @NonNull
+  public final LinearLayout successOverlay;
+
+  private FragmentClaimItemBinding(@NonNull ConstraintLayout rootView,
+      @NonNull ImageButton backButton, @NonNull MaterialButton backToHomeButton,
+      @NonNull FrameLayout buttonContainer, @NonNull TextInputEditText dateLostEditText,
+      @NonNull TextView errorText, @NonNull LinearLayout headerBar,
+      @NonNull TextView itemLocationText, @NonNull TextView itemNameText,
+      @NonNull TextInputEditText privateDetailEditText, @NonNull TextInputEditText reasonEditText,
+      @NonNull MaterialButton submitClaimButton, @NonNull LinearLayout successOverlay) {
     this.rootView = rootView;
+    this.backButton = backButton;
+    this.backToHomeButton = backToHomeButton;
+    this.buttonContainer = buttonContainer;
+    this.dateLostEditText = dateLostEditText;
+    this.errorText = errorText;
+    this.headerBar = headerBar;
+    this.itemLocationText = itemLocationText;
+    this.itemNameText = itemNameText;
+    this.privateDetailEditText = privateDetailEditText;
+    this.reasonEditText = reasonEditText;
+    this.submitClaimButton = submitClaimButton;
+    this.successOverlay = successOverlay;
   }
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public ConstraintLayout getRoot() {
     return rootView;
   }
 
@@ -43,10 +105,87 @@ public final class FragmentClaimItemBinding implements ViewBinding {
 
   @NonNull
   public static FragmentClaimItemBinding bind(@NonNull View rootView) {
-    if (rootView == null) {
-      throw new NullPointerException("rootView");
-    }
+    // The body of this method is generated in a way you would not otherwise write.
+    // This is done to optimize the compiled bytecode for size and performance.
+    int id;
+    missingId: {
+      id = R.id.back_button;
+      ImageButton backButton = ViewBindings.findChildViewById(rootView, id);
+      if (backButton == null) {
+        break missingId;
+      }
 
-    return new FragmentClaimItemBinding((LinearLayout) rootView);
+      id = R.id.back_to_home_button;
+      MaterialButton backToHomeButton = ViewBindings.findChildViewById(rootView, id);
+      if (backToHomeButton == null) {
+        break missingId;
+      }
+
+      id = R.id.button_container;
+      FrameLayout buttonContainer = ViewBindings.findChildViewById(rootView, id);
+      if (buttonContainer == null) {
+        break missingId;
+      }
+
+      id = R.id.date_lost_edit_text;
+      TextInputEditText dateLostEditText = ViewBindings.findChildViewById(rootView, id);
+      if (dateLostEditText == null) {
+        break missingId;
+      }
+
+      id = R.id.error_text;
+      TextView errorText = ViewBindings.findChildViewById(rootView, id);
+      if (errorText == null) {
+        break missingId;
+      }
+
+      id = R.id.header_bar;
+      LinearLayout headerBar = ViewBindings.findChildViewById(rootView, id);
+      if (headerBar == null) {
+        break missingId;
+      }
+
+      id = R.id.item_location_text;
+      TextView itemLocationText = ViewBindings.findChildViewById(rootView, id);
+      if (itemLocationText == null) {
+        break missingId;
+      }
+
+      id = R.id.item_name_text;
+      TextView itemNameText = ViewBindings.findChildViewById(rootView, id);
+      if (itemNameText == null) {
+        break missingId;
+      }
+
+      id = R.id.private_detail_edit_text;
+      TextInputEditText privateDetailEditText = ViewBindings.findChildViewById(rootView, id);
+      if (privateDetailEditText == null) {
+        break missingId;
+      }
+
+      id = R.id.reason_edit_text;
+      TextInputEditText reasonEditText = ViewBindings.findChildViewById(rootView, id);
+      if (reasonEditText == null) {
+        break missingId;
+      }
+
+      id = R.id.submit_claim_button;
+      MaterialButton submitClaimButton = ViewBindings.findChildViewById(rootView, id);
+      if (submitClaimButton == null) {
+        break missingId;
+      }
+
+      id = R.id.success_overlay;
+      LinearLayout successOverlay = ViewBindings.findChildViewById(rootView, id);
+      if (successOverlay == null) {
+        break missingId;
+      }
+
+      return new FragmentClaimItemBinding((ConstraintLayout) rootView, backButton, backToHomeButton,
+          buttonContainer, dateLostEditText, errorText, headerBar, itemLocationText, itemNameText,
+          privateDetailEditText, reasonEditText, submitClaimButton, successOverlay);
+    }
+    String missingId = rootView.getResources().getResourceName(id);
+    throw new NullPointerException("Missing required view with ID: ".concat(missingId));
   }
 }

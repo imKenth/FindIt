@@ -205,8 +205,12 @@
                     android:textColor="@color/gray_800"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    app:icon="@drawable/ic_google"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
                     app:cornerRadius="16dp"
-                    app:strokeColor="@color/gray_300" />
+                    app:strokeColor="@color/gray_300"
+                    app:iconTint="@null"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

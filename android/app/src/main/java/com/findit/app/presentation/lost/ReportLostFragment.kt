@@ -15,8 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
-import com.findit.app.data.repository.FirestoreRepositoryImpl
 import com.findit.app.databinding.FragmentReportLostBinding
 import com.findit.app.domain.model.ItemCategory
 import com.findit.app.domain.model.ItemType

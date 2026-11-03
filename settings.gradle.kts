@@ -16,4 +16,3 @@ dependencyResolutionManagement {
 rootProject.name = "FindItMobileApp"
 include(":app")
 project(":app").projectDir = file("android/app")
-include(":backend")

@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="Sign out"
+                    android:text="User App"
                     android:textColor="@color/gray_400"
                     android:textSize="12sp"
                     android:textStyle="bold" />

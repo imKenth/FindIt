@@ -77,6 +77,7 @@ drawable ic_check
 drawable ic_close
 drawable ic_document
 drawable ic_email
+drawable ic_google
 drawable ic_home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
@@ -100,7 +101,7 @@ font outfit_bold
 font outfit_medium
 font outfit_regular
 font outfit_semi_bold
-id action_adminDashboardFragment_to_loginFragment
+id action_adminDashboardFragment_to_homeFragment
 id action_global_home
 id action_global_my_reports
 id action_global_profile
@@ -145,6 +146,7 @@ id back_button
 id back_to_home_button
 id bottom_navigation
 id bottom_navigation_container
+id button_container
 id cancel_button
 id category_chip_group
 id category_dropdown
@@ -157,7 +159,10 @@ id claimItemFragment
 id claimStatusFragment
 id claim_button
 id claim_detail
+id claim_reason_text
+id claim_status_badge
 id claimant_info
+id claimant_name_text
 id claims_count
 id claims_count_text
 id claims_recycler_view
@@ -167,10 +172,12 @@ id confirm_password_edit_text
 id create_account_button
 id create_report_fab
 id date_edit_text
+id date_lost_edit_text
 id date_meta
 id delete_button
 id description_edit_text
 id divider
+id done_button
 id edit_button
 id edit_profile_button
 id email_edit_text
@@ -183,6 +190,7 @@ id forgot_password_button
 id found_type_card
 id google_register_button
 id google_sign_in_button
+id header_bar
 id header_container
 id header_title
 id hero_background
@@ -195,7 +203,9 @@ id item_description
 id item_hero_image
 id item_image
 id item_location
+id item_location_text
 id item_name
+id item_name_text
 id item_reporter_date
 id item_type_label
 id location_edit_text
@@ -235,9 +245,11 @@ id notificationsFragment
 id notifications_recycler_view
 id password_edit_text
 id password_layout
+id private_detail_edit_text
 id profileFragment
 id profile_image
 id profile_stats_top
+id reason_edit_text
 id recent_recycler_view
 id registerFragment
 id reject_button
@@ -271,6 +283,7 @@ id status_card
 id status_message
 id status_text
 id submit_button
+id submit_claim_button
 id success_overlay
 id tab_layout
 id time_edit_text

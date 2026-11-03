@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.findit.app.R
-import com.findit.app.data.remote.MockData
 import com.findit.app.databinding.FragmentNotificationsBinding
+import com.findit.app.domain.model.AppNotification
 
 class NotificationsFragment : Fragment() {
 
@@ -34,13 +34,7 @@ class NotificationsFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        val unread = MockData.notifications.filter { !it.read }
-        if (unread.isNotEmpty()) {
-            binding.unreadCountCard.isVisible = true
-            binding.unreadCountText.text = "${unread.size} new"
-        } else {
-            binding.unreadCountCard.isVisible = false
-        }
+        binding.unreadCountCard.isVisible = false
 
         setupRecyclerView()
     }
@@ -56,10 +50,11 @@ class NotificationsFragment : Fragment() {
         }
         binding.notificationsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.notificationsRecyclerView.adapter = adapter
-        adapter.submitList(MockData.notifications)
-        
-        binding.emptyState.isVisible = MockData.notifications.isEmpty()
-        binding.notificationsRecyclerView.isVisible = MockData.notifications.isNotEmpty()
+        val notificationsList = emptyList<AppNotification>()
+        adapter.submitList(notificationsList)
+
+        binding.emptyState.isVisible = notificationsList.isEmpty()
+        binding.notificationsRecyclerView.isVisible = notificationsList.isNotEmpty()
     }
 
     override fun onDestroyView() {

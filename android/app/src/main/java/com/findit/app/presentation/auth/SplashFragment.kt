@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.findit.app.data.repository.FirebaseAuthRepositoryImpl
 import com.findit.app.R
 import com.findit.app.databinding.FragmentSplashBinding
 import kotlinx.coroutines.flow.first
@@ -28,7 +27,7 @@ class SplashFragment : Fragment() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(FirebaseAuthRepositoryImpl()) as T
+                return AuthViewModel(com.findit.app.di.AppModule.authRepository) as T
             }
         }
     }
