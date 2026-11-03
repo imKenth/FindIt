@@ -32,7 +32,7 @@ class LoginFragment : Fragment() {
         try {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             val account = task.getResult(ApiException::class.java)
-            val idToken: String? = account?.idToken
+            val idToken = account?.idToken
             val email = account?.email ?: return@registerForActivityResult
             val name = account.displayName ?: account.givenName ?: email.substringBefore("@").replace(".", " ")
             val photoUrl = account.photoUrl?.toString()
@@ -100,6 +100,7 @@ class LoginFragment : Fragment() {
     private fun launchGoogleSignIn() {
         try {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
             val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
