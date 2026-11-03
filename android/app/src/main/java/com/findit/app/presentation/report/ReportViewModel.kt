@@ -1,5 +1,6 @@
 package com.findit.app.presentation.report
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.findit.app.domain.model.Item
@@ -25,13 +26,16 @@ class ReportViewModel(private val repository: ItemRepository) : ViewModel() {
         description: String,
         type: ItemType,
         reportedBy: String,
-        reportedById: String
+        reportedById: String,
+        imageUri: Uri? = null
     ) {
         viewModelScope.launch {
             _reportState.value = ReportState.Loading
             try {
+                val itemId = UUID.randomUUID().toString()
+                val imageUrl = imageUri?.let { repository.uploadItemImage(itemId, it) }.orEmpty()
                 val item = Item(
-                    id = UUID.randomUUID().toString(),
+                    id = itemId,
                     name = name,
                     category = try { ItemCategory.valueOf(category.uppercase().replace(" ", "_")) } catch (e: Exception) { ItemCategory.OTHER },
                     status = if (type == ItemType.LOST) ItemStatus.LOST else ItemStatus.FOUND,
@@ -39,7 +43,7 @@ class ReportViewModel(private val repository: ItemRepository) : ViewModel() {
                     date = date,
                     time = time,
                     description = description,
-                    imageUrl = "", // Placeholder
+                    imageUrl = imageUrl,
                     reportedBy = reportedBy,
                     reportedById = reportedById,
                     type = type

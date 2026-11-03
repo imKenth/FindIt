@@ -188,7 +188,6 @@ id filter_chip_group
 id filter_scroll
 id forgot_password_button
 id found_type_card
-id google_register_button
 id google_sign_in_button
 id header_bar
 id header_container

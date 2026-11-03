@@ -1,11 +1,13 @@
 package com.findit.app.presentation.found
 
 import android.R
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.findit.app.databinding.FragmentReportFoundBinding
 import com.findit.app.domain.model.ItemCategory
 import com.findit.app.domain.model.ItemType
@@ -28,6 +31,18 @@ class ReportFoundFragment : Fragment() {
 
     private var _binding: FragmentReportFoundBinding? = null
     private val binding get() = _binding!!
+    private var selectedImageUri: Uri? = null
+
+    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        selectedImageUri = uri
+        binding.photoPreview.isVisible = uri != null
+        if (uri != null) {
+            binding.photoPreview.load(uri)
+            binding.photoButton.text = getString(com.findit.app.R.string.change_photo)
+        } else {
+            binding.photoButton.text = getString(com.findit.app.R.string.add_photo)
+        }
+    }
 
     private val authViewModel: AuthViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -70,6 +85,10 @@ class ReportFoundFragment : Fragment() {
 
         binding.submitButton.setOnClickListener {
             submitReport()
+        }
+
+        binding.photoButton.setOnClickListener {
+            imagePicker.launch("image/*")
         }
 
         binding.backToHomeButton.setOnClickListener {
@@ -115,7 +134,8 @@ class ReportFoundFragment : Fragment() {
                 description = finalDesc,
                 type = ItemType.FOUND,
                 reportedBy = userName,
-                reportedById = userEmail
+                reportedById = userEmail,
+                imageUri = selectedImageUri
             )
         }
     }
@@ -134,12 +154,15 @@ class ReportFoundFragment : Fragment() {
         when (state) {
             is ReportState.Loading -> {
                 binding.submitButton.isEnabled = false
+                binding.reportErrorText.isVisible = false
             }
             is ReportState.Success -> {
                 binding.successOverlay.isVisible = true
             }
             is ReportState.Error -> {
                 binding.submitButton.isEnabled = true
+                binding.reportErrorText.text = state.message
+                binding.reportErrorText.isVisible = true
             }
             is ReportState.Idle -> {
                 binding.submitButton.isEnabled = true

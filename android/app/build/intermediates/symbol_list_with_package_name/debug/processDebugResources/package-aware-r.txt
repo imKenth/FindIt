@@ -3600,7 +3600,6 @@ id fullscreen_header
 id ghost_view
 id ghost_view_holder
 id gone
-id google_register_button
 id google_sign_in_button
 id graph
 id graph_wrap
