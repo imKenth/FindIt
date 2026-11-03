@@ -1,11 +1,11 @@
 [
     {
-        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_bg_rounded_white_alpha.xml.flat",
-        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/bg_rounded_white_alpha.xml"
-    },
-    {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_document.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/ic_document.xml"
+    },
+    {
+        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_bg_rounded_white_alpha.xml.flat",
+        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/bg_rounded_white_alpha.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_launcher_background.xml.flat",
@@ -34,10 +34,6 @@
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_item_bottom_navigation.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/item_bottom_navigation.xml"
-    },
-    {
-        "merged": "com.findit.app-debug-57:/layout_fragment_register.xml.flat",
-        "source": "com.findit.app-main-59:/layout/fragment_register.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_card_admin_report.xml.flat",
@@ -110,6 +106,10 @@
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_fragment_item_details.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/fragment_item_details.xml"
+    },
+    {
+        "merged": "com.findit.app-debug-57:/layout_fragment_report_lost.xml.flat",
+        "source": "com.findit.app-main-59:/layout/fragment_report_lost.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/font_outfit_bold.ttf.flat",
@@ -222,6 +222,10 @@
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_layout_profile_menu_item.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/layout_profile_menu_item.xml"
+    },
+    {
+        "merged": "com.findit.app-debug-57:/layout_fragment_report_found.xml.flat",
+        "source": "com.findit.app-main-59:/layout/fragment_report_found.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_search_nav.xml.flat",

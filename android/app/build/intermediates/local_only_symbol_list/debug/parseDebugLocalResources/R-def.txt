@@ -244,6 +244,8 @@ id notificationsFragment
 id notifications_recycler_view
 id password_edit_text
 id password_layout
+id photo_button
+id photo_preview
 id private_detail_edit_text
 id profileFragment
 id profile_image
@@ -257,6 +259,7 @@ id reportFoundFragment
 id reportLostFragment
 id reportTypeFragment
 id report_content_button
+id report_error_text
 id report_found_card
 id report_lost_card
 id reporter_meta
@@ -337,7 +340,9 @@ layout layout_profile_menu_item
 layout layout_profile_stats
 mipmap ic_launcher
 navigation nav_graph
+string add_photo
 string app_name
+string change_photo
 string change_profile_photo
 string default_web_client_id
 string gcm_defaultSenderId

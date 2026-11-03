@@ -1,14 +1,14 @@
 package com.findit.app.data.repository
 
 import android.net.Uri
+import com.findit.app.FindItApplication
 import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.Item
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObjects
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -24,7 +24,6 @@ class FirestoreRepositoryImpl(
 ) : ItemRepository {
 
     private val itemsCollection by lazy { firestore.collection("items") }
-    private val storage by lazy { FirebaseStorage.getInstance() }
 
     override fun getAllItems(): Flow<List<Item>> {
         return try {
@@ -63,8 +62,10 @@ class FirestoreRepositoryImpl(
     override suspend fun uploadItemImage(itemId: String, imageUri: Uri): String {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
             ?: throw IllegalStateException("You must be signed in to upload an item photo.")
-        val imageReference = storage.reference.child("item_images/$userId/$itemId")
-        imageReference.putFile(imageUri).await()
-        return imageReference.downloadUrl.await().toString()
+        return CloudinaryImageUploader.upload(
+            imageUri,
+            FindItApplication.instance.contentResolver,
+            "item_${userId}_$itemId"
+        )
     }
 }

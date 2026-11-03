@@ -217,16 +217,35 @@
                 android:layout_marginTop="16dp"
                 android:text="Add Photo" />
 
+            <ImageView
+                android:id="@+id/photo_preview"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="6dp"
+                android:contentDescription="Selected item photo"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/photo_button"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="6dp"
-                android:text="Tap to add photo"
+                android:text="@string/add_photo"
                 android:textAllCaps="false"
                 android:textColor="@color/gray_400"
                 app:cornerRadius="12dp"
                 app:strokeColor="@color/gray_200" />
+
+            <TextView
+                android:id="@+id/report_error_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/red_500"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submit_button"

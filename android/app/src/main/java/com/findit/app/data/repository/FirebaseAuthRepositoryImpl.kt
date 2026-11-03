@@ -6,15 +6,9 @@ import com.findit.app.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import java.io.DataOutputStream
-import java.net.HttpURLConnection
-import java.net.URL
 
 class FirebaseAuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuth = try {
@@ -36,7 +30,7 @@ class FirebaseAuthRepositoryImpl(
         return try {
             val user = firebaseAuth.currentUser
                 ?: return Result.failure(Exception("You must be signed in to upload a profile photo"))
-            val downloadUrl = uploadToCloudinary(uri, contentResolver, user.uid)
+            val downloadUrl = CloudinaryImageUploader.upload(uri, contentResolver, "profile_${user.uid}")
             user.updateProfile(
                 UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(downloadUrl))
@@ -46,49 +40,6 @@ class FirebaseAuthRepositoryImpl(
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    private suspend fun uploadToCloudinary(
-        uri: Uri,
-        contentResolver: ContentResolver,
-        userId: String
-    ): String = withContext(Dispatchers.IO) {
-        val boundary = "----FindItCloudinary${System.currentTimeMillis()}"
-        val connection = URL(CLOUDINARY_UPLOAD_URL).openConnection() as HttpURLConnection
-        connection.requestMethod = "POST"
-        connection.doOutput = true
-        connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=$boundary")
-
-        try {
-            DataOutputStream(connection.outputStream).use { output ->
-                writeFormField(output, boundary, "upload_preset", CLOUDINARY_UPLOAD_PRESET)
-                writeFormField(output, boundary, "public_id", "profile_$userId")
-                output.writeBytes("--$boundary\r\n")
-                output.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"profile.jpg\"\r\n")
-                output.writeBytes("Content-Type: ${contentResolver.getType(uri) ?: "image/jpeg"}\r\n\r\n")
-                contentResolver.openInputStream(uri)?.use { input ->
-                    input.copyTo(output)
-                } ?: throw IllegalArgumentException("Could not read selected image")
-                output.writeBytes("\r\n--$boundary--\r\n")
-            }
-
-            val response = connection.inputStream.bufferedReader().use { it.readText() }
-            JSONObject(response).getString("secure_url")
-        } finally {
-            connection.disconnect()
-        }
-    }
-
-    private fun writeFormField(output: DataOutputStream, boundary: String, name: String, value: String) {
-        output.writeBytes("--$boundary\r\n")
-        output.writeBytes("Content-Disposition: form-data; name=\"$name\"\r\n\r\n")
-        output.writeBytes("$value\r\n")
-    }
-
-    private companion object {
-        const val CLOUDINARY_UPLOAD_URL =
-            "https://api.cloudinary.com/v1_1/do0pueye3/image/upload"
-        const val CLOUDINARY_UPLOAD_PRESET = "findit_profile_imgs"
     }
 
     override suspend fun signIn(email: String, password: String): Result<User> {

@@ -3810,6 +3810,8 @@ id path
 id pathRelative
 id peekHeight
 id percent
+id photo_button
+id photo_preview
 id pin
 id pooling_container_listener_holder_tag
 id position
@@ -3834,6 +3836,7 @@ id reportLostFragment
 id reportTypeFragment
 id report_content_button
 id report_drawn
+id report_error_text
 id report_found_card
 id report_lost_card
 id reporter_meta
@@ -4284,6 +4287,7 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string add_photo
 string android_credentials_TYPE_PASSWORD_CREDENTIAL
 string androidx_credentials_TYPE_PUBLIC_KEY_CREDENTIAL
 string androidx_startup
@@ -4302,6 +4306,7 @@ string call_notification_hang_up_action
 string call_notification_incoming_text
 string call_notification_ongoing_text
 string call_notification_screening_text
+string change_photo
 string change_profile_photo
 string character_counter_content_description
 string character_counter_overflowed_content_description

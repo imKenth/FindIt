@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -50,6 +51,15 @@ public final class FragmentReportFoundBinding implements ViewBinding {
   public final TextInputEditText nameEditText;
 
   @NonNull
+  public final MaterialButton photoButton;
+
+  @NonNull
+  public final ImageView photoPreview;
+
+  @NonNull
+  public final TextView reportErrorText;
+
+  @NonNull
   public final MaterialButton submitButton;
 
   @NonNull
@@ -63,8 +73,9 @@ public final class FragmentReportFoundBinding implements ViewBinding {
       @NonNull AutoCompleteTextView categoryDropdown, @NonNull ImageView closeButton,
       @NonNull TextInputEditText dateEditText, @NonNull TextInputEditText descriptionEditText,
       @NonNull TextInputEditText locationEditText, @NonNull TextInputEditText nameEditText,
-      @NonNull MaterialButton submitButton, @NonNull LinearLayout successOverlay,
-      @NonNull Toolbar toolbar) {
+      @NonNull MaterialButton photoButton, @NonNull ImageView photoPreview,
+      @NonNull TextView reportErrorText, @NonNull MaterialButton submitButton,
+      @NonNull LinearLayout successOverlay, @NonNull Toolbar toolbar) {
     this.rootView = rootView;
     this.backButton = backButton;
     this.backToHomeButton = backToHomeButton;
@@ -74,6 +85,9 @@ public final class FragmentReportFoundBinding implements ViewBinding {
     this.descriptionEditText = descriptionEditText;
     this.locationEditText = locationEditText;
     this.nameEditText = nameEditText;
+    this.photoButton = photoButton;
+    this.photoPreview = photoPreview;
+    this.reportErrorText = reportErrorText;
     this.submitButton = submitButton;
     this.successOverlay = successOverlay;
     this.toolbar = toolbar;
@@ -154,6 +168,24 @@ public final class FragmentReportFoundBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.photo_button;
+      MaterialButton photoButton = ViewBindings.findChildViewById(rootView, id);
+      if (photoButton == null) {
+        break missingId;
+      }
+
+      id = R.id.photo_preview;
+      ImageView photoPreview = ViewBindings.findChildViewById(rootView, id);
+      if (photoPreview == null) {
+        break missingId;
+      }
+
+      id = R.id.report_error_text;
+      TextView reportErrorText = ViewBindings.findChildViewById(rootView, id);
+      if (reportErrorText == null) {
+        break missingId;
+      }
+
       id = R.id.submit_button;
       MaterialButton submitButton = ViewBindings.findChildViewById(rootView, id);
       if (submitButton == null) {
@@ -174,7 +206,8 @@ public final class FragmentReportFoundBinding implements ViewBinding {
 
       return new FragmentReportFoundBinding((CoordinatorLayout) rootView, backButton,
           backToHomeButton, categoryDropdown, closeButton, dateEditText, descriptionEditText,
-          locationEditText, nameEditText, submitButton, successOverlay, toolbar);
+          locationEditText, nameEditText, photoButton, photoPreview, reportErrorText, submitButton,
+          successOverlay, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
