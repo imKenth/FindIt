@@ -103,15 +103,39 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
-    override suspend fun signUp(name: String, email: String, password: String): Result<User> {
+    override suspend fun signInWithGoogle(idToken: String, name: String?, photoUrl: String?): Result<User> {
+        return try {
+            val credential = com.google.firebase.auth.GoogleAuthProvider.getCredential(idToken, null)
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            
+            if (!name.isNullOrEmpty() || !photoUrl.isNullOrEmpty()) {
+                val builder = UserProfileChangeRequest.Builder()
+                if (!name.isNullOrEmpty()) builder.setDisplayName(name)
+                if (!photoUrl.isNullOrEmpty()) builder.setPhotoUri(Uri.parse(photoUrl))
+                result.user?.updateProfile(builder.build())?.await()
+            }
+
+            val user = result.user?.toDomainUser()
+            if (user != null) Result.success(user)
+            else Result.failure(Exception("Failed to sign in with Google"))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun signUp(name: String, email: String, password: String, photoUrl: String?): Result<User> {
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            result.user?.updateProfile(
-                UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build()
-            )?.await()
-            val user = result.user?.toDomainUser()?.copy(name = name)
+            val profileBuilder = UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
+            if (!photoUrl.isNullOrEmpty()) {
+                profileBuilder.setPhotoUri(Uri.parse(photoUrl))
+            }
+            result.user?.updateProfile(profileBuilder.build())?.await()
+            val user = result.user?.toDomainUser()?.copy(
+                name = name,
+                avatar = photoUrl ?: result.user?.photoUrl?.toString() ?: ""
+            )
             if (user != null) Result.success(user)
             else Result.failure(Exception("Failed to create user"))
         } catch (e: Exception) {
@@ -119,17 +143,46 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
+    override suspend fun updateGoogleProfile(name: String, photoUrl: String?): Result<Unit> {
+        return try {
+            val user = firebaseAuth.currentUser ?: return Result.failure(Exception("No user logged in"))
+            val builder = UserProfileChangeRequest.Builder().setDisplayName(name)
+            if (!photoUrl.isNullOrEmpty()) {
+                builder.setPhotoUri(Uri.parse(photoUrl))
+            }
+            user.updateProfile(builder.build()).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun signOut() {
         firebaseAuth.signOut()
+        try {
+            val gso = com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder(
+                com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN
+            ).build()
+            val client = com.google.android.gms.auth.api.signin.GoogleSignIn.getClient(
+                com.findit.app.FindItApplication.instance, gso
+            )
+            client.signOut().await()
+            client.revokeAccess().await()
+        } catch (e: Exception) {
+            // Ignore if Google Play Services client is not initialized or offline
+        }
     }
 
     // Extension function to map Firebase User to our Domain User
     private fun com.google.firebase.auth.FirebaseUser.toDomainUser(): User {
+        val googleAvatar = photoUrl?.toString()
+        val avatarUrl = if (!googleAvatar.isNullOrEmpty()) googleAvatar else "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&auto=format"
+        val formattedName = if (!displayName.isNullOrBlank()) displayName!! else email?.substringBefore("@")?.replace(".", " ") ?: "User"
         return User(
             id = uid,
-            name = displayName ?: "User",
+            name = formattedName,
             email = email ?: "",
-            avatar = photoUrl?.toString() ?: "",
+            avatar = avatarUrl,
             reportsCount = 0,
             claimsCount = 0,
             resolvedCount = 0,

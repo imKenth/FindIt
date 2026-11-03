@@ -181,6 +181,8 @@ id filter_chip_group
 id filter_scroll
 id forgot_password_button
 id found_type_card
+id google_register_button
+id google_sign_in_button
 id header_container
 id header_title
 id hero_background
@@ -322,6 +324,7 @@ mipmap ic_launcher
 navigation nav_graph
 string app_name
 string change_profile_photo
+string default_web_client_id
 string gcm_defaultSenderId
 string google_api_key
 string google_app_id

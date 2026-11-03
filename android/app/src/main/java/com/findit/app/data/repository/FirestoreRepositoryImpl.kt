@@ -1,5 +1,6 @@
 package com.findit.app.data.repository
 
+import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.Item
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.snapshots
@@ -26,27 +27,30 @@ class FirestoreRepositoryImpl(
         return try {
             itemsCollection.snapshots().map { snapshot ->
                 val remoteItems = snapshot.toObjects(Item::class.java)
-                (localItems + remoteItems).distinctBy { it.id }
+                // Combine real user reports (local + remote) with demo sample items
+                (localItems + remoteItems + MockData.items).distinctBy { it.id }
             }.catch {
-                emit(localItems.toList())
+                emit((localItems + MockData.items).distinctBy { it.id })
             }
         } catch (e: Exception) {
-            flowOf(localItems.toList())
+            flowOf((localItems + MockData.items).distinctBy { it.id })
         }
     }
 
     override fun getItemById(id: String): Flow<Item?> {
-        val local = localItems.find { it.id == id }
-        if (local != null) return flowOf(local)
+        val local = localItems.find { it.id == id } ?: MockData.items.find { it.id == id }
+        if (local != null && localItems.contains(local)) return flowOf(local)
 
         return try {
             itemsCollection.document(id).snapshots().map { snapshot ->
-                snapshot.toObject(Item::class.java) ?: localItems.find { it.id == id }
+                snapshot.toObject(Item::class.java)
+                    ?: localItems.find { it.id == id }
+                    ?: MockData.items.find { it.id == id }
             }.catch {
-                emit(localItems.find { it.id == id })
+                emit(localItems.find { it.id == id } ?: MockData.items.find { it.id == id })
             }
         } catch (e: Exception) {
-            flowOf(localItems.find { it.id == id })
+            flowOf(localItems.find { it.id == id } ?: MockData.items.find { it.id == id })
         }
     }
 

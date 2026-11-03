@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.findit.app-mergeDebugResources-82:/values-tr/values-tr.xml",
+            "outputFile": "com.findit.app-mergeDebugResources-81:/values-tr/values-tr.xml",
             "map": [
                 {
                     "source": "/home/rai/.gradle/caches/8.10.2/transforms/601672922f25e1e68191d1a03f0e47b5/transformed/material-1.12.0/res/values-tr/values-tr.xml",
@@ -20,6 +20,23 @@
                         "endLines": "5,35,36,37,38,39,47,48,49,74,75,76,80,83,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,203,207,208,210",
                         "endColumns": "12,74,74,76,98,90,95,111,81,59,63,90,76,60,90,62,62,58,68,62,53,107,57,61,53,72,120,83,79,98,83,90,139,76,75,130,86,75,52,53,65,69,76,70,79,70,74,77,70,100,84,88,94,92,71,71,95,51,85,66,83,89,61,63,62,69,93,101,88,99,56,57,78,83,74,73",
                         "endOffsets": "310,3307,3382,3459,3558,3649,4458,4570,4652,7519,7583,7674,8070,8314,14565,14628,14691,14750,14819,14882,14936,15044,15102,15164,15218,15291,15412,15496,15576,15675,15759,15850,15990,16067,16143,16274,16361,16437,16490,16544,16610,16680,16757,16828,16908,16979,17054,17132,17203,17304,17389,17478,17573,17666,17738,17810,17906,17958,18044,18111,18195,18285,18347,18411,18474,18544,18638,18740,18829,18929,18986,19044,19517,19849,19924,20069"
+                    }
+                },
+                {
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/5dcca8506e501f4ea80ab8a7c5af31c7/transformed/play-services-basement-18.4.0/res/values-tr/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "142",
+                        "endOffsets": "337"
+                    },
+                    "to": {
+                        "startLines": "60",
+                        "startColumns": "4",
+                        "startOffsets": "5850",
+                        "endColumns": "146",
+                        "endOffsets": "5992"
                     }
                 },
                 {
@@ -91,24 +108,7 @@
                     }
                 },
                 {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/dbaad484cec545cdd35d99831cbeb43f/transformed/play-services-basement-18.3.0/res/values-tr/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "142",
-                        "endOffsets": "337"
-                    },
-                    "to": {
-                        "startLines": "60",
-                        "startColumns": "4",
-                        "startOffsets": "5850",
-                        "endColumns": "146",
-                        "endOffsets": "5992"
-                    }
-                },
-                {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/eca37f37dd5050b44e065f49c66fea43/transformed/play-services-base-18.0.1/res/values-tr/values.xml",
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/150d21e4a1853e6788fb1d6e2c5e4429/transformed/play-services-base-18.5.0/res/values-tr/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.findit.app-mergeDebugResources-82:/values-pt/values-pt.xml",
+            "outputFile": "com.findit.app-mergeDebugResources-81:/values-pt/values-pt.xml",
             "map": [
                 {
                     "source": "/home/rai/.gradle/caches/8.10.2/transforms/e20487893dae9bd3fd9f650b77936b6c/transformed/ui-release/res/values-pt/values-pt.xml",

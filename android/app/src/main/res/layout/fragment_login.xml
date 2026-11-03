@@ -186,13 +186,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="8dp"
-                    android:text="Sign In"
+                    android:text="Sign In with Email"
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:backgroundTint="@color/violet_600"
                     app:cornerRadius="16dp"
                     app:elevation="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/google_sign_in_button"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Continue with Google"
+                    android:textAllCaps="false"
+                    android:textColor="@color/gray_800"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_google"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/gray_300"
+                    app:iconTint="@null"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

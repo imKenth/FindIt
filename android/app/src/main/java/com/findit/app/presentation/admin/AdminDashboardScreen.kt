@@ -88,8 +88,12 @@ fun AdminDashboardScreen(navController: NavController) {
                             Text("FindIt School Administrator", fontSize = 12.sp, color = Gray400)
                         }
                     }
-                    TextButton(onClick = { navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } } }) {
-                        Text("Sign out", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Gray400)
+                    TextButton(onClick = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.ADMIN) { inclusive = true }
+                        }
+                    }) {
+                        Text("Exit Admin", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Gray400)
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))

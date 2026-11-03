@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.findit.app-mergeDebugResources-82:/values-iw/values-iw.xml",
+            "outputFile": "com.findit.app-mergeDebugResources-81:/values-iw/values-iw.xml",
             "map": [
                 {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/eca37f37dd5050b44e065f49c66fea43/transformed/play-services-base-18.0.1/res/values-iw/values.xml",
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/150d21e4a1853e6788fb1d6e2c5e4429/transformed/play-services-base-18.5.0/res/values-iw/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -142,23 +142,6 @@
                     }
                 },
                 {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/dbaad484cec545cdd35d99831cbeb43f/transformed/play-services-basement-18.3.0/res/values-iw/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "113",
-                        "endOffsets": "308"
-                    },
-                    "to": {
-                        "startLines": "61",
-                        "startColumns": "4",
-                        "startOffsets": "5783",
-                        "endColumns": "117",
-                        "endOffsets": "5896"
-                    }
-                },
-                {
                     "source": "/home/rai/.gradle/caches/8.10.2/transforms/e491638683912fa90d1a3ec9dc1f2615/transformed/navigation-ui-2.8.5/res/values-iw/values-iw.xml",
                     "from": {
                         "startLines": "2,3",
@@ -173,6 +156,23 @@
                         "startOffsets": "18581,18687",
                         "endColumns": "105,119",
                         "endOffsets": "18682,18802"
+                    }
+                },
+                {
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/5dcca8506e501f4ea80ab8a7c5af31c7/transformed/play-services-basement-18.4.0/res/values-iw/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "113",
+                        "endOffsets": "308"
+                    },
+                    "to": {
+                        "startLines": "61",
+                        "startColumns": "4",
+                        "startOffsets": "5783",
+                        "endColumns": "117",
+                        "endOffsets": "5896"
                     }
                 },
                 {

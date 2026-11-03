@@ -40,6 +40,9 @@ public final class FragmentLoginBinding implements ViewBinding {
   public final Button forgotPasswordButton;
 
   @NonNull
+  public final MaterialButton googleSignInButton;
+
+  @NonNull
   public final LinearLayout headerContainer;
 
   @NonNull
@@ -57,15 +60,17 @@ public final class FragmentLoginBinding implements ViewBinding {
   private FragmentLoginBinding(@NonNull NestedScrollView rootView,
       @NonNull Button createAccountButton, @NonNull TextInputEditText emailEditText,
       @NonNull TextInputLayout emailLayout, @NonNull TextView errorText,
-      @NonNull Button forgotPasswordButton, @NonNull LinearLayout headerContainer,
-      @NonNull View heroBackground, @NonNull TextInputEditText passwordEditText,
-      @NonNull TextInputLayout passwordLayout, @NonNull MaterialButton signInButton) {
+      @NonNull Button forgotPasswordButton, @NonNull MaterialButton googleSignInButton,
+      @NonNull LinearLayout headerContainer, @NonNull View heroBackground,
+      @NonNull TextInputEditText passwordEditText, @NonNull TextInputLayout passwordLayout,
+      @NonNull MaterialButton signInButton) {
     this.rootView = rootView;
     this.createAccountButton = createAccountButton;
     this.emailEditText = emailEditText;
     this.emailLayout = emailLayout;
     this.errorText = errorText;
     this.forgotPasswordButton = forgotPasswordButton;
+    this.googleSignInButton = googleSignInButton;
     this.headerContainer = headerContainer;
     this.heroBackground = heroBackground;
     this.passwordEditText = passwordEditText;
@@ -130,6 +135,12 @@ public final class FragmentLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.google_sign_in_button;
+      MaterialButton googleSignInButton = ViewBindings.findChildViewById(rootView, id);
+      if (googleSignInButton == null) {
+        break missingId;
+      }
+
       id = R.id.header_container;
       LinearLayout headerContainer = ViewBindings.findChildViewById(rootView, id);
       if (headerContainer == null) {
@@ -161,8 +172,8 @@ public final class FragmentLoginBinding implements ViewBinding {
       }
 
       return new FragmentLoginBinding((NestedScrollView) rootView, createAccountButton,
-          emailEditText, emailLayout, errorText, forgotPasswordButton, headerContainer,
-          heroBackground, passwordEditText, passwordLayout, signInButton);
+          emailEditText, emailLayout, errorText, forgotPasswordButton, googleSignInButton,
+          headerContainer, heroBackground, passwordEditText, passwordLayout, signInButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

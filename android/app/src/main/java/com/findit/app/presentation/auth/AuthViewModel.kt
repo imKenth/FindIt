@@ -34,6 +34,38 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         }
     }
 
+    fun signInWithGoogle(idToken: String, name: String? = null, photoUrl: String? = null) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            val result = repository.signInWithGoogle(idToken, name, photoUrl)
+            result.onSuccess {
+                _authState.value = AuthState.Success
+            }.onFailure { e ->
+                _authState.value = AuthState.Error(e.message ?: "Google Sign-In failed")
+            }
+        }
+    }
+
+    fun handleGoogleUser(name: String, email: String, photoUrl: String? = null) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            val googleName = if (name.isBlank()) email.substringBefore("@").replace(".", " ") else name
+            val googlePhoto = photoUrl ?: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&auto=format"
+            val signInResult = repository.signIn(email, "googlepassword123")
+            if (signInResult.isSuccess) {
+                repository.updateGoogleProfile(googleName, googlePhoto)
+                _authState.value = AuthState.Success
+            } else {
+                val signUpResult = repository.signUp(googleName, email, "googlepassword123", googlePhoto)
+                if (signUpResult.isSuccess) {
+                    _authState.value = AuthState.Success
+                } else {
+                    _authState.value = AuthState.Error(signUpResult.exceptionOrNull()?.message ?: "Google authentication failed")
+                }
+            }
+        }
+    }
+
     fun signUp(name: String, email: String, password: String) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading

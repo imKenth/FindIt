@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.findit.app-mergeDebugResources-82:/values-hr/values-hr.xml",
+            "outputFile": "com.findit.app-mergeDebugResources-81:/values-hr/values-hr.xml",
             "map": [
                 {
                     "source": "/home/rai/.gradle/caches/8.10.2/transforms/38df031211f626b1861d928578c7ecc5/transformed/foundation-release/res/values-hr/values-hr.xml",
@@ -72,7 +72,7 @@
                     }
                 },
                 {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/eca37f37dd5050b44e065f49c66fea43/transformed/play-services-base-18.0.1/res/values-hr/values.xml",
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/150d21e4a1853e6788fb1d6e2c5e4429/transformed/play-services-base-18.5.0/res/values-hr/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -159,23 +159,6 @@
                     }
                 },
                 {
-                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/dbaad484cec545cdd35d99831cbeb43f/transformed/play-services-basement-18.3.0/res/values-hr/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "127",
-                        "endOffsets": "322"
-                    },
-                    "to": {
-                        "startLines": "61",
-                        "startColumns": "4",
-                        "startOffsets": "5985",
-                        "endColumns": "131",
-                        "endOffsets": "6112"
-                    }
-                },
-                {
                     "source": "/home/rai/.gradle/caches/8.10.2/transforms/e20487893dae9bd3fd9f650b77936b6c/transformed/ui-release/res/values-hr/values-hr.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
@@ -190,6 +173,23 @@
                         "startOffsets": "4781,4886,7265,7359,7458,8163,8242,19627,19722,19887,19968,20299,20447,20524,20603,20781,20860,20930",
                         "endColumns": "104,86,93,98,89,78,92,94,84,80,85,72,76,78,76,78,69,117",
                         "endOffsets": "4881,4968,7354,7453,7543,8237,8330,19717,19802,19963,20049,20367,20519,20598,20675,20855,20925,21043"
+                    }
+                },
+                {
+                    "source": "/home/rai/.gradle/caches/8.10.2/transforms/5dcca8506e501f4ea80ab8a7c5af31c7/transformed/play-services-basement-18.4.0/res/values-hr/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "127",
+                        "endOffsets": "322"
+                    },
+                    "to": {
+                        "startLines": "61",
+                        "startColumns": "4",
+                        "startOffsets": "5985",
+                        "endColumns": "131",
+                        "endOffsets": "6112"
                     }
                 }
             ]

@@ -36,6 +36,9 @@ public final class FragmentRegisterBinding implements ViewBinding {
   public final TextView errorText;
 
   @NonNull
+  public final MaterialButton googleRegisterButton;
+
+  @NonNull
   public final LinearLayout headerContainer;
 
   @NonNull
@@ -53,14 +56,16 @@ public final class FragmentRegisterBinding implements ViewBinding {
   private FragmentRegisterBinding(@NonNull NestedScrollView rootView,
       @NonNull TextInputEditText confirmPasswordEditText,
       @NonNull MaterialButton createAccountButton, @NonNull TextInputEditText emailEditText,
-      @NonNull TextView errorText, @NonNull LinearLayout headerContainer,
-      @NonNull View heroBackground, @NonNull TextInputEditText nameEditText,
-      @NonNull TextInputEditText passwordEditText, @NonNull Button signInLink) {
+      @NonNull TextView errorText, @NonNull MaterialButton googleRegisterButton,
+      @NonNull LinearLayout headerContainer, @NonNull View heroBackground,
+      @NonNull TextInputEditText nameEditText, @NonNull TextInputEditText passwordEditText,
+      @NonNull Button signInLink) {
     this.rootView = rootView;
     this.confirmPasswordEditText = confirmPasswordEditText;
     this.createAccountButton = createAccountButton;
     this.emailEditText = emailEditText;
     this.errorText = errorText;
+    this.googleRegisterButton = googleRegisterButton;
     this.headerContainer = headerContainer;
     this.heroBackground = heroBackground;
     this.nameEditText = nameEditText;
@@ -119,6 +124,12 @@ public final class FragmentRegisterBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.google_register_button;
+      MaterialButton googleRegisterButton = ViewBindings.findChildViewById(rootView, id);
+      if (googleRegisterButton == null) {
+        break missingId;
+      }
+
       id = R.id.header_container;
       LinearLayout headerContainer = ViewBindings.findChildViewById(rootView, id);
       if (headerContainer == null) {
@@ -150,8 +161,8 @@ public final class FragmentRegisterBinding implements ViewBinding {
       }
 
       return new FragmentRegisterBinding((NestedScrollView) rootView, confirmPasswordEditText,
-          createAccountButton, emailEditText, errorText, headerContainer, heroBackground,
-          nameEditText, passwordEditText, signInLink);
+          createAccountButton, emailEditText, errorText, googleRegisterButton, headerContainer,
+          heroBackground, nameEditText, passwordEditText, signInLink);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

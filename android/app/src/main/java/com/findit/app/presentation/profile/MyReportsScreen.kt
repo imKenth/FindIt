@@ -24,7 +24,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.findit.app.data.remote.MockData
 import com.findit.app.domain.model.ItemStatus
 import com.findit.app.domain.model.ItemType
 import com.findit.app.presentation.auth.AuthViewModel
@@ -58,18 +57,14 @@ fun MyReportsScreen(navController: NavController) {
     val currentUser by authViewModel.currentUser.collectAsState()
     val allItems by homeViewModel.items.collectAsState()
 
-    val currentUserName = currentUser?.name ?: "Alex Rivera"
+    val currentUserName = currentUser?.name ?: ""
 
-    val userItems = if (allItems.isNotEmpty()) {
-        val userFiltered = allItems.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
-        if (userFiltered.isNotEmpty()) userFiltered else allItems.take(2)
-    } else {
-        MockData.myReports
-    }
+    // Strictly show only items reported by the logged-in user (no example/mock reports for new users)
+    val userItems = allItems.filter { it.reportedBy.equals(currentUserName, ignoreCase = true) }
 
     val activeReports = userItems.filter { it.status == ItemStatus.LOST || it.status == ItemStatus.FOUND }
     val resolvedReports = userItems.filter { it.status == ItemStatus.RESOLVED || it.status == ItemStatus.CLAIMED }
-    val myClaims = MockData.myClaims
+    val myClaims = emptyList<com.findit.app.domain.model.Item>()
 
     var tab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Active", "Claims", "Resolved")
@@ -172,31 +167,7 @@ fun MyReportsScreen(navController: NavController) {
                         }
                     }
                     1 -> { // Claims
-                        if (myClaims.isEmpty()) {
-                            EmptyState("No Claims Yet", "Items you've claimed will appear here")
-                        } else {
-                            myClaims.forEach { claim ->
-                                Card(
-                                    modifier = Modifier.fillMaxWidth().clickable { navController.navigate(Routes.claimStatus(claim.id)) },
-                                    shape = RoundedCornerShape(16.dp),
-                                    colors = CardDefaults.cardColors(containerColor = White),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                                ) {
-                                    Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                        AsyncImage(model = claim.imageUrl, contentDescription = claim.name, modifier = Modifier.size(64.dp).clip(RoundedCornerShape(12.dp)), contentScale = ContentScale.Crop)
-                                        Column(modifier = Modifier.weight(1f)) {
-                                            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                                                Text(claim.name, fontSize = 14.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily, color = Gray900, modifier = Modifier.weight(1f))
-                                                StatusBadge(status = ItemStatus.APPROVED, size = BadgeSize.XS)
-                                            }
-                                            Spacer(modifier = Modifier.height(4.dp))
-                                            Text("Claim submitted", fontSize = 12.sp, color = Gray400)
-                                            Text(claim.location, fontSize = 12.sp, color = Gray400)
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        EmptyState("No Claims Yet", "Items you've claimed will appear here")
                     }
                     2 -> { // Resolved
                         if (resolvedReports.isEmpty()) {
@@ -236,9 +207,9 @@ fun MyReportsScreen(navController: NavController) {
 }
 
 @Composable
-private fun EmptyState(title: String, desc: String) {
+private fun EmptyState(title: String, desc: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(top = 60.dp),
+        modifier = modifier.fillMaxWidth().padding(top = 60.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(modifier = Modifier.size(64.dp).clip(RoundedCornerShape(50)).background(Gray100), contentAlignment = Alignment.Center) {

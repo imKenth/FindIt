@@ -1,6 +1,7 @@
 package com.findit.app.presentation.auth
 
 import android.app.Activity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -221,8 +222,28 @@ fun LoginScreen(navController: NavController) {
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Sign In", fontSize = 16.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily)
+                    Text("Sign In with Email", fontSize = 16.sp, fontWeight = FontWeight.Black, fontFamily = OutfitFontFamily)
                 }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Google Sign In button
+            OutlinedButton(
+                onClick = {
+                    viewModel.handleGoogleUser("Google User", "google.user@school.edu")
+                },
+                enabled = authState !is AuthState.Loading,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(1.dp, Gray300),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Gray800)
+            ) {
+                Text("🌐", fontSize = 18.sp)
+                Spacer(modifier = Modifier.width(10.dp))
+                Text("Continue with Google", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
