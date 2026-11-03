@@ -1,11 +1,11 @@
 [
     {
-        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_document.xml.flat",
-        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/ic_document.xml"
-    },
-    {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_bg_rounded_white_alpha.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/bg_rounded_white_alpha.xml"
+    },
+    {
+        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_document.xml.flat",
+        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/ic_document.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_launcher_background.xml.flat",
@@ -108,12 +108,12 @@
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/fragment_item_details.xml"
     },
     {
-        "merged": "com.findit.app-debug-57:/layout_fragment_report_lost.xml.flat",
-        "source": "com.findit.app-main-59:/layout/fragment_report_lost.xml"
-    },
-    {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/font_outfit_bold.ttf.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/font/outfit_bold.ttf"
+    },
+    {
+        "merged": "com.findit.app-debug-57:/drawable_bg_image_placeholder.xml.flat",
+        "source": "com.findit.app-main-59:/drawable/bg_image_placeholder.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_item_notification.xml.flat",
@@ -224,10 +224,6 @@
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/layout_profile_menu_item.xml"
     },
     {
-        "merged": "com.findit.app-debug-57:/layout_fragment_report_found.xml.flat",
-        "source": "com.findit.app-main-59:/layout/fragment_report_found.xml"
-    },
-    {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_ic_search_nav.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/ic_search_nav.xml"
     },
@@ -280,20 +276,20 @@
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/drawable/ic_back.xml"
     },
     {
-        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_card_admin_claim.xml.flat",
-        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/card_admin_claim.xml"
-    },
-    {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_fragment_report_found.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/fragment_report_found.xml"
     },
     {
-        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_fragment_search.xml.flat",
-        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/fragment_search.xml"
+        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_card_admin_claim.xml.flat",
+        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/card_admin_claim.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_fragment_report_lost.xml.flat",
         "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/fragment_report_lost.xml"
+    },
+    {
+        "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/layout_fragment_search.xml.flat",
+        "source": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-main-59:/layout/fragment_search.xml"
     },
     {
         "merged": "/home/rai/.gradle/daemon/8.10.2/com.findit.app-debug-57:/drawable_bg_badge_green.xml.flat",

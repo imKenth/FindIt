@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,14 +20,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.findit.app.databinding.FragmentReportLostBinding
 import com.findit.app.domain.model.ItemCategory
 import com.findit.app.domain.model.ItemType
 import com.findit.app.presentation.auth.AuthViewModel
+import com.findit.app.presentation.report.ItemMatchAdapter
 import com.findit.app.presentation.report.ReportState
 import com.findit.app.presentation.report.ReportViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ReportLostFragment : Fragment() {
@@ -32,6 +36,7 @@ class ReportLostFragment : Fragment() {
     private var _binding: FragmentReportLostBinding? = null
     private val binding get() = _binding!!
     private var selectedImageUri: Uri? = null
+    private lateinit var matchesAdapter: ItemMatchAdapter
 
     private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         selectedImageUri = uri
@@ -75,6 +80,7 @@ class ReportLostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupCategoryDropdown()
+        setupMatching()
         
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -102,6 +108,54 @@ class ReportLostFragment : Fragment() {
         val categories = ItemCategory.values().map { it.name.replace("_", " ") }
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, categories)
         binding.categoryDropdown.setAdapter(adapter)
+    }
+
+    private fun setupMatching() {
+        matchesAdapter = ItemMatchAdapter { match ->
+            findNavController().navigate(
+                com.findit.app.R.id.action_reportLostFragment_to_itemDetailsFragment,
+                bundleOf("itemId" to match.item.id)
+            )
+        }
+        binding.matchesRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.matchesRecyclerView.isNestedScrollingEnabled = false
+        binding.matchesRecyclerView.adapter = matchesAdapter
+
+        listOf<TextView>(
+            binding.nameEditText,
+            binding.categoryDropdown,
+            binding.locationEditText,
+            binding.dateEditText,
+            binding.descriptionEditText
+        ).forEach { field ->
+            field.doOnTextChanged { _, _, _, _ -> updateMatchQuery() }
+        }
+
+        updateMatchQuery()
+        observeMatches()
+    }
+
+    private fun updateMatchQuery() {
+        reportViewModel.updateMatchQuery(
+            name = binding.nameEditText.text.toString(),
+            category = binding.categoryDropdown.text.toString(),
+            location = binding.locationEditText.text.toString(),
+            date = binding.dateEditText.text.toString(),
+            description = binding.descriptionEditText.text.toString(),
+            type = ItemType.LOST
+        )
+    }
+
+    private fun observeMatches() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                reportViewModel.matchingItems.collect { matches ->
+                    matchesAdapter.submitList(matches)
+                    binding.matchSection.isVisible = matches.isNotEmpty()
+                }
+            }
+        }
     }
 
     private fun submitReport() {

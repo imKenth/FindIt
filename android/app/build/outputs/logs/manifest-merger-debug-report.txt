@@ -30,12 +30,9 @@ MERGED from [androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /ho
 MERGED from [com.google.android.gms:play-services-auth:21.3.0] /home/rai/.gradle/caches/8.10.2/transforms/07806e5298bbe2ea711f44ee7d01d241/transformed/play-services-auth-21.3.0/AndroidManifest.xml:17:1-40:12
 MERGED from [com.google.android.gms:play-services-auth-api-phone:18.0.2] /home/rai/.gradle/caches/8.10.2/transforms/e125b0183fe9cb323e838cb747055326/transformed/play-services-auth-api-phone-18.0.2/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.10] /home/rai/.gradle/caches/8.10.2/transforms/437a91a261757ef645ff84db92d0136b/transformed/play-services-auth-base-18.0.10/AndroidManifest.xml:2:1-7:12
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:2:1-18:12
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:15:1-39:12
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:2:1-18:12
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:2:1-26:12
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:15:1-34:12
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] /home/rai/.gradle/caches/8.10.2/transforms/01d30add99c8625e778f0fca3c9fdfae/transformed/firebase-appcheck-interop-17.1.0/AndroidManifest.xml:15:1-23:12
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /home/rai/.gradle/caches/8.10.2/transforms/29a84a4382a05e0f6cdcd742aa364abc/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:15:1-25:12
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /home/rai/.gradle/caches/8.10.2/transforms/eb9e900cf7d4530c1a1e236bb9fb63bc/transformed/firebase-database-collection-18.0.1/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] /home/rai/.gradle/caches/8.10.2/transforms/1f9426c0f5ca57b5617ccd0aa5a890ba/transformed/play-services-fido-20.1.0/AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.android.gms:play-services-base:18.5.0] /home/rai/.gradle/caches/8.10.2/transforms/77de8b9355e4413c08798ef8d2f6b209/transformed/play-services-base-18.5.0/AndroidManifest.xml:2:1-7:12
@@ -77,7 +74,6 @@ MERGED from [androidx.browser:browser:1.4.0] /home/rai/.gradle/caches/8.10.2/tra
 MERGED from [androidx.core:core:1.15.0] /home/rai/.gradle/caches/8.10.2/transforms/012d9c32eaa2bd95d30e6bf2383ae07b/transformed/core-1.15.0/AndroidManifest.xml:17:1-30:12
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/851a1facc244c3a300b2e96495b55767/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.core:core-ktx:1.15.0] /home/rai/.gradle/caches/8.10.2/transforms/4ece923ee1d9d3b91344deee66921e72/transformed/core-ktx-1.15.0/AndroidManifest.xml:2:1-7:12
-MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] /home/rai/.gradle/caches/8.10.2/transforms/5a5455594638a3187fe69c33f4927981/transformed/googleid-1.1.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/7c8d4295816437805a7d7b4d37dff3a5/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/7763a4d11d612403dafe6fc7bfff5775/transformed/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] /home/rai/.gradle/caches/8.10.2/transforms/f81fceaeee1d29f63de83ea75255b62a/transformed/profileinstaller-1.4.0/AndroidManifest.xml:17:1-55:12
@@ -92,6 +88,7 @@ MERGED from [androidx.documentfile:documentfile:1.0.0] /home/rai/.gradle/caches/
 MERGED from [androidx.print:print:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/3964f8ba5bf56a1acaf34ac268a3619d/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/rai/.gradle/caches/8.10.2/transforms/8b8d44de20ec4140f4a12d9ea4878248/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/rai/.gradle/caches/8.10.2/transforms/8fa8b82aa0b7e5f60e47eed13825bc56/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] /home/rai/.gradle/caches/8.10.2/transforms/5a5455594638a3187fe69c33f4927981/transformed/googleid-1.1.0/AndroidManifest.xml:2:1-7:12
 MERGED from [io.grpc:grpc-android:1.57.2] /home/rai/.gradle/caches/8.10.2/transforms/c748a09457f5d9afa9caf04ea816da29/transformed/grpc-android-1.57.2/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/aec73ff19e1ef6b31e8c4421441ee43d/transformed/protolite-well-known-types-18.0.0/AndroidManifest.xml:2:1-11:12
 	package
@@ -106,8 +103,6 @@ uses-permission#android.permission.INTERNET
 ADDED from /home/rai/Documents/FindItMobileApp/android/app/src/main/AndroidManifest.xml:4:5-67
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/1f525debc744b72f1642ed57bbf52e29/transformed/firebase-auth-23.0.0/AndroidManifest.xml:25:5-67
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/1f525debc744b72f1642ed57bbf52e29/transformed/firebase-auth-23.0.0/AndroidManifest.xml:25:5-67
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:24:5-67
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:24:5-67
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/rai/.gradle/caches/8.10.2/transforms/c862d4cc4676285e0568e2d8fff0b4f3/transformed/recaptcha-18.4.0/AndroidManifest.xml:7:5-67
@@ -131,18 +126,12 @@ MERGED from [androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /ho
 MERGED from [androidx.credentials:credentials-play-services-auth:1.2.0-rc01] /home/rai/.gradle/caches/8.10.2/transforms/3b57daa68a936302c56f1f1d9fd61537/transformed/credentials-play-services-auth-1.2.0-rc01/AndroidManifest.xml:23:5-42:19
 MERGED from [com.google.android.gms:play-services-auth:21.3.0] /home/rai/.gradle/caches/8.10.2/transforms/07806e5298bbe2ea711f44ee7d01d241/transformed/play-services-auth-21.3.0/AndroidManifest.xml:22:5-38:19
 MERGED from [com.google.android.gms:play-services-auth:21.3.0] /home/rai/.gradle/caches/8.10.2/transforms/07806e5298bbe2ea711f44ee7d01d241/transformed/play-services-auth-21.3.0/AndroidManifest.xml:22:5-38:19
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:8:5-16:19
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:8:5-16:19
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:26:5-37:19
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:26:5-37:19
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:8:5-16:19
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:8:5-16:19
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:13:5-24:19
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:21:5-32:19
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:21:5-32:19
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] /home/rai/.gradle/caches/8.10.2/transforms/01d30add99c8625e778f0fca3c9fdfae/transformed/firebase-appcheck-interop-17.1.0/AndroidManifest.xml:21:5-20
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] /home/rai/.gradle/caches/8.10.2/transforms/01d30add99c8625e778f0fca3c9fdfae/transformed/firebase-appcheck-interop-17.1.0/AndroidManifest.xml:21:5-20
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /home/rai/.gradle/caches/8.10.2/transforms/29a84a4382a05e0f6cdcd742aa364abc/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:23:5-20
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /home/rai/.gradle/caches/8.10.2/transforms/29a84a4382a05e0f6cdcd742aa364abc/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:23:5-20
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] /home/rai/.gradle/caches/8.10.2/transforms/1f9426c0f5ca57b5617ccd0aa5a890ba/transformed/play-services-fido-20.1.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] /home/rai/.gradle/caches/8.10.2/transforms/1f9426c0f5ca57b5617ccd0aa5a890ba/transformed/play-services-fido-20.1.0/AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.android.gms:play-services-base:18.5.0] /home/rai/.gradle/caches/8.10.2/transforms/77de8b9355e4413c08798ef8d2f6b209/transformed/play-services-base-18.5.0/AndroidManifest.xml:4:5-6:19
@@ -263,18 +252,12 @@ MERGED from [com.google.android.gms:play-services-auth-api-phone:18.0.2] /home/r
 MERGED from [com.google.android.gms:play-services-auth-api-phone:18.0.2] /home/rai/.gradle/caches/8.10.2/transforms/e125b0183fe9cb323e838cb747055326/transformed/play-services-auth-api-phone-18.0.2/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.10] /home/rai/.gradle/caches/8.10.2/transforms/437a91a261757ef645ff84db92d0136b/transformed/play-services-auth-base-18.0.10/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth-base:18.0.10] /home/rai/.gradle/caches/8.10.2/transforms/437a91a261757ef645ff84db92d0136b/transformed/play-services-auth-base-18.0.10/AndroidManifest.xml:5:5-44
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:19:5-44
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:19:5-44
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:6:5-44
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:6:5-44
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:18:5-44
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:18:5-44
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] /home/rai/.gradle/caches/8.10.2/transforms/01d30add99c8625e778f0fca3c9fdfae/transformed/firebase-appcheck-interop-17.1.0/AndroidManifest.xml:18:5-44
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] /home/rai/.gradle/caches/8.10.2/transforms/01d30add99c8625e778f0fca3c9fdfae/transformed/firebase-appcheck-interop-17.1.0/AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /home/rai/.gradle/caches/8.10.2/transforms/29a84a4382a05e0f6cdcd742aa364abc/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:18:5-20:41
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /home/rai/.gradle/caches/8.10.2/transforms/29a84a4382a05e0f6cdcd742aa364abc/transformed/firebase-appcheck-interop-17.0.0/AndroidManifest.xml:18:5-20:41
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /home/rai/.gradle/caches/8.10.2/transforms/eb9e900cf7d4530c1a1e236bb9fb63bc/transformed/firebase-database-collection-18.0.1/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /home/rai/.gradle/caches/8.10.2/transforms/eb9e900cf7d4530c1a1e236bb9fb63bc/transformed/firebase-database-collection-18.0.1/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] /home/rai/.gradle/caches/8.10.2/transforms/1f9426c0f5ca57b5617ccd0aa5a890ba/transformed/play-services-fido-20.1.0/AndroidManifest.xml:5:5-44
@@ -357,8 +340,6 @@ MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/rai/.g
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/851a1facc244c3a300b2e96495b55767/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
 MERGED from [androidx.core:core-ktx:1.15.0] /home/rai/.gradle/caches/8.10.2/transforms/4ece923ee1d9d3b91344deee66921e72/transformed/core-ktx-1.15.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.core:core-ktx:1.15.0] /home/rai/.gradle/caches/8.10.2/transforms/4ece923ee1d9d3b91344deee66921e72/transformed/core-ktx-1.15.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] /home/rai/.gradle/caches/8.10.2/transforms/5a5455594638a3187fe69c33f4927981/transformed/googleid-1.1.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] /home/rai/.gradle/caches/8.10.2/transforms/5a5455594638a3187fe69c33f4927981/transformed/googleid-1.1.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/7c8d4295816437805a7d7b4d37dff3a5/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/7c8d4295816437805a7d7b4d37dff3a5/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] /home/rai/.gradle/caches/8.10.2/transforms/7763a4d11d612403dafe6fc7bfff5775/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
@@ -387,6 +368,8 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/rai/.gradle/caches/8.1
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/rai/.gradle/caches/8.10.2/transforms/8b8d44de20ec4140f4a12d9ea4878248/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/rai/.gradle/caches/8.10.2/transforms/8fa8b82aa0b7e5f60e47eed13825bc56/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/rai/.gradle/caches/8.10.2/transforms/8fa8b82aa0b7e5f60e47eed13825bc56/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] /home/rai/.gradle/caches/8.10.2/transforms/5a5455594638a3187fe69c33f4927981/transformed/googleid-1.1.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] /home/rai/.gradle/caches/8.10.2/transforms/5a5455594638a3187fe69c33f4927981/transformed/googleid-1.1.0/AndroidManifest.xml:5:5-44
 MERGED from [io.grpc:grpc-android:1.57.2] /home/rai/.gradle/caches/8.10.2/transforms/c748a09457f5d9afa9caf04ea816da29/transformed/grpc-android-1.57.2/AndroidManifest.xml:5:5-44
 MERGED from [io.grpc:grpc-android:1.57.2] /home/rai/.gradle/caches/8.10.2/transforms/c748a09457f5d9afa9caf04ea816da29/transformed/grpc-android-1.57.2/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:protolite-well-known-types:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/aec73ff19e1ef6b31e8c4421441ee43d/transformed/protolite-well-known-types-18.0.0/AndroidManifest.xml:7:5-9:41
@@ -423,16 +406,10 @@ service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [com.google.firebase:firebase-auth-ktx:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/89f1e68b10bec3c2654922c0ca532780/transformed/firebase-auth-ktx-23.0.0/AndroidManifest.xml:8:9-14:19
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/1f525debc744b72f1642ed57bbf52e29/transformed/firebase-auth-23.0.0/AndroidManifest.xml:66:9-72:19
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/1f525debc744b72f1642ed57bbf52e29/transformed/firebase-auth-23.0.0/AndroidManifest.xml:66:9-72:19
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:9:9-15:19
-MERGED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:9:9-15:19
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:27:9-36:19
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:27:9-36:19
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:9:9-15:19
 MERGED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:9:9-15:19
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:14:9-23:19
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:14:9-23:19
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:22:9-31:19
-MERGED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:22:9-31:19
 MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/cb6c8ed802391fed696d2092a04318b3/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:9:9-15:19
 MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/cb6c8ed802391fed696d2092a04318b3/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:9:9-15:19
 MERGED from [com.google.firebase:firebase-common:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/d6f67571fce107d9694cfe0da0a1453e/transformed/firebase-common-21.0.0/AndroidManifest.xml:30:9-38:19
@@ -453,8 +430,6 @@ ADDED from [com.google.firebase:firebase-auth-ktx:23.0.0] /home/rai/.gradle/cach
 		ADDED from [com.google.firebase:firebase-auth-ktx:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/89f1e68b10bec3c2654922c0ca532780/transformed/firebase-auth-ktx-23.0.0/AndroidManifest.xml:12:17-119
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.firebase:firebase-auth:23.0.0] /home/rai/.gradle/caches/8.10.2/transforms/1f525debc744b72f1642ed57bbf52e29/transformed/firebase-auth-23.0.0/AndroidManifest.xml:26:5-79
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:23:5-79
-MERGED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:23:5-79
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:10:5-79
 MERGED from [com.google.android.recaptcha:recaptcha:18.4.0] /home/rai/.gradle/caches/8.10.2/transforms/c862d4cc4676285e0568e2d8fff0b4f3/transformed/recaptcha-18.4.0/AndroidManifest.xml:8:5-79
@@ -567,24 +542,6 @@ ADDED from [com.google.android.gms:play-services-auth:21.3.0] /home/rai/.gradle/
 		ADDED from [com.google.android.gms:play-services-auth:21.3.0] /home/rai/.gradle/caches/8.10.2/transforms/07806e5298bbe2ea711f44ee7d01d241/transformed/play-services-auth-21.3.0/AndroidManifest.xml:36:13-107
 	android:name
 		ADDED from [com.google.android.gms:play-services-auth:21.3.0] /home/rai/.gradle/caches/8.10.2/transforms/07806e5298bbe2ea711f44ee7d01d241/transformed/play-services-auth-21.3.0/AndroidManifest.xml:34:13-89
-meta-data#com.google.firebase.components:com.google.firebase.storage.ktx.FirebaseStorageLegacyRegistrar
-ADDED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
-	android:value
-		ADDED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:14:17-82
-	android:name
-		ADDED from [com.google.firebase:firebase-storage-ktx:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/105de8957790c0ad33f05c82fe8f4ccb/transformed/firebase-storage-ktx-21.0.0/AndroidManifest.xml:13:17-125
-meta-data#com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar
-ADDED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:30:13-32:85
-	android:value
-		ADDED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:32:17-82
-	android:name
-		ADDED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:31:17-118
-meta-data#com.google.firebase.components:com.google.firebase.storage.StorageRegistrar
-ADDED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:33:13-35:85
-	android:value
-		ADDED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:35:17-82
-	android:name
-		ADDED from [com.google.firebase:firebase-storage:21.0.0] /home/rai/.gradle/caches/8.10.2/transforms/c207adaae410b7962d24ed49a82b1df7/transformed/firebase-storage-21.0.0/AndroidManifest.xml:34:17-107
 meta-data#com.google.firebase.components:com.google.firebase.firestore.ktx.FirebaseFirestoreLegacyRegistrar
 ADDED from [com.google.firebase:firebase-firestore-ktx:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/58efe26ee7e02ff578cb16caa7b997c4/transformed/firebase-firestore-ktx-25.0.0/AndroidManifest.xml:12:13-14:85
 	android:value
@@ -603,18 +560,6 @@ ADDED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/cac
 		ADDED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:22:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-firestore:25.0.0] /home/rai/.gradle/caches/8.10.2/transforms/a3a17a0e44df76dd207ceefcb8123a2e/transformed/firebase-firestore-25.0.0/AndroidManifest.xml:21:17-111
-meta-data#com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar
-ADDED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:25:13-27:85
-	android:value
-		ADDED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:27:17-82
-	android:name
-		ADDED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:26:17-120
-meta-data#com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar
-ADDED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:28:13-30:85
-	android:value
-		ADDED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:30:17-82
-	android:name
-		ADDED from [com.google.firebase:firebase-appcheck:18.0.0] /home/rai/.gradle/caches/8.10.2/transforms/eb20b573431f67ab3060a8971577fc11/transformed/firebase-appcheck-18.0.0/AndroidManifest.xml:29:17-117
 activity#com.google.android.gms.common.api.GoogleApiActivity
 ADDED from [com.google.android.gms:play-services-base:18.5.0] /home/rai/.gradle/caches/8.10.2/transforms/77de8b9355e4413c08798ef8d2f6b209/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
 	android:exported

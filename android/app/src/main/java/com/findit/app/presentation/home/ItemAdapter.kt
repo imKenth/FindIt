@@ -43,10 +43,10 @@ class ItemAdapter(
 
         fun bind(item: Item) {
             binding.root.setOnClickListener { onItemClick(item) }
-            binding.itemImage.load(item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.ic_launcher_background) {
+            binding.itemImage.load(item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.bg_image_placeholder) {
                 crossfade(true)
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_background)
+                placeholder(R.drawable.bg_image_placeholder)
+                error(R.drawable.bg_image_placeholder)
             }
             binding.itemName.text = item.name
             binding.itemLocation.text = item.location
@@ -91,10 +91,10 @@ class ItemAdapter(
 
         fun bind(item: Item) {
             binding.root.setOnClickListener { onItemClick(item) }
-            binding.itemImage.load(item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.ic_launcher_background) {
+            binding.itemImage.load(item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.bg_image_placeholder) {
                 crossfade(true)
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_background)
+                placeholder(R.drawable.bg_image_placeholder)
+                error(R.drawable.bg_image_placeholder)
             }
             binding.itemName.text = item.name
             binding.itemCategory.text = item.category.name.replace("_", " ")

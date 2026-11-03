@@ -3136,6 +3136,7 @@ drawable bg_circle_violet_500
 drawable bg_circle_violet_600
 drawable bg_circle_violet_800
 drawable bg_gradient_transparent_black
+drawable bg_image_placeholder
 drawable bg_rounded_white_alpha
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation

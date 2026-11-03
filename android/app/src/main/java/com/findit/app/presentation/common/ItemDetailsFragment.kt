@@ -71,11 +71,11 @@ class ItemDetailsFragment : Fragment() {
 
     private fun bindItem(item: Item) {
         binding.itemHeroImage.load(
-            item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.ic_launcher_background
+            item.imageUrl.takeIf(String::isNotBlank) ?: R.drawable.bg_image_placeholder
         ) {
             crossfade(true)
-            placeholder(R.drawable.ic_launcher_background)
-            error(R.drawable.ic_launcher_background)
+            placeholder(R.drawable.bg_image_placeholder)
+            error(R.drawable.bg_image_placeholder)
         }
         binding.itemName.text = item.name
         binding.categoryText.text = item.category.name.replace("_", " ")
