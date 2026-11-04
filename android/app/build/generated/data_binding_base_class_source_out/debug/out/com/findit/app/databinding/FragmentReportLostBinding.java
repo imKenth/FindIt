@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.findit.app.R;
@@ -48,6 +49,12 @@ public final class FragmentReportLostBinding implements ViewBinding {
   public final TextInputEditText locationEditText;
 
   @NonNull
+  public final LinearLayout matchSection;
+
+  @NonNull
+  public final RecyclerView matchesRecyclerView;
+
+  @NonNull
   public final TextInputEditText nameEditText;
 
   @NonNull
@@ -75,7 +82,8 @@ public final class FragmentReportLostBinding implements ViewBinding {
       @NonNull MaterialCardView backButton, @NonNull MaterialButton backToHomeButton,
       @NonNull AutoCompleteTextView categoryDropdown, @NonNull ImageView closeButton,
       @NonNull TextInputEditText dateEditText, @NonNull TextInputEditText descriptionEditText,
-      @NonNull TextInputEditText locationEditText, @NonNull TextInputEditText nameEditText,
+      @NonNull TextInputEditText locationEditText, @NonNull LinearLayout matchSection,
+      @NonNull RecyclerView matchesRecyclerView, @NonNull TextInputEditText nameEditText,
       @NonNull MaterialButton photoButton, @NonNull ImageView photoPreview,
       @NonNull TextView reportErrorText, @NonNull MaterialButton submitButton,
       @NonNull LinearLayout successOverlay, @NonNull TextInputEditText timeEditText,
@@ -88,6 +96,8 @@ public final class FragmentReportLostBinding implements ViewBinding {
     this.dateEditText = dateEditText;
     this.descriptionEditText = descriptionEditText;
     this.locationEditText = locationEditText;
+    this.matchSection = matchSection;
+    this.matchesRecyclerView = matchesRecyclerView;
     this.nameEditText = nameEditText;
     this.photoButton = photoButton;
     this.photoPreview = photoPreview;
@@ -167,6 +177,18 @@ public final class FragmentReportLostBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.match_section;
+      LinearLayout matchSection = ViewBindings.findChildViewById(rootView, id);
+      if (matchSection == null) {
+        break missingId;
+      }
+
+      id = R.id.matches_recycler_view;
+      RecyclerView matchesRecyclerView = ViewBindings.findChildViewById(rootView, id);
+      if (matchesRecyclerView == null) {
+        break missingId;
+      }
+
       id = R.id.name_edit_text;
       TextInputEditText nameEditText = ViewBindings.findChildViewById(rootView, id);
       if (nameEditText == null) {
@@ -217,8 +239,8 @@ public final class FragmentReportLostBinding implements ViewBinding {
 
       return new FragmentReportLostBinding((CoordinatorLayout) rootView, backButton,
           backToHomeButton, categoryDropdown, closeButton, dateEditText, descriptionEditText,
-          locationEditText, nameEditText, photoButton, photoPreview, reportErrorText, submitButton,
-          successOverlay, timeEditText, toolbar);
+          locationEditText, matchSection, matchesRecyclerView, nameEditText, photoButton,
+          photoPreview, reportErrorText, submitButton, successOverlay, timeEditText, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

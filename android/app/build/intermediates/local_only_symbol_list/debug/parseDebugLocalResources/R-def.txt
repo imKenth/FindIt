@@ -128,6 +128,8 @@ id action_profileFragment_to_myReportsFragment
 id action_profileFragment_to_notificationsFragment
 id action_registerFragment_to_adminDashboardFragment
 id action_registerFragment_to_homeFragment
+id action_reportFoundFragment_to_itemDetailsFragment
+id action_reportLostFragment_to_itemDetailsFragment
 id action_reportTypeFragment_to_reportFoundFragment
 id action_reportTypeFragment_to_reportLostFragment
 id action_searchFragment_to_itemDetailsFragment
@@ -212,6 +214,11 @@ id location_edit_text
 id location_meta
 id loginFragment
 id lost_type_card
+id match_item_location
+id match_item_name
+id match_item_status
+id match_reasons
+id match_section
 id matches_recycler_view
 id menu_help_support
 id menu_icon
@@ -311,6 +318,7 @@ layout card_admin_claim
 layout card_admin_report
 layout card_admin_user
 layout card_item_compact
+layout card_item_match
 layout card_item_wide
 layout card_my_report
 layout fragment_admin

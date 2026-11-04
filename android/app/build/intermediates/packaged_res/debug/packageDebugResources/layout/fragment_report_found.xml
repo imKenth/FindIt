@@ -211,6 +211,39 @@
                     android:inputType="textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:id="@+id/match_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Possible matches"
+                    android:textColor="@color/gray_900"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="These active lost reports may match your item."
+                    android:textColor="@color/gray_500"
+                    android:textSize="13sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/matches_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never" />
+            </LinearLayout>
+
             <!-- Photo -->
             <TextView
                 style="@style/Theme.FindIt.Label"

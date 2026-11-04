@@ -124,13 +124,21 @@
         android:id="@+id/reportLostFragment"
         android:name="com.findit.app.presentation.lost.ReportLostFragment"
         android:label="ReportLostFragment"
-        tools:layout="@layout/fragment_report_lost" />
+        tools:layout="@layout/fragment_report_lost">
+        <action
+            android:id="@+id/action_reportLostFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/reportFoundFragment"
         android:name="com.findit.app.presentation.found.ReportFoundFragment"
         android:label="ReportFoundFragment"
-        tools:layout="@layout/fragment_report_found" />
+        tools:layout="@layout/fragment_report_found">
+        <action
+            android:id="@+id/action_reportFoundFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
