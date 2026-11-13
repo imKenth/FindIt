@@ -22,6 +22,8 @@ color emerald_300
 color emerald_400
 color emerald_500
 color emerald_600
+color filter_chip_background
+color filter_chip_text
 color gray_100
 color gray_200
 color gray_300
@@ -68,8 +70,11 @@ drawable bg_badge_violet
 drawable bg_circle_violet_500
 drawable bg_circle_violet_600
 drawable bg_circle_violet_800
+drawable bg_findit_hero
 drawable bg_gradient_transparent_black
 drawable bg_image_placeholder
+drawable bg_navigation_surface
+drawable bg_notification_card
 drawable bg_rounded_white_alpha
 drawable ic_add
 drawable ic_arrow_right
@@ -105,6 +110,7 @@ font outfit_semi_bold
 id action_adminDashboardFragment_to_homeFragment
 id action_global_home
 id action_global_my_reports
+id action_global_notifications
 id action_global_profile
 id action_global_report_type
 id action_global_search
@@ -237,7 +243,7 @@ id nav_home
 id nav_host_fragment
 id nav_item_icon
 id nav_item_label
-id nav_my_reports
+id nav_notifications
 id nav_profile
 id nav_reports
 id nav_reports_button
@@ -361,12 +367,14 @@ string google_crash_reporting_api_key
 string google_storage_bucket
 string nav_home
 string nav_my_reports
+string nav_notifications
 string nav_profile
 string nav_reports
 string nav_search
 string project_id
 string report_found_icon
 string report_lost_icon
+style ShapeAppearance.FindIt.Circle
 style ShapeAppearance.FindIt.Rounded12
 style ShapeAppearance.FindIt.Rounded16
 style Theme.FindIt

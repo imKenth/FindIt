@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
         root.findViewById<View>(R.id.nav_reports).setOnClickListener {
             navController.navigate(R.id.action_global_report_type, null, navOptions)
         }
-        configureItem(root, R.id.nav_my_reports, R.drawable.ic_document, R.string.nav_my_reports) {
-            navController.navigate(R.id.action_global_my_reports, null, navOptions)
+        configureItem(root, R.id.nav_notifications, R.drawable.ic_notifications, R.string.nav_notifications) {
+            navController.navigate(R.id.action_global_notifications, null, navOptions)
         }
         configureItem(root, R.id.nav_profile, R.drawable.ic_person, R.string.nav_profile) {
             navController.navigate(R.id.action_global_profile, null, navOptions)
@@ -87,11 +87,12 @@ class MainActivity : AppCompatActivity() {
         val selectedItemId = when (destinationId) {
             R.id.homeFragment -> R.id.nav_home
             R.id.searchFragment -> R.id.nav_search
-            R.id.myReportsFragment -> R.id.nav_my_reports
+            R.id.notificationsFragment -> R.id.nav_notifications
+            R.id.myReportsFragment -> R.id.nav_profile
             R.id.profileFragment -> R.id.nav_profile
             else -> null
         }
-        listOf(R.id.nav_home, R.id.nav_search, R.id.nav_my_reports, R.id.nav_profile).forEach { itemId ->
+        listOf(R.id.nav_home, R.id.nav_search, R.id.nav_notifications, R.id.nav_profile).forEach { itemId ->
             val item = bottomNavigation()?.findViewById<View>(itemId) ?: return@forEach
             val color = ContextCompat.getColor(
                 this,
@@ -110,6 +111,7 @@ class MainActivity : AppCompatActivity() {
         R.id.homeFragment,
         R.id.searchFragment,
         R.id.reportTypeFragment,
+        R.id.notificationsFragment,
         R.id.myReportsFragment,
         R.id.profileFragment
     )

@@ -28,7 +28,7 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
   public final ItemBottomNavigationBinding navHome;
 
   @NonNull
-  public final ItemBottomNavigationBinding navMyReports;
+  public final ItemBottomNavigationBinding navNotifications;
 
   @NonNull
   public final ItemBottomNavigationBinding navProfile;
@@ -47,14 +47,14 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
 
   private LayoutBottomNavigationBinding(@NonNull FrameLayout rootView,
       @NonNull LinearLayout bottomNavigationContainer, @NonNull ItemBottomNavigationBinding navHome,
-      @NonNull ItemBottomNavigationBinding navMyReports,
+      @NonNull ItemBottomNavigationBinding navNotifications,
       @NonNull ItemBottomNavigationBinding navProfile, @NonNull FrameLayout navReports,
       @NonNull MaterialCardView navReportsButton, @NonNull TextView navReportsLabel,
       @NonNull ItemBottomNavigationBinding navSearch) {
     this.rootView = rootView;
     this.bottomNavigationContainer = bottomNavigationContainer;
     this.navHome = navHome;
-    this.navMyReports = navMyReports;
+    this.navNotifications = navNotifications;
     this.navProfile = navProfile;
     this.navReports = navReports;
     this.navReportsButton = navReportsButton;
@@ -102,12 +102,12 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
       }
       ItemBottomNavigationBinding binding_navHome = ItemBottomNavigationBinding.bind(navHome);
 
-      id = R.id.nav_my_reports;
-      View navMyReports = ViewBindings.findChildViewById(rootView, id);
-      if (navMyReports == null) {
+      id = R.id.nav_notifications;
+      View navNotifications = ViewBindings.findChildViewById(rootView, id);
+      if (navNotifications == null) {
         break missingId;
       }
-      ItemBottomNavigationBinding binding_navMyReports = ItemBottomNavigationBinding.bind(navMyReports);
+      ItemBottomNavigationBinding binding_navNotifications = ItemBottomNavigationBinding.bind(navNotifications);
 
       id = R.id.nav_profile;
       View navProfile = ViewBindings.findChildViewById(rootView, id);
@@ -142,8 +142,8 @@ public final class LayoutBottomNavigationBinding implements ViewBinding {
       ItemBottomNavigationBinding binding_navSearch = ItemBottomNavigationBinding.bind(navSearch);
 
       return new LayoutBottomNavigationBinding((FrameLayout) rootView, bottomNavigationContainer,
-          binding_navHome, binding_navMyReports, binding_navProfile, navReports, navReportsButton,
-          navReportsLabel, binding_navSearch);
+          binding_navHome, binding_navNotifications, binding_navProfile, navReports,
+          navReportsButton, navReportsLabel, binding_navSearch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

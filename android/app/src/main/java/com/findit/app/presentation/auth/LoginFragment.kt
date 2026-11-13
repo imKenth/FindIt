@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.findit.app.data.repository.AuthEmailPolicy
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.findit.app.R
 import com.findit.app.databinding.FragmentLoginBinding
@@ -44,7 +45,11 @@ class LoginFragment : Fragment() {
                 viewModel.handleGoogleUser(email)
             }
         } catch (e: ApiException) {
-            binding.errorText.text = "Google Sign-In Error (${e.statusCode}): Enable Google provider in Firebase Console."
+            binding.errorText.text = if (e.statusCode == 10) {
+                "Google Sign-In configuration error (10). Check that Firebase has the SHA-1 fingerprint for this app's signing key registered for com.findit.app, then download the updated google-services.json and rebuild."
+            } else {
+                "Google Sign-In Error (${e.statusCode}: ${GoogleSignInStatusCodes.getStatusCodeString(e.statusCode)})."
+            }
             binding.errorText.isVisible = true
         } catch (e: Exception) {
             binding.errorText.text = e.localizedMessage ?: "Google Sign-In failed"

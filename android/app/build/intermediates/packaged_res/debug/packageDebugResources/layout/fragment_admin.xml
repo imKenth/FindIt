@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray_900">
+        android:background="@color/violet_950">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray_900"
+            android:background="@color/violet_950"
             app:tabIndicatorColor="@color/amber_400"
             app:tabSelectedTextColor="@color/white"
             app:tabTextColor="@color/gray_500" />

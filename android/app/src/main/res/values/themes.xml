@@ -16,12 +16,14 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/gray_50</item>
 
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/gray_900</item>
-        <item name="colorSurfaceVariant">@color/gray_50</item>
+        <item name="colorSurfaceVariant">@color/violet_50</item>
         <item name="colorOnSurfaceVariant">@color/gray_500</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
 
         <item name="colorError">@color/red_500</item>
         <item name="colorOnError">@color/white</item>
@@ -35,6 +37,11 @@
     <style name="ShapeAppearance.FindIt.Rounded16" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ShapeAppearance.FindIt.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="Theme.FindIt.Label">

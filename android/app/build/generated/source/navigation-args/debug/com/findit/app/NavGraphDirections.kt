@@ -16,6 +16,9 @@ public class NavGraphDirections private constructor() {
     public fun actionGlobalMyReports(): NavDirections =
         ActionOnlyNavDirections(R.id.action_global_my_reports)
 
+    public fun actionGlobalNotifications(): NavDirections =
+        ActionOnlyNavDirections(R.id.action_global_notifications)
+
     public fun actionGlobalProfile(): NavDirections =
         ActionOnlyNavDirections(R.id.action_global_profile)
   }

@@ -3,6 +3,7 @@
     <string name="nav_search">Search</string>
     <string name="nav_reports">Reports</string>
     <string name="nav_my_reports">My Reports</string>
+    <string name="nav_notifications">Notifications</string>
     <string name="nav_profile">Profile</string>
     <string name="report_lost_icon">Report lost</string>
     <string name="report_found_icon">Report found</string>

@@ -21,6 +21,9 @@ public class RegisterFragmentDirections private constructor() {
 
     public fun actionGlobalMyReports(): NavDirections = NavGraphDirections.actionGlobalMyReports()
 
+    public fun actionGlobalNotifications(): NavDirections =
+        NavGraphDirections.actionGlobalNotifications()
+
     public fun actionGlobalProfile(): NavDirections = NavGraphDirections.actionGlobalProfile()
   }
 }

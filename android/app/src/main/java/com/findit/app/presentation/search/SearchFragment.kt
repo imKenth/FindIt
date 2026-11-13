@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -80,6 +81,14 @@ class SearchFragment : Fragment() {
         binding.clearFiltersButton.setOnClickListener {
             binding.searchEditText.setText("")
             binding.chipAll.isChecked = true
+            currentCategory = "All"
+            for (index in 0 until binding.categoryChipGroup.childCount) {
+                val chip = binding.categoryChipGroup.getChildAt(index) as? Chip ?: continue
+                if (chip.text == "All") {
+                    chip.isChecked = true
+                    break
+                }
+            }
             updateResults()
         }
     }
@@ -138,6 +147,11 @@ class SearchFragment : Fragment() {
                 text = cat
                 isCheckable = true
                 isChecked = cat == "All"
+                setChipBackgroundColorResource(R.color.filter_chip_background)
+                chipStrokeWidth = 0f
+                setTextColor(
+                    ContextCompat.getColorStateList(requireContext(), R.color.filter_chip_text)
+                )
                 setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
                         currentCategory = cat

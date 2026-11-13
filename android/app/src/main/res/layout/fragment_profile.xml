@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/violet_50">
+    android:background="@color/gray_50">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/white"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -20,17 +20,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/violet_700"
+                android:background="@color/white"
                 android:paddingHorizontal="20dp"
                 android:paddingTop="48dp"
-                android:paddingBottom="48dp">
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:id="@+id/header_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Profile"
-                    android:textColor="@color/white"
+                    android:textColor="@color/gray_900"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
                     android:id="@+id/edit_profile_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="#26FFFFFF"
+                    app:cardBackgroundColor="@color/violet_50"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -52,40 +52,42 @@
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="6dp"
                         android:text="Edit Profile"
-                        android:textColor="@color/violet_200"
+                        android:textColor="@color/violet_700"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
                     android:layout_marginTop="24dp"
                     android:clickable="true"
                     android:contentDescription="@string/change_profile_photo"
                     android:focusable="true"
                     android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/header_title"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.FindIt.Rounded16"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.FindIt.Circle"
                     tools:src="@tools:sample/avatars" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@id/profile_image"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/profile_image"
-                    app:layout_constraintTop_toTopOf="@id/profile_image">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_image">
 
                     <TextView
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:textColor="@color/gray_900"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:text="Alex Rivera" />
@@ -94,7 +96,8 @@
                         android:id="@+id/user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/violet_200"
+                        android:gravity="center"
+                        android:textColor="@color/gray_500"
                         android:textSize="14sp"
                         tools:text="alex.rivera@school.edu" />
 
@@ -102,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        app:cardBackgroundColor="#3300C853"
+                        app:cardBackgroundColor="@color/green_50"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="0dp">
 
@@ -112,7 +115,7 @@
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
                             android:text="✓ Verified Student"
-                            android:textColor="@color/emerald_300"
+                            android:textColor="@color/green_700"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </com.google.android.material.card.MaterialCardView>
@@ -123,7 +126,8 @@
 
         <include
             android:id="@+id/profile_stats_top"
-            layout="@layout/layout_profile_stats" />
+            layout="@layout/layout_profile_stats"
+            android:visibility="gone" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -255,8 +259,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/gray_200"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

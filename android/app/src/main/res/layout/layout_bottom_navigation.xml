@@ -14,7 +14,7 @@
         android:layout_marginTop="12dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="@color/white"
+        android:background="@drawable/bg_navigation_surface"
         android:elevation="4dp"
         android:clipChildren="false"
         android:clipToPadding="false">
@@ -52,13 +52,14 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="6dp"
                 android:text="@string/nav_reports"
-                android:textColor="@color/black"
+                android:textColor="@color/bottom_nav_unselected"
                 android:textSize="12sp"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:visibility="gone" />
         </FrameLayout>
 
         <include
-            android:id="@+id/nav_my_reports"
+            android:id="@+id/nav_notifications"
             layout="@layout/item_bottom_navigation"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -77,8 +78,8 @@
     <!-- Big circle, higher elevation than the bar so it draws on top -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/nav_reports_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_gravity="top|center_horizontal"
         android:clickable="true"
         android:focusable="true"
@@ -88,12 +89,12 @@
         app:strokeWidth="0dp">
 
         <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:contentDescription="@string/nav_reports"
             android:src="@drawable/ic_add"
-            app:tint="@color/black" />
+            app:tint="@color/white" />
     </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

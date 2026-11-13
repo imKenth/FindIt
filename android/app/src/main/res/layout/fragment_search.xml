@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/gray_50">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_layout"
@@ -17,6 +17,7 @@
         app:boxCornerRadiusBottomStart="16dp"
         app:boxCornerRadiusTopEnd="16dp"
         app:boxCornerRadiusTopStart="16dp"
+        app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/violet_400"
         app:hintEnabled="false"
         app:layout_constraintTop_toTopOf="parent"
@@ -57,23 +58,29 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="All"
-                app:chipBackgroundColor="@color/violet_600"
-                app:chipStrokeWidth="0dp"
-                app:itemTextColor="@color/white" />
+                android:textColor="@color/filter_chip_text"
+                app:chipBackgroundColor="@color/filter_chip_background"
+                app:chipStrokeWidth="0dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_lost"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lost" />
+                android:text="Lost"
+                android:textColor="@color/filter_chip_text"
+                app:chipBackgroundColor="@color/filter_chip_background"
+                app:chipStrokeWidth="0dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_found"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Found" />
+                android:text="Found"
+                android:textColor="@color/filter_chip_text"
+                app:chipBackgroundColor="@color/filter_chip_background"
+                app:chipStrokeWidth="0dp" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
